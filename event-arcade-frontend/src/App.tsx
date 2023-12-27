@@ -1,14 +1,18 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Authentication from "./pages/Authentication/Authentication";
 
-
-function App() {
-
+export default function App() {
   return (
-    <>
-      <div>
-        
-      </div>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/auth" element={<Authentication/>}/>
+
+      </Routes>
+    </Router>
   )
 }
 
-export default App
+
