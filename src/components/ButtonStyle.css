@@ -1,0 +1,30 @@
+.bg-orange {
+  background-color: black !important; 
+  border-color: #151514 !important;
+  height: 40px;
+  width: 100px;
+}
+
+.custom-update-button{
+  background-color: #FF9800;
+  border-color: #FF9800;
+  width: 200px;
+  margin-left: 160px;
+  
+}
+
+.custom-update-button:hover {
+  background-color: #FF9800; 
+}
+
+.custom-delete-button{
+  background-color: #EC407A;
+  border-color: #EC407A;
+  width: 200px;
+  margin-right: 100px;
+  margin-left:5px;
+}
+
+.custom-delete-button:hover {
+  background-color: #EC407A;
+}
