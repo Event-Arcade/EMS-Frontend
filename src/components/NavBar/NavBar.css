@@ -40,5 +40,6 @@
 .nav-signin-button:hover,
 .nav-signin-button:active {
   background-color: #EC407A;
+  
   border-color: #EC407A;
 }

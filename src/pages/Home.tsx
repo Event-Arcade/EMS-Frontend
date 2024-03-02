@@ -19,7 +19,7 @@ export default function Home() {
         <SlidingPanel />
         <div className="picture-card-text">Popular Services</div>
         <PictureCard />
-        <NumberList/>
+        <NumberList />
         <div className="picture-card-text">Featured Videos</div>
         <VideoGallery />
         <Footer />

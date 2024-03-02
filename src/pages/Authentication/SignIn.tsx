@@ -2,14 +2,21 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Authentication.css";
 //import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import {FormEvent } from "react";
+
 import axios from "axios";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const handlelogin = e => {
+  const handlelogin = (e: FormEvent) => {
+    e.preventDefault();
+
+    const email = (e.target as any)[0].value;
+    const password = (e.target as any)[1].value;
+
     axios.post("https://localhost:7005/api/Account/Register", {
-      email: e.target[0].value,
-      password: e.target[1].value
+      email,
+      password,
     });
     navigate("/dashboard");
   };
