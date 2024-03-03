@@ -1,0 +1,20 @@
+.footer{
+  margin-bottom: 0;
+  padding: 20px 0;
+  font-size: 14px;
+  transition: all 0.3s;
+  border-top: 0px solid #cddfff;
+  max-width: 1190px;
+}
+
+.footer .copyright{
+  text-align: center;
+  color: #2b2c2c;
+}
+
+.footer .credits{
+  padding-top: 5px;
+  text-align: center;
+  font-size: 13px;
+  color: #515151;
+}

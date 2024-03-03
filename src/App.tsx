@@ -1,4 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import './App.css';
+import 'remixicon/fonts/remixicon.css';
+
+import'bootstrap/dist/js/bootstrap.min.js';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Authentication from "./pages/Authentication/Authentication";
