@@ -10,6 +10,8 @@ import video2 from "../../assets/videos/video2.mp4";
 import video3 from "../../assets/videos/video3.mp4";
 import video4 from "../../assets/videos/video4.mp4";
 import video5 from "../../assets/videos/video5.mp4";
+import profileImg from "../../assets/img/profileImg.jpg"
+
 
 //import ReactPlayer from "react-player";
 import "./VideoGallery.css";
@@ -45,19 +47,31 @@ const VideoGallery = () => {
   ];
   return (
     <>
-      <div className="gallery">
+      <div className="gallery" style={{paddingLeft:'80px' , paddingRight:'80px'}}>
         {data.map((item, index) => {
           return (
             <div className="video" key={index}>
               <div className="video-container">
                 <video
                   style={{ width: "100%" }}
-                  autoPlay={true}
+                  autoPlay={false}
                   controls
                   poster={item.poster}
                 >
                   <source src={item.videoUrl} type="video/mp4" />
                 </video>
+                <div className="video-description">
+                  <div className="video-title">
+                    <img src={profileImg} alt="" className="video-owner" />
+                    <p>HHHHHh</p>
+                  </div>
+                  <div className="static-container">
+                    <p className="view-count">14k |</p>
+                    <p className="time-period">     3hr ago</p>
+                    <i className="bi bi-hand-thumbs-up-fill" style={{color:'#e78309',paddingLeft:'40px'}}></i>
+                    <i className="bi bi-hand-thumbs-down-fill" style={{paddingLeft:'10px'}}></i>
+                  </div>
+                </div>
               </div>
             </div>
           );

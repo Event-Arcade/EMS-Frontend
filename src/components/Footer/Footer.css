@@ -23,7 +23,7 @@
   padding: 4rem 4rem;
 }
 
-.footer {
+.mfooter {
   background-color: #ECEFF1;
   width: 100%;
 }
@@ -32,6 +32,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  position: relative;
 }
 
 .sb_footer-links {
@@ -105,7 +106,12 @@ hr {
   margin-left: 600px;
 }
 
-/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .arcade-logo {
+    margin-left: 120px;
+    
+  }
+}
 
 @media (min-width: 768px) {
   .sb_footer-links {
@@ -113,20 +119,22 @@ hr {
   }
 
   .sb_footer-links-div {
-    width: 48%; /* Two columns */
+    width: 48%; 
   }
 }
 
+
 @media (min-width: 992px) {
   .sb_footer-links-div {
-    width: 48%; /* Two columns */
+    width: 48%; 
   }
 }
 
 @media (min-width: 1200px) {
   .sb_footer-links-div {
-    width: 23%; /* Four columns */
-  }
+    width:auto; 
+  
+}
 }
 
 @media (max-width: 1200px) {
@@ -143,6 +151,6 @@ hr {
 
 @media (max-width: 768px) {
   .sb_footer-copyright p {
-    margin-left: 40px;
+    margin-left: 0px;
   }
 }

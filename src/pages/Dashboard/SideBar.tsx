@@ -24,13 +24,13 @@ function SideBar() {
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="/calendar">
+          <a className="nav-link" href="/startpage">
             <i className="bi bi-patch-plus"></i>
             <span>Create Plan</span>
           </a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="/settings">
+          <a className="nav-link" href="/setting">
             <i className="bi bi-gear"></i>
             <span>Settings</span>
           </a>

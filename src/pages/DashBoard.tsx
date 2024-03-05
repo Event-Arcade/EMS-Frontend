@@ -43,7 +43,8 @@ import Header from "./Dashboard/Header"
 import '../App.css'
 import SideBar from "./Dashboard/SideBar"
 import Main from "./Dashboard/Main"
-import Footer from "./Dashboard/Footer"
+//import Footer from "./Dashboard/Footer"
+import Footer from "../components/Footer/Footer"
 
 function DashBoard() {
   return (

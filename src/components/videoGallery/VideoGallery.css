@@ -13,6 +13,10 @@
   transition: all 350ms ease;
   cursor: pointer;
   margin-bottom: 12px;
+  background-color: white;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  
 }
 
 .gallery .video:hover{
@@ -39,3 +43,36 @@
   border-radius: 10px;
   overflow: hidden;
 }
+
+.video-owner{
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  padding: 10px;
+}
+.video-title {
+  display: flex;
+  align-items: center; 
+}
+
+.video-title p {
+  font-size: 10px; 
+  margin: 0; 
+  font-weight: 600;
+}
+
+.static-container{
+  padding-left: 50px;
+  padding-bottom:10px;
+  display: flex;
+  align-items: center;
+}
+
+.static-container p {
+  font-size: 10px; 
+  margin: 0; 
+  font-weight: 600;
+}
+
+
+

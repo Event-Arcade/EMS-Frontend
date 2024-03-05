@@ -9,7 +9,7 @@ export default function SlidingPanel() {
     <Carousel data-bs-theme="dark">
       <Carousel.Item>
         <img
-          style={{ height: 600 }}
+          style={{ height: 700 }}
           className="d-block w-100"
           src={SlidingPic3}
           alt="First slide"
@@ -36,7 +36,7 @@ export default function SlidingPanel() {
       </Carousel.Item>
       <Carousel.Item>
         <img
-          style={{ height: 600 }}
+          style={{ height: 700 }}
           className="d-block w-100"
           src={SlidingPic2}
           alt="Second slide"
@@ -61,7 +61,7 @@ export default function SlidingPanel() {
       </Carousel.Item>
       <Carousel.Item>
         <img
-          style={{ height: 600 }}
+          style={{ height: 700 }}
           className="d-block w-100"
           src={SlidingPic1}
           alt="Third slide"
