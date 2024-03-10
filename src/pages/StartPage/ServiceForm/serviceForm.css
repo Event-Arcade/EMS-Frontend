@@ -1,0 +1,87 @@
+.Service-form-container {
+  height: fit-content;
+  background: transparent;
+  width: 1000px;
+  margin: 50px 20px 0 100px;
+  border-radius: 20px;
+}
+.Service-form-list {
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  column-gap: 20px;
+  padding: 25px;
+}
+.Service-form-item .Service-form-img img {
+  height: 200px;
+  width: 300px;
+  transition: 0.5s;
+  border-radius: 0px;
+}
+.Service-form-item .Service-form-img {
+  /* background-image: linear-gradient(to top right, #ffffff, #ffffff); */
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px;
+}
+.Service-form-item .Service-form-content {
+  background-color: #f1af0924;
+  border-radius: 30px;
+  padding: 50px 30px;
+  transform: translate(0, -50px);
+  backdrop-filter: blur(20px);
+  color: #fff;
+}
+.Service-form-title {
+  font-size: 15px;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  color: black;
+
+}
+.Service-form-item .Service-form-content .Service-form-des {
+  font-size: small;
+  font-family: "poppins", sans-serif;
+  opacity: 0.7;
+  margin: 10px 0;
+  color: black;
+}
+.Service-form-item .Service-form-content .Service-form-price {
+  font-size: 15px;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+.Service-form-item .Service-form-content .Service-form-add {
+  background-color: #e78309;
+  color: #fff;
+  width: 150px;
+  height: 40px;
+  border: none;
+  margin-left: 40px;
+  border-radius: 30px;
+}
+ .Service-form-item:hover img{
+  transform: translate(0,-50px);
+  border-radius: 10px;
+  padding-top: 10px;
+  /* box-shadow: 0 0 1000px #000; */
+} 
+.Service-form-listPage {
+  padding: 10px;
+  text-align: center;
+  list-style: none;
+}
+
+.Service-form-listPage li {
+  background-color: #9a1b1bbd;
+  padding: 20px;
+  display: inline-block;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.Service-form-listPage .active {
+  background-color: #b192ef;
+  color: #fff;
+}

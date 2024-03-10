@@ -1,0 +1,10 @@
+.main-location-container{
+  margin-left: 30px;
+  width: 1195px;
+  height: fit-content;
+  background: rgb(10, 10, 10);
+}
+
+.select-box{
+  display: flex;
+}

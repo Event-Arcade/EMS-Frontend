@@ -23,7 +23,7 @@ function NavAvatar() {
         </li>
         <li>
           <a className="dropdown-item d-flex align-items-center"
-          href='users-profile.html'>
+          href='/editProfile'>
             <i className="bi bi-person"></i>
             <span>My Profile</span>
           </a>

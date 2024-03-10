@@ -1,0 +1,25 @@
+
+
+#main-container{ 
+  margin-top: 40px;
+  margin-left: 270px;
+  /* padding: 20px 30px; */
+  padding: 0;
+  width: 1150px;
+  transition: all 0.3s;
+  
+}
+
+/* @media-container (max-width: 1199px) {
+  #main-container {
+    padding: 20px;
+  }
+} */
+
+@media screen and (max-width: 550px) {
+  #main-container {
+    margin-left: -30px;
+    width: 100%;
+  }
+  
+}

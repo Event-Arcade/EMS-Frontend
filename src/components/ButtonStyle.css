@@ -28,3 +28,28 @@
 .custom-delete-button:hover {
   background-color: #EC407A;
 }
+
+.custom-next-button{
+  background-color: black;
+  color: #FF9800;
+  border-width: 3px;
+  border-radius: 16px;
+  border-width: 0;
+  width: 130px;
+  height: 45px;
+  margin: 50px 0 0  900px;
+}
+
+.custom-next-button:hover {
+  box-shadow: 0 0 10px 0 rgba(1, 41, 112, 0.15);
+}
+
+.custom-search-button{
+  background: #FF9800;
+  color: white;
+  border-radius: 10px;
+  width: 150px;
+  height: 40px;
+  margin-top: 20px;
+  border-width: 0;
+}
