@@ -33,12 +33,12 @@ function LocationForm() {
       <SelectBox
         options={functiontype}
         defaultLabel="Function Type"
-        style={{ width: '200px', margin: '20px 50px 10px 100px'}}
+        style={{ width: '200px', margin: '40px 50px 10px 100px'}}
       />
       <SelectBox
         options={location}
         defaultLabel="Location"
-        style={{ width: '200px', margin: '20px 50px 10px 0px'}}
+        style={{ width: '200px', margin: '40px 50px 10px 0px'}}
       />
       <button className="custom-search-button">Search</button>
       </div>

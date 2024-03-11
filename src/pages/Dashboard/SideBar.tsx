@@ -35,7 +35,7 @@ function SideBar() {
             <span>Settings</span>
           </a>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <a
             className="nav-link collapsed"
             data-bs-target="#components-nav"
@@ -179,7 +179,7 @@ function SideBar() {
               </a>
             </li>
           </ul>
-        </li>
+        </li> */}
         {/* ???? */}
       </ul>
       {/* <ul className="sidebar-nav" id="sidebar-nav">

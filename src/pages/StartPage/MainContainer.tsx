@@ -20,6 +20,7 @@ import SelectBox from '../../components/SelectBox/SelectBox';
 function MainContainer() {
   const [currentStep, setCurrentStep] = useState(1);
   const [imageSrc, setImageSrc] = useState<string>(step1);
+  const[topic, setTopic] = useState<string>('Select Your Location');
 
   const updateImageSrc = () => {
     switch (currentStep) {
@@ -40,10 +41,27 @@ function MainContainer() {
       //   break;
     }
   };
+  const updateTopic = () => {
+    switch (currentStep) {
+      case 1:
+        setTopic('Select Your Venue');
+        break;
+      case 2:
+        setTopic('Select Your Catering Service');
+        break;
+      case 3:
+        setTopic('Select Your Decoration Service');
+        break;
+      case 4:
+        setTopic('Select Your Entertainment Service');
+        break;
+    }
+  }
 
   const handleNextClick = () => {
     setCurrentStep((prevStep) => Math.min(prevStep + 1, 5));
     updateImageSrc();
+    updateTopic();
   };
 
   function showStep(step: number) {
@@ -55,9 +73,9 @@ function MainContainer() {
       case 3:
         return <CateringForm />;
       case 4:
-        return <Entertainment />;
+        return <Decoration/>;
       case 5:
-        return <Decoration />;
+        return <Entertainment />;
       default:
         return null;
     }
@@ -65,7 +83,7 @@ function MainContainer() {
 
   return (
     <div className='main-container' id='main-container'>
-      <Stepper currentStep={currentStep} onNextClick={handleNextClick} imageSrc={imageSrc} />
+      <Stepper currentStep={currentStep} onNextClick={handleNextClick} imageSrc={imageSrc} topic={topic}/>
       {showStep(currentStep)}
       
       <ButtonContainer onNextClick={handleNextClick} />

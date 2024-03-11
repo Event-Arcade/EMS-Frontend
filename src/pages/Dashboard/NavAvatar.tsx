@@ -53,7 +53,7 @@ function NavAvatar() {
         </li>
         <li>
           <a className="dropdown-item d-flex align-items-center"
-          href='#'>
+          href='/'>
             <i className="bi bi-arrow-bar-right"></i>
             <span>Sign Out</span>
           </a>

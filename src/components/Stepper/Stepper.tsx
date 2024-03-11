@@ -10,9 +10,10 @@ interface StepperProps {
   currentStep: number;
   onNextClick: () => void;
   imageSrc: string;
+  topic: string;
 }
 
-function Stepper({ currentStep, onNextClick, imageSrc }: StepperProps) {
+function Stepper({ currentStep, onNextClick, imageSrc,topic }: StepperProps) {
   const handleNextClick = () => {
     onNextClick();
   };
@@ -22,7 +23,7 @@ function Stepper({ currentStep, onNextClick, imageSrc }: StepperProps) {
       <section className="step-wizard">
         <div className="left-section">
           <div className="st-topic">
-            Let's Start
+            {topic}
             <p>Within a Few Clicks, Make Your Selection</p>
           </div>
           <div className="st-search">

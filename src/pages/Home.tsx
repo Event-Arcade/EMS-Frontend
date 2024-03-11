@@ -1,3 +1,4 @@
+import Banner from "../components/Banner/Banner";
 import Footer from "../components/Footer/Footer";
 import NavBar from "../components/NavBar/NavBar";
 import NumberList from "../components/NumberList/NumberList";
@@ -20,6 +21,7 @@ export default function Home() {
         <div className="picture-card-text">Popular Services</div>
         <PictureCard />
         <NumberList />
+        <Banner />
         <div className="picture-card-text">Featured Videos</div>
         <VideoGallery />
         <Footer />
