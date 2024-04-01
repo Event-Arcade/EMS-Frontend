@@ -11,7 +11,7 @@ function NavAvatar() {
       <a className="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
         {/* <i className="bi bi-chat-left-text"></i> */}
         <img src={profileImg} alt='Profile' className='rounded-circle'/>
-        <span className="d-none d-md-block dropdown-toggle ps-2">Saman Kumara</span>
+        <span className="d-none d-md-block dropdown-toggle ps-2">Lahiru Madhuwantha</span>
       </a>
       <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
         <li className="dropdown-header">

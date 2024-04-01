@@ -1,7 +1,7 @@
-import React from "react";
+import React , {useState} from "react";
 import "./venueForm.css";
 import "../StartPage/ServiceForm/serviceForm.css";
-import SelectBox from "../../components/SelectBox/SelectBox";
+import SelectBox from "../../components/SelectBox/SelectBox"
 import ServiceForm from "./ServiceForm/ServiceForm";
 
 function VenueForm() {
@@ -56,6 +56,12 @@ function VenueForm() {
     },
   ];
 
+  const [selectedNoOfGuest, setselectedNoOfGuest] = useState("");
+  const [selectedVenuetype, setselectedVenuetype] = useState("");
+  const [selectedBudget, setselectedBudget] = useState("");
+  const [selectedRating, setselectedRating] = useState("");
+
+
   const noOfGuest = [
     { label: "Under 50", value: "under 50" },
     { label: "Under 100", value: "under 100" },
@@ -91,21 +97,31 @@ function VenueForm() {
           <SelectBox
             options={noOfGuest}
             defaultLabel="No of Guest"
+            value={selectedNoOfGuest}
+            onChange={(value) => setselectedNoOfGuest(value)}
             style={{ width: "150px", margin: "40px 50px 10px 120px" }}
+
+            
           />
           <SelectBox
             options={venuetype}
             defaultLabel="Venue Type"
+            value={selectedVenuetype}
+            onChange={(value) => setselectedVenuetype(value)}
             style={{ width: "150px", margin: "40px 50px 10px 0px" }}
           />
           <SelectBox
             options={budget}
             defaultLabel="Budget"
+            value={selectedBudget}
+            onChange={(value) => setselectedBudget(value)}
             style={{ width: "150px", margin: "40px 50px 10px 0px" }}
           />
           <SelectBox
             options={rating}
             defaultLabel="Rating"
+            value={selectedRating}
+            onChange={(value) => setselectedRating(value)}
             style={{ width: "150px", margin: "40px 50px 10px 0px" }}
           />
           <button className="custom-search-button">Search</button>

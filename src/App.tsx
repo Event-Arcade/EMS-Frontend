@@ -12,6 +12,7 @@ import VendorRegistration from "./pages/VendorRegistration";
 import EditProfile from "./pages/EditProfile";
 import CalenderPage from "./pages/CalenderPage";
 import StartPage from "./pages/StartPage";
+import ServiceDetailPage from "./pages/ServiceDetail/ServiceDetailPage";
 
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/vendorRegistration" element={<VendorRegistration/>}/>
         <Route path="/calendar" element={<CalenderPage/>}/>
         <Route path="/startpage" element={<StartPage/>}/>
+        <Route path="/serviceDetailPage" element={<ServiceDetailPage/>}/>
       </Routes>
     </Router>
   )

@@ -32,7 +32,7 @@ function Panel() {
   }, []);
 
   return (
-    <section className="dashboard section">
+    <section className="dashboard section" style={{paddingTop:50}}>
       <div className="row">
         <div className="col-lg-9">My Shops
           <div className="row">

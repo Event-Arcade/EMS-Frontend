@@ -15,7 +15,8 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: #444444;
-  background: rgb(246, 244, 236)
+  /* background: rgb(246, 244, 236) */
+  background: white;
   
   /* -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%; */

@@ -8,16 +8,20 @@ import axios from "axios";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const handlelogin = (e: FormEvent) => {
-    e.preventDefault();
+  const handlelogin = () => {
+    const email = "lahiru@gmail.com"
+    const password= "1234"
 
-    const email = (e.target as any)[0].value;
-    const password = (e.target as any)[1].value;
+  // const handlelogin = (e: FormEvent) => {
+  //   e.preventDefault();
 
-    axios.post("https://localhost:7005/api/Account/Register", {
-      email,
-      password,
-    });
+  //   const email = (e.target as any)[0].value;
+  //   const password = (e.target as any)[1].value;
+
+  //   axios.post("https://localhost:7005/api/Account/Register", {
+  //     email,
+  //     password,
+  //   });
     navigate("/dashboard");
   };
   return (

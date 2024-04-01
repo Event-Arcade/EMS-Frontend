@@ -1,4 +1,4 @@
-import React from 'react'
+import  {useState} from 'react'
 import './cateringForm.css'
 import '../StartPage/ServiceForm/serviceForm.css';
 import SelectBox from '../../components/SelectBox/SelectBox';
@@ -74,6 +74,10 @@ function CateringForm() {
     {label: "5", value: "5"},
       
     ];
+
+    const [selectedNoOfGuest, setselectedNoOfGuest] = useState("");
+    const [selectedBudget, setselectedBudget] = useState("");
+    const [selectedRating, setselectedRating] = useState("");
     
   return (
     <div>
@@ -82,16 +86,22 @@ function CateringForm() {
       <SelectBox
         options={noOfGuest}
         defaultLabel="No of Guest"
+        value={selectedNoOfGuest}
+        onChange={(value) => setselectedNoOfGuest(value)}
         style={{ width: '200px', margin: '40px 50px 10px 120px'}}
       />
       <SelectBox
         options={budget}
         defaultLabel="Budget"
+        value={selectedBudget}
+        onChange={(value) => setselectedBudget(value)}
         style={{ width: '200px', margin: '40px 50px 10px 0px'}}
       />
       <SelectBox
         options={rating}
         defaultLabel="Rating"
+        value={selectedRating}
+        onChange={(value) => setselectedRating(value)}
         style={{ width: '200px', margin: '40px 50px 10px 0px'}}
       />
       <button className="custom-search-button">Search</button>

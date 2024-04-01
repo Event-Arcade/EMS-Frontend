@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './entertainment.css'
 import '../StartPage/ServiceForm/serviceForm.css';
 import SelectBox from '../../components/SelectBox/SelectBox';
@@ -82,6 +82,12 @@ function Entertainment() {
     {label: "5", value: "5"},
       
     ];
+
+    const [selectedEntItem, setselectedEntItem] = useState("");
+    const [selectedBudget, setselectedBudget] = useState("");
+    const [selectedRating, setselectedRating] = useState("");
+
+    
   return (
     <div>
       <div className="select-box">
@@ -89,16 +95,22 @@ function Entertainment() {
       <SelectBox
         options={entItem}
         defaultLabel="Item"
+        value={selectedEntItem}
+        onChange={(value) => setselectedEntItem(value)}
         style={{ width: '200px', margin: '40px 50px 10px 120px'}}
       />
       <SelectBox
         options={budget}
         defaultLabel="Budget"
+        value={selectedBudget}
+        onChange={(value) => setselectedBudget(value)}
         style={{ width: '200px', margin: '40px 50px 10px 0px'}}
       />
       <SelectBox
         options={rating}
         defaultLabel="Rating"
+        value={selectedRating}
+        onChange={(value) => setselectedRating(value)}
         style={{ width: '200px', margin: '40px 50px 10px 0px'}}
       />
       <button className="custom-search-button">Search</button>
@@ -115,6 +127,7 @@ function Entertainment() {
     </div>
     </div>
   )
-}
+        
+        }
 
 export default Entertainment

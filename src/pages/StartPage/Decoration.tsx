@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useState} from 'react'
 import './decoration.css'
 import '../StartPage/ServiceForm/serviceForm.css';
 import SelectBox from '../../components/SelectBox/SelectBox';
@@ -51,6 +51,8 @@ function Decoration() {
     
   ];
 
+
+
   const decoitems = [
     {label: "Poruwa", value: "poruwa"}, 
     {label: "Table", value: "table"},
@@ -82,6 +84,13 @@ function Decoration() {
     {label: "5", value: "5"},
       
     ];
+
+  const [selectedDecoItems, setselectedDecoItems] = useState("");
+  const [selectedVenueSize, setselectedVenueSize] = useState("");
+  const [selectedBudget, setselectedBudget] = useState("");
+  const [selectedRating, setselectedRating] = useState("");
+  
+
   return (
     <div>
       <div className="select-box">
@@ -89,22 +98,36 @@ function Decoration() {
       <SelectBox
         options={decoitems}
         defaultLabel="Items"
+        value={selectedDecoItems}
+        onChange={(value) => setselectedDecoItems(value)}
         style={{ width: '150px', margin: '40px 50px 10px 120px'}}
       />
+
+{/* // options={location}
+            //   defaultLabel="Location"
+            //   value={selectedLocation}
+            //   onChange={(value) => setSelectedLocation(value)}
+            //   style={{ width: "200px", margin: "40px 50px 10px 0px" }} */}
 
 <SelectBox
         options={venuesize}
         defaultLabel="Size of Venue"
+        value={selectedVenueSize}
+        onChange={(value) => setselectedVenueSize(value)}
         style={{ width: '150px', margin: '40px 50px 10px 0px'}}
       />
       <SelectBox
         options={budget}
         defaultLabel="Budget"
+        value={selectedBudget}
+        onChange={(value) => setselectedBudget(value)}
         style={{ width: '150px', margin: '40px 50px 10px 0px'}}
       />
       <SelectBox
         options={rating}
         defaultLabel="Rating"
+        value={selectedRating}
+        onChange={(value) => setselectedRating(value)}
         style={{ width: '150px', margin: '40px 50px 10px 0px'}}
       />
       <button className="custom-search-button">Search</button>

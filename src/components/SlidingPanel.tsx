@@ -9,18 +9,19 @@ export default function SlidingPanel() {
     <Carousel data-bs-theme="dark">
       <Carousel.Item>
         <img
-          style={{ height: 700 }}
+          style={{ height: 700, filter: 'brightness(90%)' }}
           className="d-block w-100"
           src={SlidingPic3}
           alt="First slide"
         />
-        <Carousel.Caption>
-          <h5 style={{ fontSize: 50, color: "white", fontFamily: "Dotum" }}>
+        <Carousel.Caption style={{paddingBottom:'100px'}}>
+          <h5 style={{ fontSize: 70, color: "white", fontFamily: "Dotum" ,paddingBottom:'50px',fontWeight:600}}>
             Welcome To Event Arcade
           </h5>
+          <hr></hr>
           <p
             style={{
-              fontSize: 30,
+              fontSize: 20,
               color: "white",
               fontFamily: "Copperplate Gothic",
             }}
