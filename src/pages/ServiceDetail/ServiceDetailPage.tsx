@@ -5,6 +5,7 @@ import { red } from '@mui/material/colors'
 import SmallPictureBox from './SmallPictureBox'
 import ShopPageHeading from './ShopPageHeading'
 import ShopDetailForm from './ShopDetailForm'
+import Footer from '../../components/Footer/Footer'
 
 function ServiceDetailPage() {
   return (
@@ -20,6 +21,7 @@ function ServiceDetailPage() {
       </div> */}
       <ShopPageHeading/>
       <ShopDetailForm/>
+      <Footer/>
     </div>
     </>
   )
