@@ -3,14 +3,15 @@ import "./Authentication.css";
 //import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {FormEvent } from "react";
+import { useState } from "react";
 
 import axios from "axios";
 
 export default function SignIn() {
-  const navigate = useNavigate();
-  const handlelogin = () => {
-    const email = "lahiru@gmail.com"
-    const password= "1234"
+  //const navigate = useNavigate();
+  //const handlelogin = () => {
+   // const email = "lahiru@gmail.com"
+    //const password= "1234"
 
   // const handlelogin = (e: FormEvent) => {
   //   e.preventDefault();
@@ -22,7 +23,26 @@ export default function SignIn() {
   //     email,
   //     password,
   //   });
-    navigate("/dashboard");
+   // navigate("/dashboard");
+   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const response = await axios.post("https://localhost:5257/api/Account/login", {
+        email: email,
+        password: password
+      });
+
+      if (response.status === 200) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
   return (
     <div className="form-container sign-in">
@@ -47,7 +67,7 @@ export default function SignIn() {
         <input type="password" placeholder="Password" />
         <a href="#">Forgot your password?</a>
 
-        <button onClick={handlelogin}>Sign In</button>
+        <button onClick={handleLogin}>Sign In</button>
       </form>
     </div>
   );
