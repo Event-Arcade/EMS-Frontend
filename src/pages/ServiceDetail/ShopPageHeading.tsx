@@ -9,6 +9,7 @@ function ShopPageHeading() {
         My Service Name
       </p>
       <p className='sd-page-subtopic'>Galle <span>|</span> Sri Lanka<span>|</span> +94 71 256 4875</p>
+      
     </div>
   )
 }

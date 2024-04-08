@@ -8,15 +8,15 @@ function ShopDetailForm() {
   return (
     <div className="sd-form">
       <div className="row">
-        <div className="col-lg-2" style={{ background: "purple" }}></div>
-        <div className="col-lg-4" style={{ background: "blue" }}>
+        <div className="col-lg-2" ></div>
+        <div className="col-lg-4">
           <SmallPictureBox />
         </div>
-        <div className="col-lg-5" style={{ background: "black" }}>
+        <div className="col-lg-5" >
           <ServiceDescription />
           <ButtonSection/>
         </div>
-        <div className="col-lg-1" style={{ background: "pink" }}></div>
+        <div className="col-lg-1" ></div>
       </div>
     </div>
   );

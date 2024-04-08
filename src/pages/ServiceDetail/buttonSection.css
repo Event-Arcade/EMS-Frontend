@@ -1,8 +1,9 @@
 .button-section{
   width: 100%;
   height: fit-content;
-  background: rebeccapurple;
+  /* background: rebeccapurple; */
   padding-top: 40px;
+  
 }
 
 .booking-btn{
@@ -12,6 +13,10 @@
   border-width: 0;
   color: white;
   margin: 0px 20px 20px 120px;
+
+  @media (max-width: 768px) {
+    width: 100px;
+  }
   
 }
 
@@ -22,4 +27,7 @@
   border-width: 2px;
   border-color: #ed2d2d;
   color: #ed2d2d;
+  @media (max-width: 768px) {
+    width: 100px;
+  }
 }
