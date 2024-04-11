@@ -134,3 +134,16 @@
   font-size: 18px;
   line-height: 0;
 }
+
+.nav-link-btn-home{
+  background-color: #e70743;
+  color: #fff;
+  width: 120px;
+  margin-right: 100px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+  border-width: 0;
+}

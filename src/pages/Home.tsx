@@ -6,16 +6,13 @@ import { PictureCard } from "../components/PictureCard";
 import SlidingPanel from "../components/SlidingPanel";
 import "../components/TextStyle.css";
 import VideoGallery from "../components/videoGallery/VideoGallery";
+import Header from "./Dashboard/Header";
 
 export default function Home() {
   return (
     <>
       <div className="page-content">
-        <NavBar
-          isAuthenticated={false}
-          onLogout={() => console.log("Logout")}
-          onAuthentication={() => console.log("Authentication")}
-        />
+        <Header />
         <br></br>
         <SlidingPanel />
         <div className="picture-card-text">Popular Services</div>

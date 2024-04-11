@@ -6,8 +6,12 @@ import profileImg from "../../assets/img/profileImg.jpg";
 import "./nav.css";
 import { getCurrentUser } from "../../services/authService";
 
-function NavAvatar() {
-  const [user, setUser] = useState({});
+interface NavAvatarProps {
+  handleSignOut: () => void;
+}
+
+function NavAvatar({handleSignOut} : NavAvatarProps) {
+  const [user, setUser] = useState<{ normalizedUserName?: string }>({});
 
   //call when the component is rendered
   useEffect(() => {
@@ -16,6 +20,7 @@ function NavAvatar() {
       console.log(user);
     });
   }, []);
+  
 
   return (
     <li className="nav-item dropdown pe-3">
@@ -75,10 +80,10 @@ function NavAvatar() {
           <hr className="dropdown-divider" />
         </li>
         <li>
-          <a className="dropdown-item d-flex align-items-center" href="/">
+          <button onClick={handleSignOut} className="dropdown-item d-flex align-items-center">
             <i className="bi bi-arrow-bar-right"></i>
             <span>Sign Out</span>
-          </a>
+          </button>
         </li>
       </ul>
     </li>
