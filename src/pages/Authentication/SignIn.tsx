@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Authentication.css";
-import axios from "axios";
+import {login} from "../../services/authService";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -12,14 +12,8 @@ export default function SignIn() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5257/api/Account/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      if (response.ok) {
+      const response = await login(email, password);
+      if (response) {
         navigate("/dashboard");
       } else {
         console.error("Login failed");

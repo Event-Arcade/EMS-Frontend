@@ -95,9 +95,7 @@ export default function NavBar({
             </Button>
             {isAuthenticated ? (
               <NavDropdown title="Profile" id="navbarScrollingDropdown">
-                <NavDropdown.Item href="#action3"
-                onClick={handleEditProfile}
-                >
+                <NavDropdown.Item href="#action3" onClick={handleEditProfile}>
                   Edit Profile
                 </NavDropdown.Item>
                 <NavDropdown.Item
@@ -112,7 +110,10 @@ export default function NavBar({
                 </NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <Button className="nav-signin-button" onClick={handleAuthentication}>
+              <Button
+                className="nav-signin-button"
+                onClick={handleAuthentication}
+              >
                 Signin
               </Button>
             )}
