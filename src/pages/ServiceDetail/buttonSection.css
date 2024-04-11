@@ -26,6 +26,7 @@
   background: white;
   border-width: 2px;
   border-color: #ed2d2d;
+  border-style: solid;
   color: #ed2d2d;
   @media (max-width: 768px) {
     width: 100px;

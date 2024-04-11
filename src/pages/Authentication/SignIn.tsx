@@ -1,52 +1,37 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Authentication.css";
-//import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import {FormEvent } from "react";
-import { useState } from "react";
-
 import axios from "axios";
 
 export default function SignIn() {
-  //const navigate = useNavigate();
-  //const handlelogin = () => {
-   // const email = "lahiru@gmail.com"
-    //const password= "1234"
-
-  // const handlelogin = (e: FormEvent) => {
-  //   e.preventDefault();
-
-  //   const email = (e.target as any)[0].value;
-  //   const password = (e.target as any)[1].value;
-
-  //   axios.post("https://localhost:7005/api/Account/Register", {
-  //     email,
-  //     password,
-  //   });
-   // navigate("/dashboard");
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e: FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     try {
-      const response = await axios.post("https://localhost:5257/api/Account/login", {
-        email: email,
-        password: password
+      const response = await fetch("http://localhost:5257/api/Account/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
-
-      if (response.status === 200) {
+      if (response.ok) {
         navigate("/dashboard");
+      } else {
+        console.error("Login failed");
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Error:", error);
     }
   };
+
   return (
     <div className="form-container sign-in">
-      <form>
+      <form onSubmit={handleLogin}>
         <h1>Sign in</h1>
         <div className="social-icons">
           <a href="#" className="icon">
@@ -63,11 +48,19 @@ export default function SignIn() {
           </a>
         </div>
         <span>or use your email password</span>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <a href="#">Forgot your password?</a>
-
-        <button onClick={handleLogin}>Sign In</button>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Sign In</button>
       </form>
     </div>
   );
