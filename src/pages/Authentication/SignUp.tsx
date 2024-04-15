@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { register } from "../../services/authService"
-import { toast } from "react-toastify";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Authentication.css";
 
@@ -60,7 +59,7 @@ export default function SignUp() {
     try {
       const response = await register(formDataToSend);
       if (response) {
-       
+        console.log("Registration successful");
       } else {
         console.error("Registration failed");
       }

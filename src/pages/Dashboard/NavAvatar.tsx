@@ -14,12 +14,6 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
   const [user, setUser] = useState<{ normalizedUserName?: string }>({});
 
   //call when the component is rendered
-  useEffect(() => {
-    getCurrentUser().then((user) => {
-      setUser(user);
-      console.log(user);
-    });
-  }, []);
   
 
   return (
