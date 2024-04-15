@@ -1,14 +1,31 @@
-import React from 'react'
+import React , {useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import './banner.css'
 import bannerImg from './bannerImg.png'
 
 function Banner() {
   const navigate = useNavigate();
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     navigate('/dashboard');
+  //   }
+  // }, [navigate]);
+
+  // const handleStart = () => {
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  //   navigate("/dashboard");
+  // };
   const handleStart = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    navigate("/dashboard");
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/dashboard');
+    } else {
+      navigate('/auth');
+    }
   };
+
   return (
     <div className='banner-body'>
       <div className="banner-left">

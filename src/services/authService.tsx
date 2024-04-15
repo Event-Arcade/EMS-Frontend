@@ -1,4 +1,6 @@
+import axios from "./httpsClient";
 import http from "./httpsClient";
+axios
 import { toast } from "react-toastify";
 
 const apiEndpoint = "/Account";
@@ -18,6 +20,23 @@ export async function login(email: string, password: string) {
   } else {
     //set toast message
     toast.error(data.message);
+    return false;
+  }
+}
+
+export async function register(formData: FormData) {
+  try {
+    const { data } = await axios.post(apiEndpoint + "/register", formData);
+    console.log(data);
+    if (data.flag) {
+      toast.success(data.message);
+      return true;
+    } else {
+      toast.error(data.message);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error:", error);
     return false;
   }
 }
