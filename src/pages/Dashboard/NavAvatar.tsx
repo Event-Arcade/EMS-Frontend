@@ -13,9 +13,8 @@ interface NavAvatarProps {
 function NavAvatar({handleSignOut} : NavAvatarProps) {
   const [user, setUser] = useState<{ 
     normalizedUserName?: string ;
-    profilePicture?: string;
+    profilePictureURL?: string;
     normalizedEmail?: string;
-
 
   }>({});
 
@@ -25,10 +24,11 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
       const currentUser = await getCurrentUser();
       if (currentUser) {
         // Set the user data in the state
+        const data = currentUser.data;
         setUser({
-          normalizedUserName: currentUser.normalizedUserName,
-          normalizedEmail: currentUser.normalizedEmail,
-          profilePicture: currentUser.profilePicture,
+          normalizedUserName: data.firstName+data.lastName,
+          normalizedEmail: data.email,
+          profilePictureURL: data.profilePictureURL,
         });
       }
     }
@@ -43,7 +43,7 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
         data-bs-toggle="dropdown"
       >
         {/* <i className="bi bi-chat-left-text"></i> */}
-        <img src={user.profilePicture || profileImg}  
+        <img src={user.profilePictureURL || profileImg}  
         alt="Profile" 
         className="rounded-circle" />
         <span className="d-none d-md-block dropdown-toggle ps-2">

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { register, login } from "../../services/authService";
+import { register } from "../../services/authService";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Authentication.css";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -64,18 +63,8 @@ export default function SignUp() {
       const registrationSuccessful = await register(formDataToSend);
       if (registrationSuccessful) {
         console.log("Registration successful");
-        const loginSuccessful = await login(formData.email, formData.password);
-        if (loginSuccessful) {
-          console.log("User logged in successfully");
-          toast.success("Registered and logged in successfully");
-          navigate("/dashboard");
-        } else {
-          console.error("Login failed after successful registration");
-        }
-      } else {
-        console.error("Registration failed");
-        toast.error("Registration failed");
-      }
+        navigate("/dashboard");
+      } 
     } catch (error) {
       console.error("Error:", error);
     }

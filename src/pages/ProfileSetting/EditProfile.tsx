@@ -1,6 +1,4 @@
-
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -8,11 +6,12 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { toast } from "react-toastify";
 import { getCurrentUser, update } from "../../services/authService";
-import "./editProfile.css"; 
+import "./editProfile.css";
 import FormFooter from "../../components/Footer/FormFooter";
+import { useForm } from 'react-hook-form';
 
 interface UserProfileData {
-  Name: string;
+  firstName: string;
   lastName: string;
   street: string;
   city: string;
@@ -20,13 +19,10 @@ interface UserProfileData {
   province: string;
   longitude: string;
   latitude: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  profilePicture: string;
+  profilePicture:  File | null;
 }
 
-const EditProfile: React.FC = () => {
+const EditProfile = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -36,40 +32,45 @@ const EditProfile: React.FC = () => {
     setValue,
     formState: { errors },
   } = useForm<UserProfileData>();
-  
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const userData = await getCurrentUser();
-        setValue("Name", userData.normalizedUserName);
-        setValue("lastName", userData.lastName);
-        setValue("street", userData.street);
-        setValue("city", userData.city);
-        setValue("postalCode", userData.postalCode);
-        setValue("province", userData.province);
-        setValue("longitude", userData.longitude);
-        setValue("latitude", userData.latitude);
-        setValue("email", userData.email);
-        setValue("profilePicture", userData.profilePicture);
+        const {data} = await getCurrentUser();
+        setValue("firstName", data.firstName);
+        setValue("lastName", data.lastName);
+        setValue("street", data.street);
+        setValue("city", data.city);
+        setValue("postalCode", data.postalCode);
+        setValue("province", data.province);
+        setValue("longitude", data.longitude);
+        setValue("latitude", data.latitude);
         setLoading(false);
       } catch (error) {
         toast.error("Failed to load user data");
         setLoading(false);
       }
     };
-    
+
     fetchData();
   }, [setValue]);
-  
+
   const onSubmit = async (data: UserProfileData) => {
-    const success = await update(data);
+    const updatedUserDetails = new FormData();
+    updatedUserDetails.append("firstName", data.firstName);
+    updatedUserDetails.append("lastName", data.lastName);
+    updatedUserDetails.append("street", data.street);
+    updatedUserDetails.append("city", data.city);
+    updatedUserDetails.append("postalCode", data.postalCode);
+    updatedUserDetails.append("province", data.province);
+    updatedUserDetails.append("longitude", data.longitude);
+    updatedUserDetails.append("latitude", data.latitude);
+
+    const success = await update(updatedUserDetails);
     if (success) {
-      toast.success("Profile updated successfully");
-      navigate(-1);
-    } else {
-      toast.error("Failed to update profile");
-    }
+      navigate("/");
+    } 
   };
 
   if (loading) {
@@ -89,20 +90,20 @@ const EditProfile: React.FC = () => {
               controlId="validationCustom01"
             >
               <Form.Label column md="2">
-                Name
+               First Name
               </Form.Label>
               <Col md="4">
                 <Form.Control
                   type="text"
-                  {...register("Name", { required: true })}
-                  placeholder="Name"
+                  {...register("firstName", { required: true })}
+                  placeholder="First Name"
                 />
-                {errors.Name && <span>This field is required</span>}
+                {errors.firstName && <span>This field is required</span>}
               </Col>
             </Form.Group>
 
             {/* Last Name */}
-            {/* <Form.Group
+            <Form.Group
               as={Row}
               className="mb-3"
               controlId="validationCustom02"
@@ -118,7 +119,7 @@ const EditProfile: React.FC = () => {
                 />
                 {errors.lastName && <span>This field is required</span>}
               </Col>
-            </Form.Group> */}
+            </Form.Group>
 
             {/* Street */}
             <Form.Group
@@ -234,63 +235,6 @@ const EditProfile: React.FC = () => {
               </Col>
             </Form.Group>
 
-            {/* Email */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom09"
-            >
-              <Form.Label column md="2">
-                Email
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="email"
-                  {...register("email", { required: true })}
-                  placeholder="example@example.com"
-                />
-                {errors.email && <span>This field is required</span>}
-              </Col>
-            </Form.Group>
-
-            {/* Password */}
-            {/* <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom10"
-            >
-              <Form.Label column md="2">
-                Password
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="password"
-                  {...register("password", { required: true })}
-                  placeholder="Password"
-                />
-                {errors.password && <span>This field is required</span>}
-              </Col>
-            </Form.Group> */}
-
-            {/* Confirm Password */}
-            {/* <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom11"
-            >
-              <Form.Label column md="2">
-                Confirm Password
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="password"
-                  {...register("confirmPassword", { required: true })}
-                  placeholder="Confirm Password"
-                />
-                {errors.confirmPassword && <span>This field is required</span>}
-              </Col>
-            </Form.Group> */}
-
             {/* Profile Picture */}
             <Form.Group
               as={Row}
@@ -304,7 +248,6 @@ const EditProfile: React.FC = () => {
                 <Form.Control
                   type="file"
                   {...register("profilePicture")}
-                  accept="image/*"
                 />
               </Col>
             </Form.Group>
@@ -335,5 +278,3 @@ const EditProfile: React.FC = () => {
 };
 
 export default EditProfile;
-
-
