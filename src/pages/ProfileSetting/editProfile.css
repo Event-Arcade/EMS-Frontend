@@ -23,3 +23,26 @@
   align-content: center;
   color: white;
 }
+
+.custom-update-button{
+  width: 200px;
+  height: 40px;
+  background-color: #f5a505;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.custom-cancel-button{
+  width: 200px;
+  height: 40px;
+  background-color: white;
+  color: #f5a505;
+  border-width: 1px;
+  border-color: #f5a505;
+  border-radius: 5px;
+  margin-left: 10px;
+ 
+
+}

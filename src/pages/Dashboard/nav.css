@@ -148,3 +148,9 @@
   transition: 0.3s;
   border-width: 0;
 }
+
+.rounded-circle{
+  height: 40px;
+  width:40px;
+
+}

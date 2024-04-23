@@ -11,10 +11,29 @@ interface NavAvatarProps {
 }
 
 function NavAvatar({handleSignOut} : NavAvatarProps) {
-  const [user, setUser] = useState<{ normalizedUserName?: string }>({});
+  const [user, setUser] = useState<{ 
+    normalizedUserName?: string ;
+    profilePicture?: string;
+    normalizedEmail?: string;
 
-  //call when the component is rendered
+
+  }>({});
+
   
+  useEffect(() => {
+    async function fetchUserData() {
+      const currentUser = await getCurrentUser();
+      if (currentUser) {
+        // Set the user data in the state
+        setUser({
+          normalizedUserName: currentUser.normalizedUserName,
+          normalizedEmail: currentUser.normalizedEmail,
+          profilePicture: currentUser.profilePicture,
+        });
+      }
+    }
+    fetchUserData();
+  }, []);
 
   return (
     <li className="nav-item dropdown pe-3">
@@ -24,15 +43,17 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
         data-bs-toggle="dropdown"
       >
         {/* <i className="bi bi-chat-left-text"></i> */}
-        <img src={profileImg} alt="Profile" className="rounded-circle" />
+        <img src={user.profilePicture || profileImg}  
+        alt="Profile" 
+        className="rounded-circle" />
         <span className="d-none d-md-block dropdown-toggle ps-2">
           {user.normalizedUserName}
         </span>
       </a>
       <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
         <li className="dropdown-header">
-          <h6>Saman</h6>
-          <span>Hotel Slike</span>
+          <h6>{user.normalizedUserName}</h6>
+          <span>{user.normalizedEmail}</span>
         </li>
         <li>
           <hr className="dropdown-divider" />
@@ -40,7 +61,8 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
         <li>
           <a
             className="dropdown-item d-flex align-items-center"
-            href="/editProfile"
+            href="users-profile.html"
+
           >
             <i className="bi bi-person"></i>
             <span>My Profile</span>
@@ -52,7 +74,8 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
         <li>
           <a
             className="dropdown-item d-flex align-items-center"
-            href="users-profile.html"
+            href="/editProfile"
+
           >
             <i className="bi bi-gear"></i>
             <span>Account setting</span>

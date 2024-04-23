@@ -57,3 +57,26 @@ export async function getCurrentUser() {
     return null;
   }
 }
+
+export async function update(formData:any) {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            toast.error('Not authorized. Please log in.');
+            return false;
+        }
+        const response = await http.put(apiEndpoint+"/update", formData);
+
+        if (response.data.flag) {
+            toast.success(response.data.message);
+            return true;
+        } else {
+            toast.error(response.data.message);
+            return false;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        toast.error('An error occurred while updating the profile.');
+        return false;
+    }
+}
