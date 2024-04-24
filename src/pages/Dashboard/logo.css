@@ -8,6 +8,12 @@
   }
 }
 
+@media (max-width: 600px) {
+  .logo {
+    width: 200px;
+    margin-left: 20px;
+  }
+}
 .logo img {
   max-height: 50px;
   margin-right: 6px;

@@ -26,6 +26,7 @@ export default function App() {
         <Route path="/calendar" element={<CalenderPage />} />
         <Route path="/startpage" element={<StartPage />} />
         <Route path="/serviceDetailPage" element={<ServiceDetailPage />} />
+        {/* <Route path="/admindashboard" element={<Dashboard />} /> */}
       </Routes>
     </Router>
   );
