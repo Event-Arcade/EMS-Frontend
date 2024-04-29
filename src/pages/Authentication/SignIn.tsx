@@ -4,6 +4,9 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Authentication.css";
 import {login} from "../../services/authService";
 
+const adminUsername = "admin@gmail.com";
+const adminPassword = "admin123";
+
 export default function SignIn() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -11,6 +14,12 @@ export default function SignIn() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (email === adminUsername && password === adminPassword) {
+      navigate("/admin-dashboard");
+      return;
+    }
+
     try {
       const response = await login(email, password);
       if (response) {

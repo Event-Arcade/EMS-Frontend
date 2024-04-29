@@ -1,0 +1,32 @@
+/* .dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  flex-grow: 1;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+} */
+
+.page-content-ad {
+  width: 100%;
+  /* margin: 40px 300px 40px 300px !important; */
+  height: 100%;
+  /* background: red; */
+  display: flex;
+}
+
+.heading-ad {
+  .heading-ad {
+    font-size: 10px;
+    font-weight: bold;
+    color: rgb(117, 117, 119);
+    margin-bottom: 10px;
+  }
+}

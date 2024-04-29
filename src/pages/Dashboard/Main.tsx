@@ -3,13 +3,17 @@ import Panel from './Panel'
 import './main.css'
 import DashboardBanner from './DashboardBanner'
 
-function Main() {
+interface MainProps {
+  isSidebarVisible: boolean;
+}
+
+function Main({isSidebarVisible} : MainProps) {
+  
   return (
-    <main id='main' className='main'>
+    <main id='main' className={`main ${isSidebarVisible ? '' : 'main-centered'}`}>
       <PageTitle page="Dashboard"/>
       <DashboardBanner/>
       <Panel />
-
     </main>
   )
 }

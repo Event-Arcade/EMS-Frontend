@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './serviceDetailPage.css'
 import Header from '../Dashboard/Header'
 import { red } from '@mui/material/colors'
@@ -8,10 +8,17 @@ import ShopDetailForm from './ShopDetailForm'
 import Footer from '../../components/Footer/Footer'
 import FeedbackSection from './FeedbackSection'
 
-function ServiceDetailPage() {
+
+  const ServiceDetailPage: React.FC = () => {
+    const [isSideBarVisible, setIsSideBarVisible] = useState(false);
+  
+    const toggleSideBar = () => {
+      setIsSideBarVisible(!isSideBarVisible);
+    };
   return (
+
     <>
-    <Header/>
+    <Header toggleSideBar={toggleSideBar}/>
     <div className="sd-page">
       {/* <div className="row">
       <div className="col-lg-3" style={{background:"red"}}>

@@ -57,8 +57,10 @@ const DashBoard: React.FC = () => {
   return (
 <>
 <Header toggleSideBar={toggleSideBar}/>
+<div className="content">
 <SideBar isVisible={isSideBarVisible}/>
-<Main/>
+<Main isSidebarVisible ={isSideBarVisible}/>
+</div>
 <Footer/>
 </>
     )
