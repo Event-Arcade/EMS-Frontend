@@ -14,6 +14,8 @@ import CalenderPage from "./pages/CalenderPage";
 import StartPage from "./pages/StartPage";
 import ServiceDetailPage from "./pages/ServiceDetail/ServiceDetailPage";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import PackageDetailsPage from "./pages/PackageDetails/PackagDetailsPage";
+// import Chat from "./components/Chat/Chat";
 
 export default function App() {
   return (
@@ -28,6 +30,7 @@ export default function App() {
         <Route path="/startpage" element={<StartPage />} />
         <Route path="/serviceDetailPage" element={<ServiceDetailPage />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route path="/packageDetails" element={<PackageDetailsPage/>} />
       </Routes>
     </Router>
   );

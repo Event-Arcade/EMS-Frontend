@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   Form,
@@ -6,12 +6,21 @@ import {
   ListGroup,
   Modal,
   Card,
+  InputGroup,
+  Image,
 } from "react-bootstrap";
 import "./adminDashboard.css";
 import PageTitle from "../Dashboard/PageTitle";
 import Header from "../Dashboard/Header";
 import SideBar from "../Dashboard/SideBar";
 import Footer from "../../components/Footer/Footer";
+
+import {
+  createCategory,
+  getAllCategories,
+  updateCategory,
+  deleteCategory,
+} from "../../services/categoryService";
 
 interface Category {
   id: number;
@@ -22,30 +31,38 @@ interface Category {
 
 const ExistingCategoryList: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([
-    {
-      id: 1,
-      name: "Category 1",
-      description: "This is category 1",
-      categoryImage: "https://example.com/category1.jpg",
-    },
-    {
-      id: 2,
-      name: "Category 2",
-      description: "This is category 2",
-      categoryImage: "https://example.com/category2.jpg",
-    },
-    {
-      id: 3,
-      name: "Category 3",
-      description: "This is category 3",
-      categoryImage: "https://example.com/category3.jpg",
-    },
+    // {
+    //   id: 1,
+    //   name: "Category 1",
+    //   description: "This is category 1",
+    //   categoryImage: "https://example.com/category1.jpg",
+    // },
+    // {
+    //   id: 2,
+    //   name: "Category 2",
+    //   description: "This is category 2",
+    //   categoryImage: "https://example.com/category2.jpg",
+    // },
+    // {
+    //   id: 3,
+    //   name: "Category 3",
+    //   description: "This is category 3",
+    //   categoryImage: "https://example.com/category3.jpg",
+    // },
   ]);
 
   const [editedCategoryId, setEditedCategoryId] = useState<number | null>(null);
   const [editedName, setEditedName] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
   const [editedCategoryImage, setEditedCategoryImage] = useState("");
+
+  useEffect(() => {
+    async function fetchCategories() {
+      const data = await getAllCategories();
+      setCategories(data);
+    }
+    fetchCategories();
+  }, []);
 
   const handleEditClick = (category: Category) => {
     setEditedCategoryId(category.id);
@@ -58,10 +75,35 @@ const ExistingCategoryList: React.FC = () => {
     setEditedCategoryId(null);
   };
 
-  const handleSaveClick = () => {
-    // Update the category in the categories state
-    setCategories((prevCategories) =>
-      prevCategories.map((category) =>
+  // const handleSaveClick = () => {
+  //   // Update the category in the categories state
+  //   setCategories((prevCategories) =>
+  //     prevCategories.map((category) =>
+  //       category.id === editedCategoryId
+  //         ? {
+  //             ...category,
+  //             name: editedName,
+  //             description: editedDescription,
+  //             categoryImage: editedCategoryImage,
+  //           }
+  //         : category
+  //     )
+  //   );
+  //   // Clear the edited category state
+  //   setEditedCategoryId(null);
+  // };
+
+  const handleSaveClick = async () => {
+    const formData = new FormData();
+    formData.append("name", editedName);
+    formData.append("description", editedDescription);
+    formData.append("categoryImage", editedCategoryImage);
+    const success = await updateCategory(
+      editedCategoryId!.toString(),
+      formData
+    );
+    if (success) {
+      const updatedCategories = categories.map((category) =>
         category.id === editedCategoryId
           ? {
               ...category,
@@ -70,10 +112,19 @@ const ExistingCategoryList: React.FC = () => {
               categoryImage: editedCategoryImage,
             }
           : category
-      )
-    );
-    // Clear the edited category state
-    setEditedCategoryId(null);
+      );
+      setCategories(updatedCategories);
+      setEditedCategoryId(null);
+    }
+  };
+
+  const handleDeleteClick = async (categoryId: number) => {
+    const success = await deleteCategory(categoryId.toString());
+    if (success) {
+      setCategories(
+        categories.filter((category) => category.id !== categoryId)
+      );
+    }
   };
 
   return (
@@ -165,6 +216,13 @@ const ExistingCategoryList: React.FC = () => {
                     >
                       Edit
                     </Button>
+                    <Button
+                      style={{ width: "100px", marginTop: "20px" }}
+                      variant="danger"
+                      onClick={() => handleDeleteClick(category.id)}
+                    >
+                      Delete
+                    </Button>
                   </div>
                 </>
               )}
@@ -181,9 +239,20 @@ const CreateCategoryForm: React.FC = () => {
   const [description, setDescription] = useState("");
   const [categoryImage, setCategoryImage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted");
+    const formData = new FormData();
+
+    //console.log("Form submitted");
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("categoryImage", categoryImage);
+    const success = await createCategory(formData);
+    if (success) {
+      setName("");
+      setDescription("");
+      setCategoryImage("");
+    }
   };
 
   return (
@@ -325,7 +394,11 @@ const AddResourceForm: React.FC<AddResourceFormProps> = ({ addResource }) => {
             required
           />
         </Form.Group>
-        <Button type="submit" style={{ width: "150px", margin: "20px" }} variant="warning">
+        <Button
+          type="submit"
+          style={{ width: "150px", margin: "20px" }}
+          variant="warning"
+        >
           Add Resource
         </Button>
       </Form>
@@ -338,7 +411,12 @@ const AddResourceForm: React.FC<AddResourceFormProps> = ({ addResource }) => {
 interface DisplayResourcesProps {
   resources: Resource[];
   deleteResource: (id: number) => void;
-  editResource: (id: number, name: string, description: string, file?: File) => void;
+  editResource: (
+    id: number,
+    name: string,
+    description: string,
+    file?: File
+  ) => void;
 }
 
 const DisplayResources: React.FC<DisplayResourcesProps> = ({
@@ -346,7 +424,9 @@ const DisplayResources: React.FC<DisplayResourcesProps> = ({
   deleteResource,
   editResource,
 }) => {
-  const [editingResourceId, setEditingResourceId] = useState<number | null>(null);
+  const [editingResourceId, setEditingResourceId] = useState<number | null>(
+    null
+  );
   const [editedFile, setEditedFile] = useState<File | null>(null);
 
   const handleNameChange = (id: number, name: string) => {
@@ -414,7 +494,8 @@ const DisplayResources: React.FC<DisplayResourcesProps> = ({
                         type="file"
                         accept="image/*, video/*, .pdf"
                         onChange={(e) => {
-                          const file = (e.target as HTMLInputElement).files?.[0];
+                          const file = (e.target as HTMLInputElement)
+                            .files?.[0];
                           if (file) {
                             handleFileChange(resource.id, file);
                           }
@@ -517,6 +598,121 @@ const AdminDashboard: React.FC = () => {
       )
     );
   };
+  interface Chat {
+    id: number;
+    profileImage: string;
+    name: string;
+    message: string;
+    time: string;
+  }
+
+  const ChatApp: React.FC = () => {
+    // Sample chat data
+    const [chats] = useState<Chat[]>([
+      {
+        id: 1,
+        profileImage: "https://example.com/profile1.jpg",
+        name: "Alice",
+        message: "Hello, how are you?",
+        time: "2:30 PM",
+      },
+      {
+        id: 2,
+        profileImage: "https://example.com/profile2.jpg",
+        name: "Bob",
+        message: "Are you available for a call?",
+        time: "3:15 PM",
+      },
+    ]);
+
+    // State to manage the currently open chat conversation
+    const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+
+    const handleChatClick = (chat: Chat) => {
+      setCurrentChat(chat);
+    };
+
+    const handleCloseChat = () => {
+      setCurrentChat(null);
+    };
+
+    return (
+      <div>
+        {/* Chat Header */}
+        <div style={{ padding: "10px", textAlign: "center" }}>
+          <Image
+            src="https://example.com/rounded-profile.jpg"
+            alt="Profile"
+            roundedCircle
+            style={{ width: "40px", height: "40px", marginRight: "10px" }}
+          />
+          <span>Messaging</span>
+        </div>
+        <hr />
+
+        {/* Search Box */}
+        <Form>
+          <Form.Group controlId="search">
+            <InputGroup>
+              <Form.Control type="text" placeholder="Search" />
+            </InputGroup>
+          </Form.Group>
+        </Form>
+
+        {/* Chat List */}
+        <ListGroup>
+          {chats.map((chat) => (
+            <ListGroup.Item
+              key={chat.id}
+              onClick={() => handleChatClick(chat)}
+              style={{ cursor: "pointer" }}
+            >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Image
+                  src={chat.profileImage}
+                  alt={chat.name}
+                  roundedCircle
+                  style={{ width: "30px", height: "30px", marginRight: "10px" }}
+                />
+                <div>
+                  <p style={{ margin: 0 }}>{chat.name}</p>
+                  <p style={{ margin: 0, fontSize: "12px" }}>{chat.message}</p>
+                </div>
+                <div style={{ marginLeft: "auto", fontSize: "12px" }}>
+                  {chat.time}
+                </div>
+              </div>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+
+        {/* Conversation Modal */}
+        {currentChat && (
+          <Modal show={true} onHide={handleCloseChat} centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Conversation with {currentChat.name}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {/* Add chat conversation content here */}
+              <p>This is where the chat conversation will be displayed.</p>
+              <Form.Control
+                as="textarea"
+                rows={2}
+                placeholder="Type a message..."
+                style={{ marginTop: "10px" }}
+              />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={handleCloseChat} variant="secondary">
+                Close
+              </Button>
+              <Button variant="primary">Send</Button>
+            </Modal.Footer>
+          </Modal>
+        )}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -526,7 +722,7 @@ const AdminDashboard: React.FC = () => {
         <div className="col-lg-2">
           <SideBar isVisible={isSideBarVisible} />
         </div>
-        <div className="col-lg-8" style={{ margin: "100px 40px 40px 70px" }}>
+        <div className="col-lg-7" style={{ margin: "100px 40px 40px 70px" }}>
           <PageTitle page="Admin Dashboard" />
           <ExistingCategoryList />
           <CreateCategoryForm />
@@ -537,7 +733,9 @@ const AdminDashboard: React.FC = () => {
             deleteResource={deleteResource}
             editResource={editResource}
           />
-          <div className="col-lg-2"></div>
+        </div>
+        <div className="col-lg-2" style={{ background: "none"}}>
+          <ChatApp />
         </div>
       </div>
       <Footer />

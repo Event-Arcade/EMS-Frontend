@@ -16,7 +16,7 @@ export default function SignIn() {
     e.preventDefault();
 
     if (email === adminUsername && password === adminPassword) {
-      navigate("/admin-dashboard");
+      navigate("/admindashboard");
       return;
     }
 
