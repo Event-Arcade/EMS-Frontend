@@ -10,7 +10,7 @@ import Authentication from "./pages/Authentication/Authentication";
 import DashBoard from "./pages/DashBoard";
 import VendorRegistration from "./pages/VendorRegistration";
 import EditProfile from "./pages/ProfileSetting/EditProfile";
-import CalenderPage from "./pages/CalenderPage";
+import CalenderPage from "./pages/Calander/CalenderPage";
 import StartPage from "./pages/StartPage";
 import ServiceDetailPage from "./pages/ServiceDetail/ServiceDetailPage";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
@@ -19,18 +19,18 @@ import PackageDetailsPage from "./pages/PackageDetails/PackagDetailsPage";
 export default function App() {
   return (
     <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<Authentication />} />
-          <Route path="/dashboard" element={<DashBoard />} />
-          <Route path="/editProfile" element={<EditProfile />} />
-          <Route path="/vendorRegistration" element={<VendorRegistration />} />
-          <Route path="/calendar" element={<CalenderPage />} />
-          <Route path="/startpage" element={<StartPage />} />
-          <Route path="/serviceDetailPage" element={<ServiceDetailPage />} />
-          <Route path="/admindashboard" element={<AdminDashboard />} />
-          <Route path="/packageDetails" element={<PackageDetailsPage />} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/auth" element={<Authentication />} />
+        <Route path="/dashboard" element={<DashBoard />} />
+        <Route path="/editProfile" element={<EditProfile />} />
+        <Route path="/vendorRegistration" element={<VendorRegistration />} />
+        <Route path="/calendar" element={<CalenderPage />} />
+        <Route path="/startpage" element={<StartPage />} />
+        <Route path="/serviceDetailPage" element={<ServiceDetailPage />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route path="/packageDetails" element={<PackageDetailsPage />} />
+      </Routes>
     </Router>
   );
 }

@@ -48,7 +48,7 @@ import Footer from "../components/Footer/Footer"
 import { useState } from "react"
 
 const DashBoard: React.FC = () => {
-  const [isSideBarVisible, setIsSideBarVisible] = useState(false);
+  const [isSideBarVisible, setIsSideBarVisible] = useState(true);
 
   const toggleSideBar = () => {
     setIsSideBarVisible(!isSideBarVisible);
