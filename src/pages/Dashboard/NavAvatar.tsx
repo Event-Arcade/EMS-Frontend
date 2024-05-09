@@ -5,6 +5,7 @@ import messages3 from "../../assets/img/messages3.jpg";
 import profileImg from "../../assets/img/profileImg.jpg";
 import "./nav.css";
 import { getCurrentUser } from "../../services/authService";
+import ShopForm from "../ShopForm/ShopForm";
 
 interface NavAvatarProps {
   handleSignOut: () => void;
@@ -34,6 +35,21 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
     }
     fetchUserData();
   }, []);
+
+  const [isShopFormOpen, setIsShopFormOpen] = useState(false);
+
+    const handleOpenShopForm = () => {
+      setIsShopFormOpen(true);
+    };
+  
+    const handleCloseShopForm = () => {
+      setIsShopFormOpen(false);
+    };
+  
+    const handleCreateShop = (shopName: string) => {
+      console.log('New shop created:', shopName);
+      handleCloseShopForm();
+    };
 
   return (
     <li className="nav-item dropdown pe-3">
@@ -92,6 +108,23 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
             <i className="bi bi-question-circle"></i>
             <span>Need Help?</span>
           </a>
+        </li>
+        <li>
+          <hr className="dropdown-divider" />
+        </li>
+        <li>
+          <a
+            className="dropdown-item d-flex align-items-center"
+            onClick={handleOpenShopForm}
+          >
+            <i className="bi bi-bag-heart"></i>
+            <span>Create Shop</span>
+          </a>
+          <ShopForm
+        isOpen={isShopFormOpen}
+        onClose={handleCloseShopForm}
+        onCreate={handleCreateShop}
+      />
         </li>
         <li>
           <hr className="dropdown-divider" />

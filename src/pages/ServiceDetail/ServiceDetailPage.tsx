@@ -15,11 +15,17 @@ import FeedbackSection from './FeedbackSection'
     const toggleSideBar = () => {
       setIsSideBarVisible(!isSideBarVisible);
     };
+
+    const [isShopFormOpen, setIsShopFormOpen] = useState(false);
+
+  const openShopForm = () => {
+    setIsShopFormOpen(true);
+  };
   return (
 
     <>
     <Header toggleSideBar={toggleSideBar}/>
-    <div className="sd-page">
+    <div className= {`sd-page ${isShopFormOpen ? 'blur-background' : ''}`}>
       {/* <div className="row">
       <div className="col-lg-3" style={{background:"red"}}>
         <SmallPictureBox/>

@@ -15,6 +15,7 @@ import StartPage from "./pages/StartPage";
 import ServiceDetailPage from "./pages/ServiceDetail/ServiceDetailPage";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import PackageDetailsPage from "./pages/PackageDetails/PackagDetailsPage";
+import ShopPage from "./pages/ShopPage/ShopPage";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/serviceDetailPage" element={<ServiceDetailPage />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/packageDetails" element={<PackageDetailsPage />} />
+        <Route path="/shopPage" element={<ShopPage />} />
       </Routes>
     </Router>
   );
