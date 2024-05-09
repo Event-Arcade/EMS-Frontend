@@ -1,0 +1,54 @@
+
+.google-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  /* margin: 60px; */
+  /* align-self: center; */
+  margin-top: 100px;
+  margin-bottom: 50px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.google-form-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.google-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.google-form-label {
+  font-size: 16px;
+}
+
+.google-form-input,
+.google-form-select {
+  width: calc(100% - 20px); 
+  padding: 6px; 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.google-form-submit {
+  background-color:#FFA000;
+  color: #fff;
+  border: none;
+  padding: 8px 15px; 
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 14px; 
+  width: 100px;
+}
+
+.google-form-submit:hover {
+  background-color: #FFA000;
+  scale: 1.05;
+}
