@@ -9,6 +9,7 @@ function DashboardBanner() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     navigate("/startpage");
   };
+
   return (
     <div className='dbanner-body'>
       <div className="dbanner-left">
@@ -21,7 +22,7 @@ function DashboardBanner() {
       </div>
       <div className="dbanner-right">
         <img style={{width:'100%',height:'80%' ,marginTop:90,marginLeft:40}} src={bannerImg4} alt="dbanner" />
-    </div>
+      </div>
     </div>
   )
 }

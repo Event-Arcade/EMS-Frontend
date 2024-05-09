@@ -239,7 +239,7 @@ const CreateCategoryForm: React.FC = () => {
   const [description, setDescription] = useState("");
   const [categoryImage, setCategoryImage] = useState("");
 
-  const handleSubmit = async(e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
 
@@ -598,121 +598,6 @@ const AdminDashboard: React.FC = () => {
       )
     );
   };
-  interface Chat {
-    id: number;
-    profileImage: string;
-    name: string;
-    message: string;
-    time: string;
-  }
-
-  const ChatApp: React.FC = () => {
-    // Sample chat data
-    const [chats] = useState<Chat[]>([
-      {
-        id: 1,
-        profileImage: "https://example.com/profile1.jpg",
-        name: "Alice",
-        message: "Hello, how are you?",
-        time: "2:30 PM",
-      },
-      {
-        id: 2,
-        profileImage: "https://example.com/profile2.jpg",
-        name: "Bob",
-        message: "Are you available for a call?",
-        time: "3:15 PM",
-      },
-    ]);
-
-    // State to manage the currently open chat conversation
-    const [currentChat, setCurrentChat] = useState<Chat | null>(null);
-
-    const handleChatClick = (chat: Chat) => {
-      setCurrentChat(chat);
-    };
-
-    const handleCloseChat = () => {
-      setCurrentChat(null);
-    };
-
-    return (
-      <div>
-        {/* Chat Header */}
-        <div style={{ padding: "10px", textAlign: "center" }}>
-          <Image
-            src="https://example.com/rounded-profile.jpg"
-            alt="Profile"
-            roundedCircle
-            style={{ width: "40px", height: "40px", marginRight: "10px" }}
-          />
-          <span>Messaging</span>
-        </div>
-        <hr />
-
-        {/* Search Box */}
-        <Form>
-          <Form.Group controlId="search">
-            <InputGroup>
-              <Form.Control type="text" placeholder="Search" />
-            </InputGroup>
-          </Form.Group>
-        </Form>
-
-        {/* Chat List */}
-        <ListGroup>
-          {chats.map((chat) => (
-            <ListGroup.Item
-              key={chat.id}
-              onClick={() => handleChatClick(chat)}
-              style={{ cursor: "pointer" }}
-            >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Image
-                  src={chat.profileImage}
-                  alt={chat.name}
-                  roundedCircle
-                  style={{ width: "30px", height: "30px", marginRight: "10px" }}
-                />
-                <div>
-                  <p style={{ margin: 0 }}>{chat.name}</p>
-                  <p style={{ margin: 0, fontSize: "12px" }}>{chat.message}</p>
-                </div>
-                <div style={{ marginLeft: "auto", fontSize: "12px" }}>
-                  {chat.time}
-                </div>
-              </div>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-
-        {/* Conversation Modal */}
-        {currentChat && (
-          <Modal show={true} onHide={handleCloseChat} centered>
-            <Modal.Header closeButton>
-              <Modal.Title>Conversation with {currentChat.name}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {/* Add chat conversation content here */}
-              <p>This is where the chat conversation will be displayed.</p>
-              <Form.Control
-                as="textarea"
-                rows={2}
-                placeholder="Type a message..."
-                style={{ marginTop: "10px" }}
-              />
-            </Modal.Body>
-            <Modal.Footer>
-              <Button onClick={handleCloseChat} variant="secondary">
-                Close
-              </Button>
-              <Button variant="primary">Send</Button>
-            </Modal.Footer>
-          </Modal>
-        )}
-      </div>
-    );
-  };
 
   return (
     <>
@@ -734,9 +619,7 @@ const AdminDashboard: React.FC = () => {
             editResource={editResource}
           />
         </div>
-        <div className="col-lg-2" style={{ background: "none"}}>
-          <ChatApp />
-        </div>
+        <div className="col-lg-2" style={{ background: "none" }}></div>
       </div>
       <Footer />
     </>

@@ -12,7 +12,6 @@ function Main({isSidebarVisible} : MainProps) {
   return (
     <main id='main' className={`main ${isSidebarVisible ? '' : 'main-centered'}`}>
       <PageTitle page="Dashboard"/>
-      <DashboardBanner/>
       <Panel />
     </main>
   )

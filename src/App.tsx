@@ -15,23 +15,22 @@ import StartPage from "./pages/StartPage";
 import ServiceDetailPage from "./pages/ServiceDetail/ServiceDetailPage";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import PackageDetailsPage from "./pages/PackageDetails/PackagDetailsPage";
-// import Chat from "./components/Chat/Chat";
 
 export default function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Authentication />} />
-        <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="/editProfile" element={<EditProfile />} />
-        <Route path="/vendorRegistration" element={<VendorRegistration />} />
-        <Route path="/calendar" element={<CalenderPage />} />
-        <Route path="/startpage" element={<StartPage />} />
-        <Route path="/serviceDetailPage" element={<ServiceDetailPage />} />
-        <Route path="/admindashboard" element={<AdminDashboard />} />
-        <Route path="/packageDetails" element={<PackageDetailsPage/>} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<Authentication />} />
+          <Route path="/dashboard" element={<DashBoard />} />
+          <Route path="/editProfile" element={<EditProfile />} />
+          <Route path="/vendorRegistration" element={<VendorRegistration />} />
+          <Route path="/calendar" element={<CalenderPage />} />
+          <Route path="/startpage" element={<StartPage />} />
+          <Route path="/serviceDetailPage" element={<ServiceDetailPage />} />
+          <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/packageDetails" element={<PackageDetailsPage />} />
+        </Routes>
     </Router>
   );
 }
