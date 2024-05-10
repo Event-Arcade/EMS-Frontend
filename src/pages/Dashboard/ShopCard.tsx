@@ -15,7 +15,7 @@ const ShopCard: React.FC<ShopCardProps> = ({ title, description, src }) => {
       <Card.Body>
         <Card.Title style={{ fontSize: '15px', fontWeight: 600 }}>{title}</Card.Title>
         <Card.Text style={{ fontSize: '10px' }}>{description}</Card.Text>
-        <Button style={{ background: '#e78309', borderWidth: 0, width: 100 }}>Visit</Button>
+        <Button style={{ background: '#e78309', borderWidth: 0, width: 100 }} href='/vendorServices'>Visit</Button>
       </Card.Body>
     </Card>
   );
