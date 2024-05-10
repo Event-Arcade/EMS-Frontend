@@ -16,6 +16,7 @@ import ServiceDetailPage from "./pages/ServiceDetail/ServiceDetailPage";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import PackageDetailsPage from "./pages/PackageDetails/PackagDetailsPage";
 import ShopPage from "./pages/ShopPage/ShopPage";
+import VendorServices from "./pages/VendorServices/VendorServices";
 
 export default function App() {
   return (
@@ -32,6 +33,8 @@ export default function App() {
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/packageDetails" element={<PackageDetailsPage />} />
         <Route path="/shopPage" element={<ShopPage />} />
+        <Route path="/vendorServices" element={<VendorServices />} />
+
       </Routes>
     </Router>
   );

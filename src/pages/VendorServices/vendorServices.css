@@ -1,0 +1,408 @@
+
+/* Main css */
+
+body {
+  min-height: 100vh; 
+  overflow-y: auto; 
+}
+
+.user-page-container {
+  margin-top: 45px;
+  padding: 20px;
+  width: 100%;
+  min-height: 100%;
+}
+
+.nav-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  background-color: #ffc107;
+  height: 50px;
+  width: 100%;
+  /* width: 90%; */
+}
+
+.nav-bar :hover{
+  color: white;
+  background-color: #f2c84a;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.editable-image {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.editable-image img {
+  width: 100%;
+  height: auto; 
+  object-fit: cover;
+  border-radius: 8px; 
+}
+
+.editable-image .edit-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px; 
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* home */
+/* Style for the information section */
+.information-section {
+  padding: 50px;
+  background-color: #f9f9f9;
+  justify-content: center;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.information-section h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.information-section p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.information-section p:before {
+  content: "\25CF "; 
+  margin-right: 8px;
+  color: #ff4d00;
+}
+
+
+
+/* serviceSection */
+
+.services-container {
+    
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+}
+
+.service-box {
+  width: 300px; 
+  height: 250px; 
+  border: 1px solid #ccc; 
+  margin: 10px; 
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  /* padding: 10px;  */
+  align-items: center; 
+}
+
+.service-box img {
+  width: 100%; 
+  height: 60%; 
+  object-fit: cover;
+  margin-bottom: 10px; 
+}
+
+.service-details {
+  text-align: center; 
+}
+
+.service-details p {
+  margin-bottom: 2px; 
+  
+}
+
+/* AboutSection */
+
+.about-section {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.about-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.about-text {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.edit-textarea {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.edit-btn,
+.save-btn {
+  padding: 8px 16px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.save-btn {
+  background-color: #28a745;
+}
+
+
+
+/* ReviewSection */
+
+.review-section {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.review-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.review-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.review-card {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.star-rating {
+  color: #ffc107; 
+}
+
+.empty-star {
+  color: #ccc; 
+}
+
+.review-comment {
+  margin-top: 10px;
+}
+
+.write-review-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.write-review-btn:hover {
+  background-color: #0056b3; 
+}
+
+/* GallerySection */
+
+/* .photos-videos-section {
+  margin: 20px;
+  margin-bottom: 80px;
+  
+}
+
+.section-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.media-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.media-item img,
+.media-item video {
+  width: 100%;
+  height: auto;
+}
+
+.upload-btn {
+  padding: 10px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+}
+
+
+
+.upload-btn {
+  padding: 8px 16px; 
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px; 
+  height: 200px; 
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 500; 
+  border-radius: 10px; 
+  padding: 20px; 
+}
+
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+} */
+
+
+
+/* UpcomingEventsSection */
+
+.upcoming-events-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.event-form {
+  margin-bottom: 300px;
+  margin-top: 50px;
+  width: 30%;
+  padding: 20px;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event-list {
+  margin-top: 50px;
+  width: 65%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.event-box {
+  
+  flex-basis: calc(33.33% - 20px);
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.event-box:hover {
+  transform: translateY(-5px); 
+}
+
+.event-box p {
+  margin-bottom: 10px;
+}
+
+/* Style the Create Event button */
+.create-event-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-event-btn:hover {
+  background-color: #0056b3;
+}
+
+/* EditableImage.css */
+.icon-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  
+  margin: 10px; /* Adjust as needed */
+}
+
+.icon-button {
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  scale: 1.2;
+  background-color: #ffc107;
+}
