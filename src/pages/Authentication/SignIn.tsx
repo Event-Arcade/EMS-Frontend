@@ -1,32 +1,43 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Authentication.css";
-//import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import {FormEvent } from "react";
+import {login} from "../../services/authService";
 
-import axios from "axios";
+const adminUsername = "admin@gmail.com";
+const adminPassword = "admin123";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const handlelogin = () => {
-    const email = "lahiru@gmail.com"
-    const password= "1234"
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  // const handlelogin = (e: FormEvent) => {
-  //   e.preventDefault();
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  //   const email = (e.target as any)[0].value;
-  //   const password = (e.target as any)[1].value;
+    if (email === adminUsername && password === adminPassword) {
+      navigate("/admindashboard");
+      return;
+    }
 
-  //   axios.post("https://localhost:7005/api/Account/Register", {
-  //     email,
-  //     password,
-  //   });
-    navigate("/dashboard");
+    try {
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+      const response = await login(formData);
+      if (response) {
+        navigate("/dashboard");
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
+
   return (
     <div className="form-container sign-in">
-      <form>
+      <form onSubmit={handleLogin}>
         <h1>Sign in</h1>
         <div className="social-icons">
           <a href="#" className="icon">
@@ -43,11 +54,19 @@ export default function SignIn() {
           </a>
         </div>
         <span>or use your email password</span>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <a href="#">Forgot your password?</a>
-
-        <button onClick={handlelogin}>Sign In</button>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Sign In</button>
       </form>
     </div>
   );

@@ -1,0 +1,72 @@
+/* Custom CSS for the Package Details Page */
+.package-details-page {
+  margin-top: 0px auto; /* Center the page horizontally */
+  background-color: white; /* Light background color for a professional look */
+  padding-top: 100px;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content vertically */
+  text-align: left; /* Left-align text within the page */
+}
+
+/* Section Heading */
+.package-details-page h2 {
+  color: #b0b1b2; /* LinkedIn-like blue color */
+  font-size: 40px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* Info Sections */
+.info-section {
+  width: 60%; /* Set a max width for better readability */
+  background-color: #ffffff; /* White background for each section */
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: flex-start; /* Left-align content */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.info-section h3 {
+  color: #333;
+  font-size: 16px;
+  margin-right: 5px;
+}
+
+.info-section p {
+  color: #555;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Venue details section */
+.venue-details {
+  width: 60%; /* Set a max width for better readability */
+  background-color: #ffffff; /* White background for each section */
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: flex-start; /* Left-align content */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.venue-details h3 {
+  color: #333;
+  font-size: 16px;
+  margin-right: 5px;
+  display: inline; /* Align h3 and p inline */
+}
+
+.venue-details p {
+  color: #555;
+  font-size: 14px;
+  margin: 0;
+  display: flex; 
+  flex-direction: column; /* Align address and phone number vertically */
+}

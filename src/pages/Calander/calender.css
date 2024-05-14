@@ -1,0 +1,33 @@
+/* calendar.css */
+.calendar-container {
+  position: relative;
+  margin-top: 60px;
+  padding: 50px;
+  
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup button {
+  margin-top: 10px;
+  width: 80px;
+  background-color: rgb(226, 63, 117) ;
+  border-width: 0;
+color: white;;
+}

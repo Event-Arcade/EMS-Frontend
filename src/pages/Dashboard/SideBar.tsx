@@ -1,9 +1,13 @@
 import React from "react";
 import "./sideBar.css";
 
-function SideBar() {
+interface SideBarProps {
+  isVisible: boolean;
+}
+
+const SideBar: React.FC<SideBarProps> = ({ isVisible }) => {
   return (
-    <aside id="sidebar" className="sidebar">
+    <aside id="sidebar" className={`sidebar ${isVisible? 'visible' : 'hidden'}`}>
       <ul className="sidebar-nav" id="sidebar-nav">
         <li className="nav-item">
           <a className="nav-link" href="/dashboard">

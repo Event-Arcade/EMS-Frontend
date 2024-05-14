@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import messages1 from "../../assets/img/messages1.jpg"
 import messages2 from "../../assets/img/messages2.jpg"
 import messages3 from "../../assets/img/messages3.jpg"
+import Chat from '../../components/Chat/Chat';
 
 
 function NavMessage() {
+  const [chatVisible, setChatVisible] = useState(false);
+
+    const handleOpenChat = () => {
+        setChatVisible(true);
+    };
+
+    const handleCloseChat = () => {
+        setChatVisible(false);
+    };
   return (
+    <>
     <li className="nav-item dropdown">
       <a className="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
         <i className="bi bi-chat-left-text"></i>
@@ -15,9 +26,10 @@ function NavMessage() {
         <li className="dropdown-header">
           You have 3 new messages
           <a href="#">
-            <span className="badge rounded-pill bg-primary p-2 ms-2">
+            <span className="badge rounded-pill bg-primary p-2 ms-2" onClick={handleOpenChat}>
               View all
             </span>
+
           </a>
         </li>
         <li>
@@ -61,6 +73,9 @@ function NavMessage() {
         </li>
       </ul>
     </li>
+    <Chat isVisible={chatVisible} onClose={handleCloseChat}/>
+
+    </>
   )
 }
 

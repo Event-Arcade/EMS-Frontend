@@ -45,13 +45,22 @@ import SideBar from "./Dashboard/SideBar"
 import Main from "./Dashboard/Main"
 //import Footer from "./Dashboard/Footer"
 import Footer from "../components/Footer/Footer"
+import { useState } from "react"
 
-function DashBoard() {
+const DashBoard: React.FC = () => {
+  const [isSideBarVisible, setIsSideBarVisible] = useState(true);
+
+  const toggleSideBar = () => {
+    setIsSideBarVisible(!isSideBarVisible);
+  };
+
   return (
 <>
-<Header/>
-<SideBar/>
-<Main/>
+<Header toggleSideBar={toggleSideBar}/>
+<div className="content">
+<SideBar isVisible={isSideBarVisible}/>
+<Main isSidebarVisible ={isSideBarVisible}/>
+</div>
 <Footer/>
 </>
     )

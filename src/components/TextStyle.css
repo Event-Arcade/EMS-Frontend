@@ -34,3 +34,28 @@
   color: black;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
+/* shop details page heading */
+.sd-page-headtopic{
+  font-size: 40px; 
+  font-weight: 600;
+  color: rgb(158, 158, 158);
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+
+@media (max-width: 768px) {
+  font-size: 30px; 
+}}
+
+
+.sd-page-subtopic{
+  font-size: 20px; 
+  color: rgb(158, 158, 158);
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  @media (max-width: 768px) {
+    font-size: 15px; 
+  }
+}
+
+.sd-page-subtopic span{
+  margin: 0px 20px;
+}

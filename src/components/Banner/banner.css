@@ -18,6 +18,22 @@
   }
 }
 
+@media (max-width: 600px) {
+  .banner-text-paragraph {
+    font-size: 10px;
+  }
+}
+
+.banner-text {
+  hr {
+    width: 80%;
+    margin: 0 auto;
+    border: 0;
+    height: 1px;
+    background-color: #ccc;
+  }
+}
+
 .banner-left {
   width: 60%;
   height: 65vh;
@@ -32,6 +48,13 @@
   flex-direction: column;
   color: white;
   text-align: center; */
+}
+
+@media (max-width: 800px) {
+  .banner-left {
+    padding-left: 10px;
+    padding-top: 50px;
+  }
 }
 
 .banner-right {
@@ -61,5 +84,21 @@
 @media (max-width: 600px) {
   .banner-text-heading {
     font-size: 15px;
+  }
+}
+
+.banner-right {
+  img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 600px) {
+  .banner-right {
+    img{
+      width: 50%;
+      height: 60%;
+    }
   }
 }

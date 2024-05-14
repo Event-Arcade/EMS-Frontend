@@ -1,16 +1,18 @@
-import React from 'react'
 import PageTitle from './PageTitle'
 import Panel from './Panel'
 import './main.css'
 import DashboardBanner from './DashboardBanner'
 
-function Main() {
-  return (
-    <main id='main' className='main'>
-      <PageTitle page="Dashboard"/>
-      <DashboardBanner/>
-      <Panel />
+interface MainProps {
+  isSidebarVisible: boolean;
+}
 
+function Main({isSidebarVisible} : MainProps) {
+  
+  return (
+    <main id='main' className={`main ${isSidebarVisible ? '' : 'main-centered'}`}>
+      <PageTitle page="Dashboard"/>
+      <Panel />
     </main>
   )
 }
