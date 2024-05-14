@@ -5,7 +5,7 @@ import "remixicon/fonts/remixicon.css";
 
 import "bootstrap/dist/js/bootstrap.min.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Authentication from "./pages/Authentication/Authentication";
 import DashBoard from "./pages/DashBoard";
 import VendorRegistration from "./pages/VendorRegistration";
