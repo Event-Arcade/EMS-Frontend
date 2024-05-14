@@ -1,7 +1,7 @@
 import React from "react";
 import "./feedbackSection.css";
 import FeedbackItem from "./FeedbackItem";
-import profile1 from '../../assets/img/profileImg.jpg'
+import profile1 from "../../../assets/img/profileImg.jpg";
 
 const FeedbackSection: React.FC = () => {
   const feedbackData = [
@@ -39,11 +39,11 @@ const FeedbackSection: React.FC = () => {
     <div className="fb-section">
       <h2>Customer Ratings & Feedback</h2>
       {/* <div className="feedback-section"> */}
-        <div className="scrollable-container">
-          {feedbackData.map((feedback, index) => (
-            <FeedbackItem key={index} {...feedback} />
-          ))}
-        </div>
+      <div className="scrollable-container">
+        {feedbackData.map((feedback, index) => (
+          <FeedbackItem key={index} {...feedback} />
+        ))}
+      </div>
       {/* </div> */}
     </div>
   );

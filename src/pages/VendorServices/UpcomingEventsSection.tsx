@@ -3,8 +3,10 @@ import { Table } from 'react-bootstrap';
 
 const UpcomingEventsSection: React.FC = () => {
   const events = [
-    { refNumber: '001', serviceType: 'Catering', date: '2022-10-15'},
-    { refNumber: '002', serviceType: 'Entertainment', date: '2022-11-20'},
+    { refNumber: '001', serviceType: 'Catering', date: '2024-10-15'},
+    { refNumber: '002', serviceType: 'Entertainment', date: '20224-05-20'},
+    { refNumber: '002', serviceType: 'Entertainment', date: '20224-05-20'},
+
   ];
 
   const calculateRemainingTime = (date: string) => {

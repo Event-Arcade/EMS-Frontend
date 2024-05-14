@@ -1,6 +1,6 @@
 import React from 'react'
 import './shopPageHeading.css'
-import '../../components/TextStyle.css'
+import '../../../components/TextStyle.css'
 
 function ShopPageHeading() {
   return (

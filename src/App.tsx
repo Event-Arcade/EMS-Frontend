@@ -12,7 +12,7 @@ import VendorRegistration from "./pages/VendorRegistration";
 import EditProfile from "./pages/ProfileSetting/EditProfile";
 import CalenderPage from "./pages/Calander/CalenderPage";
 import StartPage from "./pages/StartPage";
-import ServiceDetailPage from "./pages/ServiceDetail/ServiceDetailPage";
+import ServiceDetailPage from "./pages/ServiceDetail/ServiceDetailPage/ServiceDetailPage";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import PackageDetailsPage from "./pages/PackageDetails/PackagDetailsPage";
 import ShopPage from "./pages/ShopPage/ShopPage";
@@ -34,7 +34,6 @@ export default function App() {
         <Route path="/packageDetails" element={<PackageDetailsPage />} />
         <Route path="/shopPage" element={<ShopPage />} />
         <Route path="/vendorServices" element={<VendorServices />} />
-
       </Routes>
     </Router>
   );

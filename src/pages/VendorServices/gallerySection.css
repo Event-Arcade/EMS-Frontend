@@ -43,6 +43,14 @@
 } */
 .gallery-section {
   padding: 20px;
+
+  hr{
+    width: 80%; 
+    margin: 0 auto; 
+    border: 0; 
+    height: 1px; 
+    background-color: #ccc;   
+  }
 }
 
 h2 {
@@ -62,13 +70,7 @@ h3{
 
 }
 
-hr{
-  width: 80%; 
-  margin: 0 auto; 
-  border: 0; 
-  height: 1px; 
-  background-color: #ccc;   
-}
+
 
 .media-grid {
   display: flex;

@@ -28,7 +28,7 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose }) => {
             src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt=""
           />
-          <span>John Doe</span>
+          <span>John John</span>
           <p>Lorem ipsum dolor sit amet...</p>
         </div>
         <div className="message">
@@ -36,7 +36,7 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose }) => {
             src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt=""
           />
-          <span>John Doe</span>
+          <span>John John</span>
           <p>Lorem ipsum dolor sit amet...</p>
         </div>
         <div className="message">
@@ -44,7 +44,7 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose }) => {
             src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt=""
           />
-          <span>John Doe</span>
+          <span>John John</span>
           <p>Lorem ipsum dolor sit amet...</p>
         </div>
         <div className="message">
@@ -52,7 +52,7 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose }) => {
             src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt=""
           />
-          <span>John Doe</span>
+          <span>John John</span>
           <p>Lorem ipsum dolor sit amet...</p>
         </div>
         <div className="message">
@@ -60,7 +60,7 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose }) => {
             src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt=""
           />
-          <span>John Doe</span>
+          <span>John John</span>
           <p>Lorem ipsum dolor sit amet...</p>
         </div>
         <div className="message">
@@ -68,7 +68,7 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose }) => {
             src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt=""
           />
-          <span>John Doe</span>
+          <span>John John</span>
           <p>Lorem ipsum dolor sit amet...</p>
         </div>
       </div>
@@ -80,7 +80,7 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose }) => {
                 src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                 alt=""
               />
-              John Doe
+              John John
             </div>
             <span className="close" onClick={() => setChat(false)}>X</span>
           </div>

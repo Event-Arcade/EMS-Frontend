@@ -16,6 +16,7 @@ function NavMessage() {
         setChatVisible(false);
     };
   return (
+    <>
     <li className="nav-item dropdown">
       <a className="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
         <i className="bi bi-chat-left-text"></i>
@@ -28,7 +29,6 @@ function NavMessage() {
             <span className="badge rounded-pill bg-primary p-2 ms-2" onClick={handleOpenChat}>
               View all
             </span>
-      <Chat isVisible={chatVisible} onClose={handleCloseChat}/>
 
           </a>
         </li>
@@ -73,6 +73,9 @@ function NavMessage() {
         </li>
       </ul>
     </li>
+    <Chat isVisible={chatVisible} onClose={handleCloseChat}/>
+
+    </>
   )
 }
 

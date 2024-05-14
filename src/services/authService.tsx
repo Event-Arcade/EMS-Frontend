@@ -3,11 +3,8 @@ import { toast } from "react-toastify";
 
 const apiEndpoint = "/Account";
 
-export async function login(email: string, password: string) {
-  const { data } = await http.post(apiEndpoint + "/login", {
-    email: email,
-    password: password,
-  });
+export async function login(formData : FormData) {
+  const { data } = await http.post(apiEndpoint + "/login", formData);
   console.log(data);
   if (data.flag) {
     localStorage.setItem("token", data.data);

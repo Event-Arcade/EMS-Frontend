@@ -32,7 +32,7 @@ function Banner() {
         <div className="banner-text">
           <h1 className='banner-text-heading'>Find the Perfect Venue</h1>
           <p className='banner-text-paragraph'>Create memories that last a lifetime.Unveil the magic of unforgettable moments with Event Arcade.  From intimate gatherings to grand celebrations, we turn your dreams into reality. Your journey to extraordinary events starts here.</p>
-          <hr style={{paddingTop:'30px',paddingBottom:'30px'}}></hr>
+          <hr/>
           <button className="custom-banner-button" onClick={handleStart}>Lets Start</button>
         </div>
       </div>

@@ -257,7 +257,7 @@ const CreateCategoryForm: React.FC = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h2 style={{ padding: "40px 0px 20px 0", color: "#BDBDBD" }}>
+      <h2 style={{ padding: "40px 0px 20px 0", color: "#BDBDBD", fontSize:"30px",textAlign:"left" }}>
         Create Category
       </h2>
       <Form.Group controlId="name">

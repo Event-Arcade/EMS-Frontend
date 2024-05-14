@@ -1,8 +1,8 @@
 import React from 'react'
 import './smallPictureBox.css'
-import SlidingPic3 from '../../assets/SlidingPic3.jpg'
-import SlidingPic2 from '../../assets/SlidingPic2.jpg'
-import SlidingPic1 from '../../assets/SlidingPic1.jpg'
+import SlidingPic3 from '../../../assets/SlidingPic3.jpg'
+import SlidingPic2 from '../../../assets/SlidingPic2.jpg'
+import SlidingPic1 from '../../../assets/SlidingPic1.jpg'
 
 function SmallPictureBox() {
   return (
