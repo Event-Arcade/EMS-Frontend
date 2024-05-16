@@ -6,7 +6,8 @@ import SlidingPanel from "../../components/SlidingPanel";
 import "../../components/TextStyle.css";
 import VideoGallery from "../../components/videoGallery/VideoGallery";
 import Header from "../Dashboard/Header";
-import ServiceList from "./PictureCard";
+import { PictureCard } from "./PictureCard";
+// import ServiceList from "./PictureCard";
 
 export default function Home() {
 
@@ -57,7 +58,8 @@ export default function Home() {
         <br></br>
         <SlidingPanel />
         <div className="picture-card-text">Popular Services</div>
-        <ServiceList services={servicesData} /> 
+        <PictureCard />
+        {/* <ServiceList services={servicesData} />  */}
         {/* <NumberList /> */}
         <Banner />
         <div className="picture-card-text">Featured Videos</div>
