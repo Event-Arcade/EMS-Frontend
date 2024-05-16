@@ -1,43 +1,35 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Authentication.css";
-import {login} from "../../services/authService";
-
-const adminUsername = "admin@gmail.com";
-const adminPassword = "admin123";
+import { MouseEvent } from "react";
+import { loginUser } from "./UserAccountSlice";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 export default function SignIn() {
+  const { isLoggedIn } = useAppSelector((state) => state.account);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (email === adminUsername && password === adminPassword) {
-      navigate("/admindashboard");
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("email", email);
-      formData.append("password", password);
-      const response = await login(formData);
-      if (response) {
-        navigate("/dashboard");
-      } else {
-        console.error("Login failed");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    dispatch(loginUser(formData));
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, [isLoggedIn]);
 
   return (
     <div className="form-container sign-in">
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSubmit}>
         <h1>Sign in</h1>
         <div className="social-icons">
           <a href="#" className="icon">

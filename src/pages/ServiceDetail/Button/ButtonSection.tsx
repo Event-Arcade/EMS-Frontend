@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./buttonSection.css";
 import Chat from "../../../components/Chat/Chat";
-import ShopForm from "../../ShopForm/ShopForm";
 
 function ButtonSection() {
   const [chatVisible, setChatVisible] = useState(false);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Footer from '../../components/Footer/Footer';
 import Carousel from 'react-bootstrap/Carousel';
@@ -6,7 +6,7 @@ import vendor1 from '../../assets/vendor/vendor1.png';
 import vendor2 from '../../assets/vendor/vendor2.jpg';
 import vendor3 from '../../assets/vendor/vendor3.jpg';
 import Header from '../Dashboard/Header';
-import './ShopPage.css';
+import './shopPage.css';
 
 interface StateType {
     businessName: string;

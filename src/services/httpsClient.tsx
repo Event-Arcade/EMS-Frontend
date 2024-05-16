@@ -1,12 +1,12 @@
 import axios from "axios";
 const baseURL = "http://localhost:5257/api";
 
-const HTTP = axios.create({
+const http = axios.create({
   baseURL: baseURL,
 });
 
 // Add a request interceptor to add the token to the header
-HTTP.interceptors.request.use((config) => {
+http.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -15,4 +15,4 @@ HTTP.interceptors.request.use((config) => {
 });
 
 //export
-export default HTTP;
+export default http;

@@ -1,8 +1,13 @@
-import React, { useState } from "react";
-import { register } from "../../services/authService";
+import React, {
+  useState,
+  MouseEvent,
+  ChangeEventHandler,
+  ChangeEvent,
+} from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./Authentication.css";
-import { useNavigate } from "react-router-dom";
+import { signupUser } from "./UserAccountSlice";
+import { useAppDispatch } from "../../store/hooks";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -19,10 +24,8 @@ export default function SignUp() {
     latitude: "",
     profilePicture: null as File | null,
   });
-
-  const navigate = useNavigate();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const dispatch = useAppDispatch();
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -30,7 +33,7 @@ export default function SignUp() {
     }));
   };
 
-  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       setFormData((prevData) => ({
@@ -40,7 +43,7 @@ export default function SignUp() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formDataToSend = new FormData();
@@ -58,16 +61,7 @@ export default function SignUp() {
     if (formData.profilePicture) {
       formDataToSend.append("profilePicture", formData.profilePicture);
     }
-
-    try {
-      const registrationSuccessful = await register(formDataToSend);
-      if (registrationSuccessful) {
-        console.log("Registration successful");
-        navigate("/dashboard");
-      } 
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    dispatch(signupUser(formDataToSend));
   };
 
   return (

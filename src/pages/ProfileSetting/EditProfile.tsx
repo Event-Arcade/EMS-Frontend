@@ -1,29 +1,19 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { toast } from "react-toastify";
-import { getCurrentUser, update } from "../../services/authService";
 import "./editProfile.css";
 import FormFooter from "../../components/Footer/FormFooter";
-import { useForm } from 'react-hook-form';
-
-interface UserProfileData {
-  firstName: string;
-  lastName: string;
-  street: string;
-  city: string;
-  postalCode: string;
-  province: string;
-  longitude: string;
-  latitude: string;
-  profilePicture:  File | null;
-}
+import { useForm } from "react-hook-form";
+import { User } from "../../interfaces/User";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useEffect } from "react";
+import { updateUser } from "../../features/accounts/UserAccountSlice";
 
 const EditProfile = () => {
-  const [loading, setLoading] = useState(true);
+  const { loading, user } = useAppSelector((state) => state.account);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const {
@@ -31,32 +21,22 @@ const EditProfile = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<UserProfileData>();
+  } = useForm<User>();
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const {data} = await getCurrentUser();
-        setValue("firstName", data.firstName);
-        setValue("lastName", data.lastName);
-        setValue("street", data.street);
-        setValue("city", data.city);
-        setValue("postalCode", data.postalCode);
-        setValue("province", data.province);
-        setValue("longitude", data.longitude);
-        setValue("latitude", data.latitude);
-        setLoading(false);
-      } catch (error) {
-        toast.error("Failed to load user data");
-        setLoading(false);
-      }
-    };
+    if (user) {
+      setValue("firstName", user.firstName);
+      setValue("lastName", user.lastName);
+      setValue("street", user.street);
+      setValue("city", user.city);
+      setValue("postalCode", user.postalCode);
+      setValue("province", user.province);
+      setValue("longitude", user.longitude);
+      setValue("latitude", user.latitude);
+    }
+  }, [user, setValue]);
 
-    fetchData();
-  }, [setValue]);
-
-  const onSubmit = async (data: UserProfileData) => {
+  const onSubmit = async (data: User) => {
     const updatedUserDetails = new FormData();
     updatedUserDetails.append("firstName", data.firstName);
     updatedUserDetails.append("lastName", data.lastName);
@@ -64,13 +44,10 @@ const EditProfile = () => {
     updatedUserDetails.append("city", data.city);
     updatedUserDetails.append("postalCode", data.postalCode);
     updatedUserDetails.append("province", data.province);
-    updatedUserDetails.append("longitude", data.longitude);
-    updatedUserDetails.append("latitude", data.latitude);
+    updatedUserDetails.append("longitude", data.longitude.toString()); // Convert to string
+    updatedUserDetails.append("latitude", data.latitude.toString()); // Convert to string
 
-    const success = await update(updatedUserDetails);
-    if (success) {
-      navigate("/");
-    } 
+    dispatch(updateUser(updatedUserDetails));
   };
 
   if (loading) {
@@ -90,7 +67,7 @@ const EditProfile = () => {
               controlId="validationCustom01"
             >
               <Form.Label column md="2">
-               First Name
+                First Name
               </Form.Label>
               <Col md="4">
                 <Form.Control
@@ -245,10 +222,7 @@ const EditProfile = () => {
                 Profile Picture
               </Form.Label>
               <Col md="4">
-                <Form.Control
-                  type="file"
-                  {...register("profilePicture")}
-                />
+                <Form.Control type="file" {...register("profilePictureUrl")} />
               </Col>
             </Form.Group>
 
@@ -262,10 +236,10 @@ const EditProfile = () => {
                   type="button"
                   className="custom-cancel-button"
                   onClick={() => {
-                    window.history.back();
+                    navigate("/dashboard");
                   }}
                 >
-                  Cancel
+                  Go Back
                 </Button>
               </Col>
             </Form.Group>

@@ -1,56 +1,19 @@
-import { useEffect, useState } from "react";
-import messages1 from "../../assets/img/messages1.jpg";
-import messages2 from "../../assets/img/messages2.jpg";
-import messages3 from "../../assets/img/messages3.jpg";
 import profileImg from "../../assets/img/profileImg.jpg";
 import "./nav.css";
-import { getCurrentUser } from "../../services/authService";
-import ShopForm from "../ShopForm/ShopForm";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setLogout } from "../../features/accounts/UserAccountSlice";
+import { useNavigate } from "react-router-dom";
 
-interface NavAvatarProps {
-  handleSignOut: () => void;
-}
+function NavAvatar() {
+  const { user } = useAppSelector((state) => state.account);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-function NavAvatar({handleSignOut} : NavAvatarProps) {
-  const [user, setUser] = useState<{ 
-    normalizedUserName?: string ;
-    profilePictureURL?: string;
-    normalizedEmail?: string;
-
-  }>({});
-
-  
-  useEffect(() => {
-    async function fetchUserData() {
-      const currentUser = await getCurrentUser();
-      if (currentUser) {
-        // Set the user data in the state
-        const data = currentUser.data;
-        setUser({
-          normalizedUserName: data.firstName+data.lastName,
-          normalizedEmail: data.email,
-          profilePictureURL: data.profilePictureURL,
-        });
-      }
-    }
-    fetchUserData();
-  }, []);
-
-  const [isShopFormOpen, setIsShopFormOpen] = useState(false);
-
-    const handleOpenShopForm = () => {
-      setIsShopFormOpen(true);
-    };
-  
-    const handleCloseShopForm = () => {
-      setIsShopFormOpen(false);
-    };
-  
-    const handleCreateShop = (shopName: string) => {
-      console.log('New shop created:', shopName);
-      handleCloseShopForm();
-    };
-
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    dispatch(setLogout());
+    navigate("/");
+  };
   return (
     <li className="nav-item dropdown pe-3">
       <a
@@ -59,39 +22,41 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
         data-bs-toggle="dropdown"
       >
         {/* <i className="bi bi-chat-left-text"></i> */}
-        <img src={user.profilePictureURL || profileImg}  
-        alt="Profile" 
-        className="rounded-circle" />
+        <img
+          src={user?.profilePictureUrl || profileImg}
+          alt="Profile"
+          className="rounded-circle"
+        />
         <span className="d-none d-md-block dropdown-toggle ps-2">
-          {user.normalizedUserName}
+          {user?.firstName}
         </span>
       </a>
       <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
         <li className="dropdown-header">
-          <h6>{user.normalizedUserName}</h6>
-          <span>{user.normalizedEmail}</span>
+          <h6>{user?.firstName + " " + user?.lastName}</h6>
+          <span>{user?.email}</span>
         </li>
-        <li>
+        {/* <li>
           <hr className="dropdown-divider" />
         </li>
         <li>
           <a
             className="dropdown-item d-flex align-items-center"
             href="users-profile.html"
-
           >
             <i className="bi bi-person"></i>
             <span>My Profile</span>
           </a>
-        </li>
+        </li> */}
         <li>
           <hr className="dropdown-divider" />
         </li>
         <li>
           <a
             className="dropdown-item d-flex align-items-center"
-            href="/editProfile"
-
+            onClick={() => {
+              navigate("/editProfile");
+            }}
           >
             <i className="bi bi-gear"></i>
             <span>Account setting</span>
@@ -103,8 +68,13 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
         <li>
           <a
             className="dropdown-item d-flex align-items-center"
-            href="users-profile.html"
+            onClick={() => {
+              navigate("/help");
+            }}
           >
+            {
+              // TODO: Add help page}
+            }
             <i className="bi bi-question-circle"></i>
             <span>Need Help?</span>
           </a>
@@ -112,25 +82,47 @@ function NavAvatar({handleSignOut} : NavAvatarProps) {
         <li>
           <hr className="dropdown-divider" />
         </li>
+        {user?.role === "client" && (
+          <>
+            <li>
+              <a
+                className="dropdown-item d-flex align-items-center"
+                onClick={() => {
+                  navigate("/createshop");
+                }}
+              >
+                <i className="bi bi-bag-heart"></i>
+                <span>Create Shop</span>
+              </a>
+            </li>
+            <li>
+              <hr className="dropdown-divider" />
+            </li>
+          </>
+        )}
+        {user?.role === "vendor" && (
+          <>
+            <li>
+              <a
+                className="dropdown-item d-flex align-items-center"
+                onClick={() => {
+                  navigate("/shop");
+                }}
+              >
+                <i className="bi bi-bag-check"></i>
+                <span>Go to My Shop</span>
+              </a>
+            </li>
+            <li>
+              <hr className="dropdown-divider" />
+            </li>
+          </>
+        )}
         <li>
-          <a
+          <button
+            onClick={handleSignOut}
             className="dropdown-item d-flex align-items-center"
-            onClick={handleOpenShopForm}
           >
-            <i className="bi bi-bag-heart"></i>
-            <span>Create Shop</span>
-          </a>
-          <ShopForm
-        isOpen={isShopFormOpen}
-        onClose={handleCloseShopForm}
-        onCreate={handleCreateShop}
-      />
-        </li>
-        <li>
-          <hr className="dropdown-divider" />
-        </li>
-        <li>
-          <button onClick={handleSignOut} className="dropdown-item d-flex align-items-center">
             <i className="bi bi-arrow-bar-right"></i>
             <span>Sign Out</span>
           </button>

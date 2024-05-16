@@ -6,7 +6,7 @@ import "remixicon/fonts/remixicon.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Authentication from "./pages/Authentication/Authentication";
+import Authentication from "./features/accounts/Authentication";
 import DashBoard from "./pages/DashBoard";
 import VendorRegistration from "./pages/VendorRegistration";
 import EditProfile from "./pages/ProfileSetting/EditProfile";
@@ -17,8 +17,25 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import PackageDetailsPage from "./pages/PackageDetails/PackagDetailsPage";
 import ShopPage from "./pages/ShopPage/ShopPage";
 import VendorServices from "./pages/VendorServices/VendorServices";
+import { useCallback, useEffect } from "react";
+import { getCurrentUser } from "./features/accounts/UserAccountSlice";
+import { useAppDispatch } from "./store/hooks";
+import AuthRoute from "./components/protectedRoutes/AuthRoute";
+import ShopForm from "./features/shops/ShopForm/ShopForm";
+import { categoryGetAll } from "./features/categories/CategorySlice";
+import { shopGetAll } from "./features/shops/ShopSlice";
 
 export default function App() {
+  const dispatch = useAppDispatch();
+  const initApp = useCallback(async () => {
+    await dispatch(getCurrentUser());
+    await dispatch(categoryGetAll());
+    await dispatch(shopGetAll());
+  }, [dispatch]);
+
+  useEffect(() => {
+    initApp();
+  }, []);
   return (
     <Router>
       <Routes>
@@ -34,6 +51,9 @@ export default function App() {
         <Route path="/packageDetails" element={<PackageDetailsPage />} />
         <Route path="/shopPage" element={<ShopPage />} />
         <Route path="/vendorServices" element={<VendorServices />} />
+        <Route path="/" element={<AuthRoute />}>
+          <Route path="createshop" element={<ShopForm />} />
+        </Route>
       </Routes>
     </Router>
   );
