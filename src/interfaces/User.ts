@@ -1,5 +1,5 @@
 export interface User {
-    id: string;
+    id?: string;
     firstName: string;
     lastName: string;
     street: string;
@@ -9,6 +9,9 @@ export interface User {
     longitude: number;
     latitude: number;
     email: string;
-    profilePictureUrl: string | null;
-    role: string;
+    profilePictureURL?: string;
+    profilePictureFile?: File
+    role?: string;
+    phoneNumber: string;
+    password: string
 }

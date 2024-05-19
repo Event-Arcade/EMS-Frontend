@@ -1,13 +1,18 @@
 import "./pageTitle.css";
 
-function PageTitle({ page }: { page: string }) {
+interface PageTitleProps{
+  title: string;
+  page: string
+}
+
+function PageTitle({ title, page }: PageTitleProps) {
   return (
     <div className="pagetitle">
-      <h1>{page}</h1>
+      <h1>{title}</h1>
       <nav>
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <a href="/">
+            <a >
               <i className="bi bi-house-door"></i>
             </a>
           </li>

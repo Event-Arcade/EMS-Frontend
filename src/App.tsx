@@ -8,7 +8,6 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import Authentication from "./features/accounts/authentication/Authentication";
-import DashBoard from "./pages/DashBoard";
 import EditProfile from "./features/accounts/ProfileSetting/EditProfile";
 import CalenderPage from "./pages/CalanderPage/CalenderPage";
 import StartPage from "./pages/StartPage/StartPage";
@@ -21,7 +20,6 @@ import { useCallback, useEffect } from "react";
 import { getCurrentUser } from "./features/accounts/UserAccountSlice";
 import { useAppDispatch } from "./store/hooks";
 import AuthRoute from "./components/protectedRoutes/AuthRoute";
-import ShopForm from "./features/shops/ShopForm/ShopForm";
 import { categoryGetAll } from "./features/categories/CategorySlice";
 import { shopGetAll } from "./features/shops/ShopSlice";
 import { shopServiceGetAll } from "./features/shopServices/ShopServiceSlice";
@@ -32,6 +30,8 @@ import CategoryManagementPage from "./pages/AdminCategoryManagementPage/Category
 import StaticResourceManagementPage from "./pages/AdminStaticResourceManagementPage/StaticResourceManagementPage";
 import VendorRoute from "./components/protectedRoutes/VendorRoute";
 import VendorDashBoardPage from "./pages/VendorDashBoardPage/VendorDashBoardPage";
+import ClientDashBoardPage from "./pages/ClientDashboardPage/ClientDashBoardPage";
+import CreateShopService from "./features/shopServices/CreateShopService";
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -53,15 +53,16 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<Authentication />} />
         <Route path="/startpage" element={<StartPage />} />
-        <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/packageDetails" element={<PackageDetailsPage />} />
         <Route path="/vendorServices" element={<VendorServices />} />
+        <Route path="/addshopservice" element={<CreateShopService shopId={0} close={function (): {} {
+          throw new Error("Function not implemented.");
+        } } />} />
 
         <Route path="/" element={<AuthRoute />}>
-          <Route path="/dashboard" element={<DashBoard />} />
+          <Route path="/dashboard" element={<ClientDashBoardPage />} />
           <Route path="/editProfile" element={<EditProfile />} />
           <Route path="/calendar" element={<CalenderPage />} />
-          <Route path="/createshop" element={<ShopForm />} />
           <Route path="/shop/:id" element={<ShopDetailPage />} />
           <Route path="/shop-service/:id" element={<ServiceDetailPage />} />
 

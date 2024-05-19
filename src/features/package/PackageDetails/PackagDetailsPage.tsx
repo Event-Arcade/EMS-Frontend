@@ -36,7 +36,9 @@ const PackageDetailsPage: React.FC = () => {
   };
   return (
     <div className="package-details-page">
-      <Header toggleSideBar={toggleSideBar} />
+      <Header getSideBarVisibility={function (): void {
+        throw new Error("Function not implemented.");
+      } } />
       <h2>Package Details</h2>
 
       {/* Function Type */}

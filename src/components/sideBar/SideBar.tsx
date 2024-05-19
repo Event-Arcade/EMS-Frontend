@@ -1,4 +1,3 @@
-import React from "react";
 import "./sideBar.css";
 import { useAppSelector } from "../../store/hooks";
 import { useNavigate } from "react-router-dom";
@@ -25,10 +24,12 @@ export default function SideBar({ isVisible }: SideBarProps) {
                 if (user?.role == "admin") {
                   navigate("/admin/dashboard");
                 } else if (user?.role == "client") {
-                  navigate("/client/dashboard");
+                  navigate("/dashboard");
                 } else if (user?.role == "vendor") {
                   navigate("/vendor/dashboard");
                 }
+              } else {
+                navigate("/auth");
               }
             }}
           >
@@ -100,34 +101,32 @@ export default function SideBar({ isVisible }: SideBarProps) {
             </li>
           </>
         )}
-        {
-          user?.role == "vendor" && (
-            <>
-              <li className="nav-item">
-                <a
-                  className="nav-link"
-                  onClick={() => {
-                    navigate(`/shop/${user?.id}`);
-                  }}
-                >
-                  <i className="bi bi-gear"></i>
-                  <span>My Shop</span>
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link"
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  <i className="bi bi-gear"></i>
-                  <span>Orders</span>
-                </a>
-              </li>
-            </>
-          )
-        }
+        {user?.role == "vendor" && (
+          <>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                onClick={() => {
+                  navigate(`/shop/${user?.id}`);
+                }}
+              >
+                <i className="bi bi-gear"></i>
+                <span>My Shop</span>
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                <i className="bi bi-gear"></i>
+                <span>Orders</span>
+              </a>
+            </li>
+          </>
+        )}
         <li className="nav-item">
           <a className="nav-link" href="/setting">
             <i className="bi bi-gear"></i>
@@ -138,6 +137,5 @@ export default function SideBar({ isVisible }: SideBarProps) {
     </aside>
   );
 }
-
 
 // TODO: Implement Vendors and Clients Lists

@@ -10,6 +10,7 @@ import { User } from "../../../interfaces/User";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useEffect } from "react";
 import { updateUser } from "../UserAccountSlice";
+import Image from "react-bootstrap/Image";
 
 const EditProfile = () => {
   const { loading, user } = useAppSelector((state) => state.account);
@@ -46,6 +47,9 @@ const EditProfile = () => {
     updatedUserDetails.append("province", data.province);
     updatedUserDetails.append("longitude", data.longitude.toString()); // Convert to string
     updatedUserDetails.append("latitude", data.latitude.toString()); // Convert to string
+    if (data.profilePictureFile) {
+      updatedUserDetails.append("ProfilePicture", data.profilePictureFile);
+    }
 
     dispatch(updateUser(updatedUserDetails));
   };
@@ -59,6 +63,7 @@ const EditProfile = () => {
       <div className="edit-form-heading">Profile Setting</div>
       <div className="EditFormcontainer">
         <div style={{ margin: "10px", paddingLeft: "200px" }}>
+          <Image  src={`${user?.profilePictureURL}`}  thumbnail />
           <Form noValidate onSubmit={handleSubmit(onSubmit)}>
             {/* First Name */}
             <Form.Group
@@ -222,7 +227,7 @@ const EditProfile = () => {
                 Profile Picture
               </Form.Label>
               <Col md="4">
-                <Form.Control type="file" {...register("profilePictureUrl")} />
+                <Form.Control type="file" {...register("profilePictureFile")} />
               </Col>
             </Form.Group>
 
@@ -236,7 +241,7 @@ const EditProfile = () => {
                   type="button"
                   className="custom-cancel-button"
                   onClick={() => {
-                    navigate("/dashboard");
+                    navigate("/vendor/dashboard");
                   }}
                 >
                   Go Back

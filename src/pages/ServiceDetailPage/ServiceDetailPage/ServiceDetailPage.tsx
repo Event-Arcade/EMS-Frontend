@@ -8,20 +8,31 @@ import FeedbackList from "../../../features/feedBacks/FeeddbackList/FeedbackList
 import { useAppSelector } from "../../../store/hooks";
 import { useParams } from "react-router-dom";
 import FeedBack from "../../../interfaces/FeedBack";
+import ShopService from "../../../interfaces/ShopService";
+import Shop from "../../../interfaces/Shop";
 
 const ServiceDetailPage: React.FC = () => {
   const { id } = useParams();
   const { feedBacks } = useAppSelector((state) => state.feedback);
   const { shopServices } = useAppSelector((state) => state.service);
+  const { shops } = useAppSelector((state) => state.shop);
   const [isSideBarVisible, setIsSideBarVisible] = useState(false);
   const [serviceFeedbacks, setServiceFeedbacks] = useState<FeedBack[]>([]);
-
+  const [currentShopService, setCurrentShopService] = useState<ShopService>();
+  const [currentShop, setCurrentShop] = useState<Shop>();
   useEffect(() => {
     const feedbacks = feedBacks.filter(
-      (feedback) => feedback.serviceId === parseInt(id || "")
+      (feedback) => feedback.serviceId === parseInt(id!)
     );
+
+    const tempService = shopServices.find(
+      (service) => service.id === parseInt(id!)
+    );
+    const tempShop = shops.find(s=>s.id=== tempService?.shopId);
+    setCurrentShop(tempShop);
+    setCurrentShopService(tempService);
     setServiceFeedbacks(feedbacks);
-  }, [feedBacks, id, shopServices]);
+  }, [feedBacks, id, shopServices, shops]);
 
   const toggleSideBar = () => {
     setIsSideBarVisible(!isSideBarVisible);
@@ -41,16 +52,12 @@ const ServiceDetailPage: React.FC = () => {
         }}
       />
       <div className={`sd-page ${isShopFormOpen ? "blur-background" : ""}`}>
-        {/* <div className="row">
-      <div className="col-lg-3" style={{background:"red"}}>
-        <SmallPictureBox/>
-      </div>
-      <div className="col-lg-4" style={{background:"blue"}}></div>
-      <div className="col-lg-5" style={{background:"green"}}></div>
-      </div> */}
         <ShopPageHeading />
         <ShopDetailForm />
-        <FeedbackList feedbacks={serviceFeedbacks} />
+        <FeedbackList
+          feedbacks={serviceFeedbacks}
+          shopOwner={`${currentShop?.ownerId}`}
+        />
         <Footer />
       </div>
     </>
@@ -58,3 +65,4 @@ const ServiceDetailPage: React.FC = () => {
 };
 
 export default ServiceDetailPage;
+("9b982dc2-f99d-4c9b-b3db-c6ed2e193c98");

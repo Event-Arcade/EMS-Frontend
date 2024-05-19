@@ -28,7 +28,7 @@ export default function SignIn() {
       } else if (user?.role === "vendor") {
         navigate("/vendor/dashboard");
       } else {
-        navigate("/client/dashboard");
+        navigate("/dashboard");
       }
     }
   }, [isLoggedIn]);

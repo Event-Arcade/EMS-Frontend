@@ -18,7 +18,7 @@ export default function AdminDashboardPage() {
       <div className="page-content-ad">
         {isSideBarVisible ?<div className="col-lg-2"></div>: <div className="col-lg-1"></div>}
         <div className="col-lg-7" style={{ margin: "100px 40px 40px 70px" }}>
-          <PageTitle page="Admin Dashboard" />
+          <PageTitle title="admin" page="Admin Dashboard" />
           <h1> **** Not Implement ****</h1>
         </div>
         <div className="col-lg-2" style={{ background: "none" }}></div>

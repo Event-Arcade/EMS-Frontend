@@ -3,9 +3,9 @@ export default interface ShopService {
     name: string;
     description?: string;
     rating?: number;
-    ownerId: string;
     price: number;
-    shopId: string;
+    shopId: number;
+    categoryId: number;
     shopServiceStaticResourcesUrls?: string[]|null;
     shopServiceStaticResourcesFiles?: File[]|null;
 }

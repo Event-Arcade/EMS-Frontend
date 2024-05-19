@@ -106,7 +106,7 @@ function NavAvatar() {
               <a
                 className="dropdown-item d-flex align-items-center"
                 onClick={() => {
-                  navigate("/shop");
+                  navigate(`/shop/${user.id}`);
                 }}
               >
                 <i className="bi bi-bag-check"></i>

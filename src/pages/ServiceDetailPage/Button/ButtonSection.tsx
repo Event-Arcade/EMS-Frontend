@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./buttonSection.css";
 import Chat from "../../../components/Chat/Chat";
 
@@ -30,11 +30,6 @@ function ButtonSection() {
   return (
     <div className="button-section">
       <button className="booking-btn">Book Now</button>
-      {/* <ShopForm
-        isOpen={isShopFormOpen}
-        onClose={handleCloseShopForm}
-        onCreate={handleCreateShop}
-      /> */}
       <button className="chat-btn" onClick={handleOpenChat}>
         Chat
       </button>

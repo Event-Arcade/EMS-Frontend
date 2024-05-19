@@ -17,7 +17,7 @@ export default function VendorDashboardPage() {
       <div className="page-content-ad">
         {isSideBarVisible ?<div className="col-lg-2"></div>: <div className="col-lg-1"></div>}
         <div className="col-lg-7" style={{ margin: "100px 40px 40px 70px" }}>
-          <PageTitle page="Vendor Dashboard" />
+          <PageTitle title="vendor" page="Vendor Dashboard" />
         </div>
         <div className="col-lg-2" style={{ background: "none" }}></div>
       </div>
