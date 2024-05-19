@@ -1,20 +1,19 @@
-import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { Form, Button, Container, Spinner } from "react-bootstrap";
 import ShopService from "../../interfaces/ShopService";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { useNavigate } from "react-router-dom";
 import { shopServiceCreate } from "./ShopServiceSlice";
+import "./popupStyles.css"; // Import the CSS file
 
 interface ShopServiceFormProps {
   shopId: number;
-  close: () => {};
+  close: () => void;
 }
 
 export default function CreateShopService({
   shopId,
   close,
 }: ShopServiceFormProps) {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { categories } = useAppSelector((state) => state.category);
   const { loading } = useAppSelector((state) => state.service);
@@ -52,7 +51,6 @@ export default function CreateShopService({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // Handle form submission
     const formData = new FormData();
     formData.append("name", shopService.name);
     formData.append("description", shopService.description || "");
@@ -80,88 +78,92 @@ export default function CreateShopService({
   };
 
   return (
-    <Container className="mt-4">
-      <h2 className="mb-4">Create Shop Service</h2>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formName">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            value={shopService.name}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="formDescription">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            name="description"
-            value={shopService.description}
-            onChange={handleChange}
-          />
-        </Form.Group>
-
-        <Form.Group controlId="formPrice">
-          <Form.Label>Price</Form.Label>
-          <Form.Control
-            type="number"
-            name="price"
-            value={shopService.price}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group controlId="formCategoryId">
-          <Form.Label>Category</Form.Label>
-          <Form.Control
-            as="select"
-            name="categoryId"
-            value={shopService.categoryId}
-            onChange={handleChange}
-            required
-          >
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId="formShopServiceStaticResourcesFiles">
-          <Form.Label>Upload Files</Form.Label>
-          <Form.Control type="file" multiple onChange={handleFileChange} />
-        </Form.Group>
-
-        {loading ? (
-          <Button variant="success" className="mt-3">
-            <Spinner
-              as="span"
-              animation="grow"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-              className="mx-2"
+    <div className="popup-content">
+      <div className="popup-header">
+        <h4 className="popup-title">Create Shop Service</h4>
+      </div>
+      <Container>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formName">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              value={shopService.name}
+              onChange={handleChange}
+              required
             />
-            Creating ...
-          </Button>
-        ) : (
-          <>
-            <Button variant="primary" type="submit" className="mt-3">
-              Submit Shop Service
-            </Button>
+          </Form.Group>
 
-            <Button variant="danger" onClick={close} className="mt-3 mx-5">
-              Cancel
+          <Form.Group controlId="formDescription">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              name="description"
+              value={shopService.description}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formPrice">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="number"
+              name="price"
+              value={shopService.price}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formCategoryId">
+            <Form.Label>Category</Form.Label>
+            <Form.Control
+              as="select"
+              name="categoryId"
+              value={shopService.categoryId}
+              onChange={handleChange}
+              required
+            >
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="formShopServiceStaticResourcesFiles">
+            <Form.Label>Upload Files</Form.Label>
+            <Form.Control type="file" multiple onChange={handleFileChange} />
+          </Form.Group>
+
+          {loading ? (
+            <Button variant="success" className="mt-3">
+              <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+                className="mx-2"
+              />
+              Creating ...
             </Button>
-          </>
-        )}
-      </Form>
-    </Container>
+          ) : (
+            <>
+              <Button variant="primary" type="submit" className="mt-3">
+                Submit Shop Service
+              </Button>
+
+              <Button variant="danger" onClick={close} className="mt-3 mx-5">
+                Cancel
+              </Button>
+            </>
+          )}
+        </Form>
+      </Container>
+    </div>
   );
 }

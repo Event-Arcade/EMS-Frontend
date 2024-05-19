@@ -13,5 +13,5 @@ export interface User {
     profilePictureFile?: File
     role?: string;
     phoneNumber: string;
-    password: string
+    password?: string
 }

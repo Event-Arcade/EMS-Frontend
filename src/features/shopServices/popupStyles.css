@@ -1,0 +1,21 @@
+.popup-content {
+    padding: 20px;
+    border-radius: 15px;
+    background-color: white;
+    max-width: 600px;
+    width: 100%;
+    border-style: none;
+  }
+  
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .popup-title {
+    margin: 0;
+  }
+  
+  

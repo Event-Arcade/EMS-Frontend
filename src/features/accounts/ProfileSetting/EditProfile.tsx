@@ -1,259 +1,271 @@
-import { useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import "./editProfile.css";
-import FormFooter from "../../../components/Footer/FormFooter";
-import { useForm } from "react-hook-form";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {
+  Button,
+  Container,
+  Form,
+  Row,
+  Col,
+  Spinner,
+  Image,
+} from "react-bootstrap";
 import { User } from "../../../interfaces/User";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { updateUser } from "../UserAccountSlice";
-import Image from "react-bootstrap/Image";
+import Header from "../../../components/header/Header";
 
-const EditProfile = () => {
-  const { loading, user } = useAppSelector((state) => state.account);
-  const dispatch = useAppDispatch();
+export default function EditProfile({ close }: { close: () => void }) {
   const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<User>();
+  const dispatch = useAppDispatch();
+  const { user, loading } = useAppSelector((state) => state.account);
 
   useEffect(() => {
     if (user) {
-      setValue("firstName", user.firstName);
-      setValue("lastName", user.lastName);
-      setValue("street", user.street);
-      setValue("city", user.city);
-      setValue("postalCode", user.postalCode);
-      setValue("province", user.province);
-      setValue("longitude", user.longitude);
-      setValue("latitude", user.latitude);
+      setCurrentUser(user);
     }
-  }, [user, setValue]);
+  }, [user]);
 
-  const onSubmit = async (data: User) => {
-    const updatedUserDetails = new FormData();
-    updatedUserDetails.append("firstName", data.firstName);
-    updatedUserDetails.append("lastName", data.lastName);
-    updatedUserDetails.append("street", data.street);
-    updatedUserDetails.append("city", data.city);
-    updatedUserDetails.append("postalCode", data.postalCode);
-    updatedUserDetails.append("province", data.province);
-    updatedUserDetails.append("longitude", data.longitude.toString()); // Convert to string
-    updatedUserDetails.append("latitude", data.latitude.toString()); // Convert to string
-    if (data.profilePictureFile) {
-      updatedUserDetails.append("ProfilePicture", data.profilePictureFile);
-    }
+  const [currentUser, setCurrentUser] = useState<User>({
+    firstName: "",
+    lastName: "",
+    street: "",
+    city: "",
+    postalCode: "",
+    province: "",
+    longitude: 0,
+    latitude: 0,
+    email: "",
+    phoneNumber: "",
+    profilePictureFile: undefined,
+  });
 
-    dispatch(updateUser(updatedUserDetails));
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setCurrentUser({
+      ...currentUser,
+      [name]:
+        name === "longitude" || name === "latitude" ? parseFloat(value) : value,
+    });
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setCurrentUser({
+        ...currentUser,
+        profilePictureFile: e.target.files[0],
+      });
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("firstName", currentUser.firstName);
+    formData.append("lastName", currentUser.lastName);
+    formData.append("street", currentUser.street);
+    formData.append("city", currentUser.city);
+    formData.append("postalCode", currentUser.postalCode);
+    formData.append("province", currentUser.province);
+    formData.append("longitude", currentUser.longitude.toString());
+    formData.append("latitude", currentUser.latitude.toString());
+    formData.append("phoneNumber", currentUser.phoneNumber);
+    formData.append("email", currentUser.email);
+    if (currentUser.profilePictureFile) {
+      formData.append("profilePicture", currentUser.profilePictureFile);
+    }
+    try {
+      await dispatch(updateUser(formData)).unwrap();
+      setCurrentUser({
+        firstName: "",
+        lastName: "",
+        street: "",
+        city: "",
+        postalCode: "",
+        province: "",
+        longitude: 0,
+        latitude: 0,
+        email: "",
+        phoneNumber: "",
+        profilePictureFile: undefined,
+      });
+      user?.role === "admin"
+        ? navigate("/admin/dashboard")
+        : user?.role === "client"
+        ? navigate("/dashboard")
+        : navigate("/vendor/dashboard");
+    } catch (e) {
+      console.error("Error:", e);
+    }
+  };
 
   return (
-    <div className="edit-form">
-      <div className="edit-form-heading">Profile Setting</div>
-      <div className="EditFormcontainer">
-        <div style={{ margin: "10px", paddingLeft: "200px" }}>
-          <Image  src={`${user?.profilePictureURL}`}  thumbnail />
-          <Form noValidate onSubmit={handleSubmit(onSubmit)}>
-            {/* First Name */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom01"
-            >
-              <Form.Label column md="2">
-                First Name
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="text"
-                  {...register("firstName", { required: true })}
-                  placeholder="First Name"
+    <Container className="mt-4">
+      <h4 className="mb-1">Edit Your Details</h4>
+      <Row className="mb-3 justify-content-center">
+        <Col md="auto">
+          <Image
+            src={`${currentUser.profilePictureURL}`}
+            rounded
+            className="mb-3"
+          />
+        </Col>
+      </Row>
+      <Form onSubmit={handleSubmit}>
+        <Row>
+          <Col md={6}>
+            <Form.Group controlId="formFirstName">
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="firstName"
+                value={currentUser.firstName}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="formLastName">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="lastName"
+                value={currentUser.lastName}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={6}>
+            <Form.Group controlId="formStreet">
+              <Form.Label>Street</Form.Label>
+              <Form.Control
+                type="text"
+                name="street"
+                value={currentUser.street}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="formCity">
+              <Form.Label>City</Form.Label>
+              <Form.Control
+                type="text"
+                name="city"
+                value={currentUser.city}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={6}>
+            <Form.Group controlId="formPostalCode">
+              <Form.Label>Postal Code</Form.Label>
+              <Form.Control
+                type="text"
+                name="postalCode"
+                value={currentUser.postalCode}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="formProvince">
+              <Form.Label>Province</Form.Label>
+              <Form.Control
+                type="text"
+                name="province"
+                value={currentUser.province}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={6}>
+            <Form.Group controlId="formLongitude">
+              <Form.Label>Longitude</Form.Label>
+              <Form.Control
+                type="number"
+                name="longitude"
+                value={currentUser.longitude}
+                onChange={handleChange}
+                required
+                step="any"
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group controlId="formLatitude">
+              <Form.Label>Latitude</Form.Label>
+              <Form.Control
+                type="number"
+                name="latitude"
+                value={currentUser.latitude}
+                onChange={handleChange}
+                required
+                step="any"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={6}>
+            <Form.Group controlId="formProfilePictureFile" className="mt-3">
+              <Form.Label>Profile Picture</Form.Label>
+              <Form.Control type="file" onChange={handleFileChange} />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            {loading ? (
+              <Button variant="success" className="mt-3">
+                <Spinner
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                  className="mx-2"
                 />
-                {errors.firstName && <span>This field is required</span>}
-              </Col>
-            </Form.Group>
-
-            {/* Last Name */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom02"
-            >
-              <Form.Label column md="2">
-                Last Name
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="text"
-                  {...register("lastName", { required: true })}
-                  placeholder="Last Name"
-                />
-                {errors.lastName && <span>This field is required</span>}
-              </Col>
-            </Form.Group>
-
-            {/* Street */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom03"
-            >
-              <Form.Label column md="2">
-                Street
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="text"
-                  {...register("street", { required: true })}
-                  placeholder="Street"
-                />
-                {errors.street && <span>This field is required</span>}
-              </Col>
-            </Form.Group>
-
-            {/* City */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom04"
-            >
-              <Form.Label column md="2">
-                City
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="text"
-                  {...register("city", { required: true })}
-                  placeholder="City"
-                />
-                {errors.city && <span>This field is required</span>}
-              </Col>
-            </Form.Group>
-
-            {/* Postal Code */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom05"
-            >
-              <Form.Label column md="2">
-                Postal Code
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="text"
-                  {...register("postalCode", { required: true })}
-                  placeholder="Postal Code"
-                />
-                {errors.postalCode && <span>This field is required</span>}
-              </Col>
-            </Form.Group>
-
-            {/* Province */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom06"
-            >
-              <Form.Label column md="2">
-                Province
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="text"
-                  {...register("province", { required: true })}
-                  placeholder="Province"
-                />
-                {errors.province && <span>This field is required</span>}
-              </Col>
-            </Form.Group>
-
-            {/* Longitude */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom07"
-            >
-              <Form.Label column md="2">
-                Longitude
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="text"
-                  {...register("longitude", { required: true })}
-                  placeholder="Longitude"
-                />
-                {errors.longitude && <span>This field is required</span>}
-              </Col>
-            </Form.Group>
-
-            {/* Latitude */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom08"
-            >
-              <Form.Label column md="2">
-                Latitude
-              </Form.Label>
-              <Col md="4">
-                <Form.Control
-                  type="text"
-                  {...register("latitude", { required: true })}
-                  placeholder="Latitude"
-                />
-                {errors.latitude && <span>This field is required</span>}
-              </Col>
-            </Form.Group>
-
-            {/* Profile Picture */}
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="validationCustom12"
-            >
-              <Form.Label column md="2">
-                Profile Picture
-              </Form.Label>
-              <Col md="4">
-                <Form.Control type="file" {...register("profilePictureFile")} />
-              </Col>
-            </Form.Group>
-
-            {/* Submit Button */}
-            <Form.Group as={Row} className="mb-3">
-              <Col md={{ span: 9, offset: 3 }}>
-                <Button type="submit" className="custom-update-button">
-                  Update Profile
+                Updating ...
+              </Button>
+            ) : (
+              <>
+                <Button variant="primary" type="submit" className="mt-3">
+                  Save Changes
                 </Button>
                 <Button
-                  type="button"
-                  className="custom-cancel-button"
+                  variant="danger"
+                  className="mt-3 mx-5"
                   onClick={() => {
-                    navigate("/vendor/dashboard");
+                    user?.role === "admin"
+                      ? navigate("/admin/dashboard")
+                      : user?.role === "client"
+                      ? navigate("/dashboard")
+                      : navigate("/vendor/dashboard");
                   }}
                 >
-                  Go Back
+                  Cancel
                 </Button>
-              </Col>
-            </Form.Group>
-          </Form>
-        </div>
-      </div>
-      <FormFooter />
-    </div>
+              </>
+            )}
+          </Col>
+        </Row>
+      </Form>
+    </Container>
   );
-};
-
-export default EditProfile;
+}

@@ -41,7 +41,6 @@ export async function getAllAdminStaticResources() {
   try {
     const { data } = await http.get(baseURL + "/getall");
     if (data.flag) {
-        toast.success(data.message);
       return data.data;
     }
     else{
@@ -59,7 +58,6 @@ export async function getAdminStaticResourceById(staticResourceId: number) {
   try {
     const { data } = await http.get(baseURL+`/get/${staticResourceId}`);
     if (data.flag) {
-        toast.success(data.message);
       return data.data;
     }
     else{

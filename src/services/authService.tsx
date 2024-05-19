@@ -2,7 +2,7 @@ import { User } from "../interfaces/User";
 import http from "./httpsClient";
 import { toast } from "react-toastify";
 
-const apiEndpoint = "/Account";
+const apiEndpoint = "/account";
 
 export async function login(formData: FormData) {
   const { data } = await http.post(apiEndpoint + "/login", formData);

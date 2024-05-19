@@ -41,7 +41,6 @@ export async function getAllFeedbacks() {
   try {
     const {data} = await http.get(baseURL + "/getall");
     if (data.flag) {
-      toast.success(data.message);
       return data.data;
     } else {
       toast.error(data.message);
