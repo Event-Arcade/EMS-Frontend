@@ -1,0 +1,83 @@
+#main{
+  margin-top: 60px;
+  padding: 20px 0px;
+  transition: all 0.3s;
+  /* width: 100%;
+  margin:0 auto; */
+  position:static
+}
+
+@media (max-width: 1199px) {
+  #main {
+    padding: 20px;
+  }
+}
+
+#main-centered {
+  margin-top: 60px;
+  padding: 20px 30px;
+  transition: all 0.3s;
+  /* Add styles to center the main content */
+  margin:  auto;
+  max-width: 80%; /* Adjust this value as needed */
+}
+
+/* ShopList.css */
+
+/* Container for the shop list */
+.shop-list {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Style for each shop section */
+.shop-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Style for individual shop cards */
+.shop-section .col-md-4 {
+  flex: 1 0 calc(33.333% - 20px); /* Display three shops per row */
+  box-sizing: border-box;
+}
+
+/* Navigation controls container */
+.section-navigation {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Button styles */
+.section-navigation button {
+  padding: 10px 15px;
+  width: 100px;
+  background-color: black ;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.section-navigation button:hover {
+  background-color: black;
+
+}
+
+.section-navigation button:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+  color: #a6a6a6;
+}
+
+/* Text style for displaying the current section and total sections */
+.section-navigation span {
+  font-size: 16px;
+  color: #555;
+}

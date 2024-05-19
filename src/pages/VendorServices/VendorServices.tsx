@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Header from "../Dashboard/Header";
+import Header from "../../components/header/Header";
 import Footer from "../../components/Footer/Footer";
 import EditableImage from "./EditableImage";
 import { useLocation } from "react-router-dom";
@@ -166,11 +166,9 @@ const VendorServices: React.FC = () => {
 
   return (
     <>
-      <Header
-        toggleSideBar={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      <Header getSideBarVisibility={function (): void {
+        throw new Error("Function not implemented.");
+      } }      />
       <div className="user-page-container">
         <EditableImage imageUrl="src/assets/vendor/userpage.jpg" />
         <div className="nav-bar">

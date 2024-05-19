@@ -4,7 +4,7 @@ import '../TextStyle.css';
 import ProductImg2 from '../../assets/img/product-2.jpg';
 import ProductImg3 from '../../assets/img/product-3.jpg';
 import ProductImg1 from '../../assets/img/product-1.jpg';
-import Searchbar from '../../pages/Dashboard/Searchbar';
+import Searchbar from '../header/searchBar/Searchbar';
 
 interface StepperProps {
   currentStep: number;

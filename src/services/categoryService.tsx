@@ -20,20 +20,20 @@ export async function createCategory(formData: FormData) {
   }
 }
 
-export async function deleteCategory(categoryId: string) {
+export async function deleteCategory(categoryId: number) {
   try {
     const { data } = await http.delete(baseURL + `/delete/${categoryId}`);
     if (data.flag) {
       toast.success(data.message);
-      return;
+      return true;
     } else {
       toast.error(data.message);
-      return;
+      return false;
     }
   } catch (error) {
     console.error("Error:", error);
     toast.error("Failed to delete category");
-    return;
+    return false;
   }
 }
 
@@ -59,10 +59,10 @@ export async function getCategoryById(categoryId: string) {
   }
 }
 
-export async function updateCategory(categoryId: string, formData: FormData) {
+export async function updateCategory(categoryId: number, formData: FormData) {
   try {
     const { data } = await http.put(
-      `/update?categotyId=${categoryId}`,
+      baseURL + `/update/${categoryId}`,
       formData
     );
     if (data.flag) {

@@ -7,7 +7,7 @@
 // import Col from "react-bootstrap/Col";
 // import Calender from "../components/Calender/Calender";
 
-import Header from "./Dashboard/Header"
+import Header from "../components/header/Header"
 
 // export default function DashBoard() {
 //   return (
@@ -41,8 +41,8 @@ import Header from "./Dashboard/Header"
 //   );
 // }
 import '../App.css'
-import SideBar from "./Dashboard/SideBar"
-import Main from "./Dashboard/Main"
+import SideBar from "../components/sideBar/SideBar"
+import ClientDashBoardPage from "./ClientDashboardPage/ClientDashBoardPage"
 //import Footer from "./Dashboard/Footer"
 import Footer from "../components/Footer/Footer"
 import { useState } from "react"
@@ -59,7 +59,7 @@ const DashBoard: React.FC = () => {
 <Header toggleSideBar={toggleSideBar}/>
 <div className="content">
 <SideBar isVisible={isSideBarVisible}/>
-<Main isSidebarVisible ={isSideBarVisible}/>
+<ClientDashBoardPage isSidebarVisible ={isSideBarVisible}/>
 </div>
 <Footer/>
 </>

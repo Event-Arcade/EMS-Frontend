@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Category from "../../interfaces/Category";
-import { createCategory, getAllCategories, updateCategory } from "../../services/categoryService";
+import { createCategory, deleteCategory, getAllCategories, updateCategory } from "../../services/categoryService";
 
 interface CategoryState {
     loading : boolean;
@@ -29,7 +29,7 @@ export const categoryCreate = createAsyncThunk<Category, FormData>(
     }
 );
 
-export const categoryUpdate = createAsyncThunk<Category, { id: string, data: FormData }>(
+export const categoryUpdate = createAsyncThunk<Category, { id: number, data: FormData }>(
     'category/updateCategory',
     async (data, thunkAPI) => {
         try {
@@ -58,6 +58,23 @@ export const categoryGetAll = createAsyncThunk<Category[], void>(
         }
     }
 );
+
+export const categoryDelete = createAsyncThunk<number, number>(
+    'category/delete',
+    async (data, thunkAPI) => {
+        try {
+            const response = await deleteCategory(data);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Get all users failed' });
+            }
+            return data;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
+
 
 const categorySlice = createSlice({
     name: 'category',
@@ -103,6 +120,18 @@ const categorySlice = createSlice({
             state.loading = false;
             state.error = action.payload as string;
         });
+        builder.addCase(categoryDelete.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(categoryDelete.fulfilled, (state, action) => {
+            state.loading = false;
+            state.categories = state.categories?.filter((category) => category.id !== action.payload as unknown as number);
+        });
+        builder.addCase(categoryDelete.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });   
     }
 });
 

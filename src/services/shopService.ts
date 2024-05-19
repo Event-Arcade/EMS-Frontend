@@ -2,8 +2,8 @@
 import { toast } from "react-toastify";
 import http from "./httpsClient";
 
-const baseURL = "/shopservices";
-
+const baseURL = "/shop";
+//TODO: when creating the new shop should update the token
 export async function createShop(formData: FormData) {
   try {
     const { data } = await http.post(baseURL + "/createmyshop", formData);
@@ -20,7 +20,7 @@ export async function createShop(formData: FormData) {
     return null;
   }
 }
-
+//TODO: when deleting the shop should update the token
 export async function deleteShop(shopId: string) {
   try {
     const { data } = await http.delete(baseURL + `/deletemyshop/${shopId}`);
@@ -91,3 +91,7 @@ export async function updateShop(shopId: string, formData: FormData) {
     return null;
   }
 }
+
+
+
+//TODO: add phone number to create user account

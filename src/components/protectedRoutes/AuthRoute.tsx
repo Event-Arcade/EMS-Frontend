@@ -4,5 +4,5 @@ import { useAppSelector } from "../../store/hooks";
 export default function AuthRoute() {
   const { isLoggedIn } = useAppSelector((state) => state.account);
   const navigate = useNavigate();
-  return isLoggedIn ? <Outlet /> : <>{navigate("/")}</>;
+  return isLoggedIn ? <Outlet /> : <>{navigate("/auth")}</>;
 }
