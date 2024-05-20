@@ -103,6 +103,7 @@ export default function CreateShopService({
               name="description"
               value={shopService.description}
               onChange={handleChange}
+              maxLength={100}
             />
           </Form.Group>
 

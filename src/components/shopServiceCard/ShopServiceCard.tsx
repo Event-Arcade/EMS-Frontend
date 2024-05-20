@@ -1,24 +1,70 @@
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+import React from "react";
+import { Card, Button, Badge, Carousel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import ShopService from "../../interfaces/ShopService";
+import "./shopServiceCard.css"; // Custom CSS file for additional styling
 
+interface ShopService {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  rating: number;
+  shopServiceStaticResourcesURLs: string[];
+}
 
+interface ShopServiceCardProps {
+  shopService: ShopService;
+}
 
-export default function ShopServiceCard({shopService }: {shopService: ShopService}) {
+const ShopServiceCard: React.FC<ShopServiceCardProps> = ({ shopService }) => {
   const navigate = useNavigate();
+
+  const isVideo = (url: string) => {
+    const videoExtensions = ['mp4', 'webm', 'ogg'];
+    const extension = url.split('.').pop()?.split('?')[0];
+    return videoExtensions.includes(extension || '');
+  };
+
   return (
-    <Card
-      style={{ width: "16rem", padding: 0, margin: "10px", marginLeft: "15px" }}
-    >
-      <Card.Img variant="top" src={shopService.shopServiceStaticResourcesUrls ? shopService.shopServiceStaticResourcesUrls[0] : ''} />
-      <Card.Body>
-        <Card.Title style={{ fontSize: "15px", fontWeight: 600 }}>
+    <Card className="shop-service-card">
+      <Carousel>
+        {shopService.shopServiceStaticResourcesURLs.map((url, index) => (
+          <Carousel.Item key={index}>
+            {isVideo(url) ? (
+              <video
+                className="d-block w-100 shop-service-card-img"
+                controls
+              >
+                <source src={url} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <img
+                className="d-block w-100 shop-service-card-img"
+                src={url}
+                alt={`Slide ${index}`}
+              />
+            )}
+          </Carousel.Item>
+        ))}
+      </Carousel>
+      <Card.Body className="shop-service-card-body">
+        <Card.Title className="shop-service-card-title">
           {shopService.name}
         </Card.Title>
-        <Card.Text style={{ fontSize: "10px" }}>{shopService.description}</Card.Text>
+        <Card.Text className="shop-service-card-text">
+          {shopService.description}
+        </Card.Text>
+        <div className="shop-service-card-footer">
+          <Card.Text className="shop-service-card-price">
+            ${shopService.price}
+          </Card.Text>
+          <Badge bg="warning" text="dark">
+            {shopService.rating} <i className="fa fa-star"></i>
+          </Badge>
+        </div>
         <Button
-          style={{ background: "#e78309", borderWidth: 0, width: 100 }}
+          className="shop-service-card-button"
           onClick={() => navigate(`/shop-service/${shopService.id}`)}
         >
           Visit
@@ -26,4 +72,6 @@ export default function ShopServiceCard({shopService }: {shopService: ShopServic
       </Card.Body>
     </Card>
   );
-}
+};
+
+export default ShopServiceCard;

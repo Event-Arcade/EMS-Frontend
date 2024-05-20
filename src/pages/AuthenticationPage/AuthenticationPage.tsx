@@ -1,8 +1,9 @@
 import { useState } from "react";
-import SignUp from "./SignUp";
-import SignIn from "./SignIn";
-import "./Authentication.css";
-import FormFooter from "../../../components/Footer/FormFooter";
+import SignUp from "../../features/accounts/authentication/SignUp";
+import SignIn from "../../features/accounts/authentication/SignIn";
+import "./authenticationPage.css";
+import Header from "../../components/header/Header";
+import Footer from "../../components/Footer/Footer";
 
 export default function Authentication() {
   const [containerToggle, setContainerToggle] = useState(true);
@@ -14,6 +15,9 @@ export default function Authentication() {
 
   return (
     <>
+    <Header getSideBarVisibility={function (): void {
+        throw new Error("Function not implemented.");
+      } }/>
       <div
         className={containerToggle ? "authcontainer" : "authcontainer active"}
       >
@@ -45,7 +49,7 @@ export default function Authentication() {
           </div>
         </div>
       </div>
-      <FormFooter />
+      <Footer/>
     </>
   );
 }

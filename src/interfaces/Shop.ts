@@ -4,6 +4,6 @@ export default interface Shop {
     description?: string;
     rating?: number;
     ownerId: string;
-    backgroundImageUrl?: string;
+    backgroundImageURL?: string;
     backgroundImageFile?: File | null;
     }

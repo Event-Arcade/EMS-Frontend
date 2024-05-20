@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from '../../interfaces/User';
-import { login, register, getCurrentUserByToken, update, getAccounts } from '../../services/authService';
+import { login, register, getCurrentUserByToken, update, getAccounts, deleteAccount } from '../../services/authService';
 
 
 interface UserAccountState {
@@ -36,7 +36,7 @@ export const signupUser = createAsyncThunk<void, FormData>(
     }
 );
 
-export const loginUser = createAsyncThunk<void, FormData>(
+export const loginUser = createAsyncThunk<any, FormData>(
     'useraccount/loginUser',
     async (data, thunkAPI) => {
         try {
@@ -46,7 +46,7 @@ export const loginUser = createAsyncThunk<void, FormData>(
             }
             thunkAPI.dispatch(setLoggedIn(true));
             thunkAPI.dispatch(getCurrentUser());
-            return;
+            return response;
         } catch (e) {
             return thunkAPI.rejectWithValue({ error: (e as Error).message });
         }
@@ -98,6 +98,21 @@ export const getAllUsers = createAsyncThunk<User[], void>(
     }
 );
 
+export const deleteUser = createAsyncThunk<void, string>(
+    'useraccount/deleteUser',
+    async (data, thunkAPI) => {
+        try {
+            const response = await deleteAccount(data);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Delete user failed' });
+            }
+            return;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
 const userAccountSlice = createSlice({
     name: 'useraccount',
     initialState,
@@ -124,6 +139,8 @@ const userAccountSlice = createSlice({
         builder.addCase(signupUser.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
+            state.user = null;
+            state.isLoggedIn = false;
         });
         builder.addCase(loginUser.pending, (state) => {
             state.loading = true;
@@ -135,6 +152,8 @@ const userAccountSlice = createSlice({
         builder.addCase(loginUser.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
+            state.user = null;
+            state.isLoggedIn = false;
         });
         builder.addCase(getCurrentUser.pending, (state) => {
             state.loading = true;
@@ -178,6 +197,18 @@ const userAccountSlice = createSlice({
             state.loading = false;
             state.error = action.payload as string;
         });
+        builder.addCase(deleteUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(deleteUser.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(deleteUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
+        
     }
 });
 

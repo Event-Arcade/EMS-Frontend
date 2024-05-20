@@ -11,7 +11,7 @@ import {
 import { User } from "../../../interfaces/User";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useNavigate } from "react-router-dom";
-import { updateUser } from "../UserAccountSlice";
+import { deleteUser, updateUser } from "../UserAccountSlice";
 import Header from "../../../components/header/Header";
 
 export default function EditProfile({ close }: { close: () => void }) {
@@ -38,6 +38,15 @@ export default function EditProfile({ close }: { close: () => void }) {
     phoneNumber: "",
     profilePictureFile: undefined,
   });
+
+  const handleDelete = async () => {
+    try {
+      await dispatch(deleteUser(user?.id ?? "")).unwrap();
+      navigate("/");
+    } catch (e) {
+      console.error("Error:", e);
+    }
+  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -248,8 +257,11 @@ export default function EditProfile({ close }: { close: () => void }) {
                 <Button variant="primary" type="submit" className="mt-3">
                   Save Changes
                 </Button>
+                <Button variant="danger" onClick={handleDelete} className="mx-4 mt-3">
+                  Delete Account
+                </Button>
                 <Button
-                  variant="danger"
+                  variant="secondary"
                   className="mt-3 mx-5"
                   onClick={() => {
                     user?.role === "admin"

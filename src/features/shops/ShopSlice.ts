@@ -5,7 +5,6 @@ import { createShop, getAllShops, getMyShop, updateShop } from "../../services/s
 
 interface UserAccountsState {
     loading : boolean;
-    myshop: Shop | null;
     shops: Shop[];
     error: string | null;
 
@@ -13,7 +12,6 @@ interface UserAccountsState {
 
 const initialState: UserAccountsState = {
     loading: false,
-    myshop: null,
     shops: [],
     error: null
 }
@@ -84,18 +82,13 @@ const shopSlice = createSlice({
     reducers: {
     },
     extraReducers: (builder) =>{
-        builder.addCase(myShopGet.fulfilled, (state, action) => {
-            state.loading = false;
-            state.myshop = action.payload || null;
-        });
-
         builder.addCase(shopCreate.pending, (state) => {
             state.loading = true;
             state.error = null;
         });
         builder.addCase(shopCreate.fulfilled, (state, action) => {
             state.loading = false;
-            state.myshop = action.payload;
+            state.shops.push(action.payload);
         });
         builder.addCase(shopCreate.rejected, (state, action) => {
             state.loading = false;
@@ -109,7 +102,10 @@ const shopSlice = createSlice({
         });
         builder.addCase(shopUpdate.fulfilled, (state, action) => {
             state.loading = false;
-            state.myshop = action.payload;
+            const index = state.shops.findIndex((shop) => shop.id === action.payload.id);
+            if (index !== -1) {
+                state.shops[index] = action.payload;
+            }
         });
         builder.addCase(shopUpdate.rejected, (state, action) => {
             state.loading = false;

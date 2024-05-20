@@ -1,54 +1,53 @@
-
-.google-form-container {
-  max-width: 600px;
-  margin: 0 auto;
+/* shopPage.css */
+.shop-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
-  /* margin: 60px; */
-  /* align-self: center; */
-  margin-top: 100px;
-  margin-bottom: 50px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
 }
 
-.google-form-title {
-  font-size: 24px;
+.shop-header {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px;
   margin-bottom: 20px;
-  text-align: center;
 }
 
-.google-form {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
+.shop-header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
 }
 
-.google-form-label {
-  font-size: 16px;
-}
-
-.google-form-input,
-.google-form-select {
-  width: calc(100% - 20px); 
-  padding: 6px; 
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.google-form-submit {
-  background-color:#FFA000;
+.shop-header-content {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
   color: #fff;
-  border: none;
-  padding: 8px 15px; 
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-  font-size: 14px; 
-  width: 100px;
 }
 
-.google-form-submit:hover {
-  background-color: #FFA000;
-  scale: 1.05;
+.shop-info {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.shop-info h1 {
+  margin-bottom: 10px;
+}
+
+.service-list {
+  width: 100%;
+}
+
+.update-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }

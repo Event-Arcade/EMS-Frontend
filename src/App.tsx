@@ -7,7 +7,7 @@ import "remixicon/fonts/remixicon.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
-import Authentication from "./features/accounts/authentication/Authentication";
+import Authentication from "./pages/AuthenticationPage/AuthenticationPage";
 import EditProfile from "./features/accounts/ProfileSetting/EditProfile";
 import CalenderPage from "./pages/CalanderPage/CalenderPage";
 import StartPage from "./pages/StartPage/StartPage";
@@ -32,6 +32,7 @@ import VendorRoute from "./components/protectedRoutes/VendorRoute";
 import VendorDashBoardPage from "./pages/VendorDashBoardPage/VendorDashBoardPage";
 import ClientDashBoardPage from "./pages/ClientDashboardPage/ClientDashBoardPage";
 import CreateShopService from "./features/shopServices/CreateShopService";
+import Header from "./components/header/Header";
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -55,13 +56,30 @@ export default function App() {
         <Route path="/startpage" element={<StartPage />} />
         <Route path="/packageDetails" element={<PackageDetailsPage />} />
         <Route path="/vendorServices" element={<VendorServices />} />
-        <Route path="/addshopservice" element={<CreateShopService shopId={0} close={function (): {} {
-          throw new Error("Function not implemented.");
-        } } />} />
+        <Route
+          path="/addshopservice"
+          element={
+            <CreateShopService
+              shopId={0}
+              close={function (): {} {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          }
+        />
 
         <Route path="/" element={<AuthRoute />}>
           <Route path="/dashboard" element={<ClientDashBoardPage />} />
-          <Route path="/editProfile" element={<EditProfile />} />
+          <Route
+            path="/editProfile"
+            element={
+              <EditProfile
+                close={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
+            }
+          />
           <Route path="/calendar" element={<CalenderPage />} />
           <Route path="/shop/:id" element={<ShopDetailPage />} />
           <Route path="/shop-service/:id" element={<ServiceDetailPage />} />

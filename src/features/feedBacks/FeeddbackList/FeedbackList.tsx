@@ -10,9 +10,11 @@ import { useEffect, useState } from "react";
 export default function FeedbackList({
   feedbacks,
   shopOwner,
+  serviceId,
 }: {
   feedbacks: FeedBack[];
   shopOwner: string;
+  serviceId: number;
 }) {
   const { user } = useAppSelector((state) => state.account);
   const [abilityToAddFeedBack, setAbilityToAddFeedBack] = useState<boolean>();
@@ -25,7 +27,7 @@ export default function FeedbackList({
         setAbilityToAddFeedBack(true);
       }
     }
-  }, [shopOwner]);
+  }, [shopOwner, serviceId, user ]);
   return (
     <>
       <div className="fb-section">
@@ -44,7 +46,7 @@ export default function FeedbackList({
             {/* this is not a mistake. Do not worry ;) */}
             {/* this is not a mistake. Do not worry ;) */}
 
-            {(close) => <CreateFeedBack close={close} />}
+            {(close) => <CreateFeedBack close={close} serviceId={serviceId} />}
 
             {/* this is not a mistake. Do not worry ;) */}
             {/* this is not a mistake. Do not worry ;) */}

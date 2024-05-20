@@ -28,7 +28,7 @@ const ServiceDetailPage: React.FC = () => {
     const tempService = shopServices.find(
       (service) => service.id === parseInt(id!)
     );
-    const tempShop = shops.find(s=>s.id=== tempService?.shopId);
+    const tempShop = shops.find((s) => s.id === tempService?.shopId);
     setCurrentShop(tempShop);
     setCurrentShopService(tempService);
     setServiceFeedbacks(feedbacks);
@@ -57,6 +57,7 @@ const ServiceDetailPage: React.FC = () => {
         <FeedbackList
           feedbacks={serviceFeedbacks}
           shopOwner={`${currentShop?.ownerId}`}
+          serviceId={parseInt(id!)}
         />
         <Footer />
       </div>
@@ -65,4 +66,3 @@ const ServiceDetailPage: React.FC = () => {
 };
 
 export default ServiceDetailPage;
-("9b982dc2-f99d-4c9b-b3db-c6ed2e193c98");

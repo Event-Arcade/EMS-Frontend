@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Card, Row, Col, Image } from "react-bootstrap";
 import FeedBack from "../../../interfaces/FeedBack";
 import { useAppSelector } from "../../../store/hooks";
 import "./feedbackItem.css";
@@ -16,29 +17,47 @@ export default function FeedbackItem({ feedback }: { feedback: FeedBack }) {
   }, [feedback, users]);
 
   return (
-    <div className="feedback-item">
-      <div className="profile-picture">
-        <img src={commentor?.profilePictureUrl ?? ""} alt="Profile" />
-      </div>
-      <div className="feedback-details">
-        <div className="name-date">
-          <p className="name">{commentor?.firstName}</p>
-          <p className="date">
-            {feedback.postedOn ? feedback.postedOn.toString() : ""}
-          </p>
-        </div>
-        <div className="rating">
-          {Array.from({ length: 5 }, (_, i) => (
-            <span
-              key={i}
-              className={i < feedback.rating ? "star filled" : "star unfilled"}
-            >
-              {i < feedback.rating ? "★" : "☆"}
-            </span>
-          ))}
-        </div>
-        <p className="comment">{feedback.comment}</p>
-      </div>
-    </div>
+    <Card className="feedback-item mb-3">
+      <Card.Body>
+        <Row className="align-items-center">
+          <Col xs={2} className="profile-picture">
+            <Image
+              src={commentor?.profilePictureURL ?? ""}
+              alt="Profile"
+              roundedCircle
+              fluid
+            />
+          </Col>
+          <Col xs={10} className="feedback-details">
+            <div className="name-date">
+              <Card.Title className="name mb-1">{commentor?.firstName}</Card.Title>
+              <Card.Subtitle className="date text-muted mb-2">
+                {feedback.postedOn ? new Date(feedback.postedOn).toLocaleDateString() : ""}
+              </Card.Subtitle>
+            </div>
+            <div className="rating mb-2">
+              {Array.from({ length: 5 }, (_, i) => (
+                <span
+                  key={i}
+                  className={i < feedback.rating ? "star filled" : "star unfilled"}
+                >
+                  {i < feedback.rating ? "★" : "☆"}
+                </span>
+              ))}
+            </div>
+            <Card.Text className="comment mb-2">{feedback.comment}</Card.Text>
+            <div className="feedback-images">
+              <Row>
+                {feedback.feedBackStaticResourceUrls && feedback.feedBackStaticResourceUrls.map((url, index) => (
+                  <Col key={index} xs={3} className="mb-2">
+                    <Image src={url} thumbnail className="feedback-thumbnail" />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
   );
 }

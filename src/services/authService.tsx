@@ -24,6 +24,7 @@ export async function register(formData: FormData) {
     const { data } = await http.post(`${apiEndpoint}/register`, formData);
     console.log(data);
     if (data.flag) {
+      localStorage.setItem("token", data.data);
       toast.success(data.message);
       return true;
     } else {
@@ -93,5 +94,27 @@ export async function getAccounts() {
   } catch (error) {
     console.error("Error:", error);
     return null;
+  }
+}
+
+export async function deleteAccount(userId: string) {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Not authorized. Please log in.");
+      return false;
+    }
+    const { data } = await http.delete(apiEndpoint + "/delete/" + userId);
+    if (data.flag) {
+      toast.success(data.message);
+      return true;
+    } else {
+      toast.error(data.message);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error("An error occurred while deleting the account.");
+    return false;
   }
 }

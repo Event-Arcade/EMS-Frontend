@@ -9,7 +9,8 @@ export async function createShop(formData: FormData) {
     const { data } = await http.post(baseURL + "/createmyshop", formData);
     if (data.flag) {
       toast.success(data.message);
-      return data.data;
+      localStorage.setItem("token", data.data1);
+      return data.data2;
     } else {
       toast.error(data.message);
       return null;
@@ -75,7 +76,7 @@ export async function getMyShop() {
 export async function updateShop(shopId: string, formData: FormData) {
   try {
     const { data } = await http.put(baseURL+
-      `/update?categotyId=${shopId}`,
+      `/updatemyshop/${shopId}`,
       formData
     );
     if (data.flag) {

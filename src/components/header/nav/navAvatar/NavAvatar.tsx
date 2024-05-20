@@ -3,7 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { setLogout } from "../../../../features/accounts/UserAccountSlice";
 import { useNavigate } from "react-router-dom";
 import { Dropdown, Image } from "react-bootstrap";
-import {Popup} from "reactjs-popup";
+import { Popup } from "reactjs-popup";
+import ShopForm from "../../../../features/shops/ShopForm/ShopForm";
 
 function NavAvatar() {
   const { user } = useAppSelector((state) => state.account);
@@ -28,9 +29,7 @@ function NavAvatar() {
           className="rounded-circle"
           roundedCircle
         />
-        <span className="d-none d-md-block ps-2 mx-2">
-          {user?.firstName}
-        </span>
+        <span className="d-none d-md-block ps-2 mx-2">{user?.firstName}</span>
       </Dropdown.Toggle>
 
       <Dropdown.Menu className="profile">
@@ -58,10 +57,17 @@ function NavAvatar() {
         {user?.role === "client" && (
           <>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={() => navigate("/createshop")}>
-              <i className="bi bi-bag-heart"></i>
-              <span>Create Shop</span>
-            </Dropdown.Item>
+            <Popup
+              trigger={
+                <Dropdown.Item>
+                  <i className="bi bi-plus-circle"></i>
+                  <span>Create Shop</span>
+                </Dropdown.Item>
+              }
+              modal
+            >
+              {(close) => <ShopForm close={close} />}
+            </Popup>
           </>
         )}
 

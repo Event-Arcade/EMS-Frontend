@@ -2,19 +2,22 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "./shopForm.css";
 import { useNavigate } from "react-router-dom";
 import Shop from "../../../interfaces/Shop";
-import { useAppDispatch } from "../../../store/hooks";
-import { Button, Form } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { Button, Form, Spinner } from "react-bootstrap";
+import { shopCreate } from "../ShopSlice";
 
 export default function ShopForm({ close }: { close: any }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { loading, error, shops } = useAppSelector((state) => state.shop);
+  const { user } = useAppSelector((state) => state.account);
 
   const [shop, setShop] = useState<Shop>({
     name: "",
     description: "",
     rating: 0,
     ownerId: "",
-    backgroundImageUrl: "",
+    backgroundImageURL: "",
     backgroundImageFile: null,
   });
 
@@ -37,14 +40,26 @@ export default function ShopForm({ close }: { close: any }) {
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     // Handle form submission
-    console.log(shop);
+    const formData = new FormData();
+    formData.append("name", shop.name);
+    formData.append("description", shop.description ?? " description default");
+    formData.append("backgroundImage", shop.backgroundImageFile as Blob);
+
+    try {
+      const response = await dispatch(shopCreate(formData)).unwrap();
+      return navigate(`/shop/${response.id}`);
+
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <Form onSubmit={handleSubmit}>
+      <h1>Create Shop</h1>
       <Form.Group controlId="formName">
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -67,37 +82,35 @@ export default function ShopForm({ close }: { close: any }) {
         />
       </Form.Group>
 
-      <Form.Group controlId="formRating">
-        <Form.Label>Rating</Form.Label>
-        <Form.Control
-          type="number"
-          name="rating"
-          value={shop.rating}
-          onChange={handleChange}
-          min={0}
-          max={5}
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formOwnerId">
-        <Form.Label>Owner ID</Form.Label>
-        <Form.Control
-          type="text"
-          name="ownerId"
-          value={shop.ownerId}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
-
       <Form.Group controlId="formBackgroundImageFile">
         <Form.Label>Upload Background Image</Form.Label>
         <Form.Control type="file" onChange={handleFileChange} />
       </Form.Group>
 
-      <Button variant="primary" type="submit">
-        Submit Shop
-      </Button>
+      {error && <p className="text-danger">{error}</p>}
+
+      {loading ? (
+        <Button variant="success" className="mt-3">
+          <Spinner
+            as="span"
+            animation="grow"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+            className="mx-2"
+          />
+          Creating ...
+        </Button>
+      ) : (
+        <>
+          <Button variant="primary" type="submit" className="mt-3">
+            Begin Journey
+          </Button>
+          <Button variant="danger" onClick={close} className="mt-3 ms-3">
+            Cancel
+          </Button>
+        </>
+      )}
     </Form>
   );
 }
