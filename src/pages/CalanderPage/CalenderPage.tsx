@@ -41,7 +41,6 @@ const CalenderPage: React.FC = () => {
     },];
   return (
     <>
-      <Header toggleSideBar={toggleSideBar} />
       {/* <SideBar isVisible={isSideBarVisible}/> */}
       <CalendarComponent events={eventsData} />
       <Footer/>

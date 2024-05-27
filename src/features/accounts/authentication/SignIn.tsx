@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "../../../pages/AuthenticationPage/authenticationPage.css";
+import "./authenticationModal.css";
 import { MouseEvent } from "react";
 import { loginUser } from "../UserAccountSlice";
 import { useNavigate } from "react-router-dom";

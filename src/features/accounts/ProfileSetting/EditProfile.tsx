@@ -1,4 +1,10 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   Button,
   Container,
@@ -12,18 +18,12 @@ import { User } from "../../../interfaces/User";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useNavigate } from "react-router-dom";
 import { deleteUser, updateUser } from "../UserAccountSlice";
-import Header from "../../../components/header/Header";
+import axios from "axios";
 
 export default function EditProfile({ close }: { close: () => void }) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, loading } = useAppSelector((state) => state.account);
-
-  useEffect(() => {
-    if (user) {
-      setCurrentUser(user);
-    }
-  }, [user]);
 
   const [currentUser, setCurrentUser] = useState<User>({
     firstName: "",
@@ -39,10 +39,40 @@ export default function EditProfile({ close }: { close: () => void }) {
     profilePictureFile: undefined,
   });
 
+  const getFile = useCallback(
+    async (url: string) => {
+      const response = await axios.get(url, {
+        responseType: "blob",
+      });
+      if (response.data) {
+        const file = new File([response.data], "profilePicture", {
+          type: response.data.type,
+        });
+        setCurrentUser({
+          ...currentUser,
+          profilePictureFile: file,
+        });
+      }
+    },
+    [currentUser]
+  );
+
+  useEffect(() => {
+    if (user) {
+      setCurrentUser(user);
+      if (user?.profilePictureURL) {
+        getFile(user.profilePictureURL);
+      }
+    }
+  }, [user]);
+
   const handleDelete = async () => {
     try {
-      await dispatch(deleteUser(user?.id ?? "")).unwrap();
-      navigate("/");
+      // TODO : Add a confirmation dialog before deleting the account
+      const response = await dispatch(deleteUser()).unwrap();
+      if (response) {
+        navigate("/");
+      }
     } catch (e) {
       console.error("Error:", e);
     }
@@ -236,7 +266,11 @@ export default function EditProfile({ close }: { close: () => void }) {
           <Col md={6}>
             <Form.Group controlId="formProfilePictureFile" className="mt-3">
               <Form.Label>Profile Picture</Form.Label>
-              <Form.Control type="file" onChange={handleFileChange} />
+              <Form.Control
+                type="file"
+                onChange={handleFileChange}
+                accept="image/*"
+              />
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -257,7 +291,11 @@ export default function EditProfile({ close }: { close: () => void }) {
                 <Button variant="primary" type="submit" className="mt-3">
                   Save Changes
                 </Button>
-                <Button variant="danger" onClick={handleDelete} className="mx-4 mt-3">
+                <Button
+                  variant="danger"
+                  onClick={handleDelete}
+                  className="mx-4 mt-3"
+                >
                   Delete Account
                 </Button>
                 <Button

@@ -98,15 +98,15 @@ export const getAllUsers = createAsyncThunk<User[], void>(
     }
 );
 
-export const deleteUser = createAsyncThunk<void, string>(
+export const deleteUser = createAsyncThunk<any, void>(
     'useraccount/deleteUser',
-    async (data, thunkAPI) => {
+    async ( _ , thunkAPI) => {
         try {
-            const response = await deleteAccount(data);
+            const response = await deleteAccount();
             if (!response) {
                 return thunkAPI.rejectWithValue({ error: 'Delete user failed' });
             }
-            return;
+            return response;
         } catch (e) {
             return thunkAPI.rejectWithValue({ error: (e as Error).message });
         }
@@ -159,7 +159,6 @@ const userAccountSlice = createSlice({
             state.loading = true;
             state.error = null;
             state.user = null;
-            state.isLoggedIn = false;
         });
         builder.addCase(getCurrentUser.fulfilled, (state, action) => {
             state.loading = false;
@@ -203,6 +202,9 @@ const userAccountSlice = createSlice({
         });
         builder.addCase(deleteUser.fulfilled, (state) => {
             state.loading = false;
+            state.isLoggedIn = false;
+            state.user = null;
+            state.error = null;
         });
         builder.addCase(deleteUser.rejected, (state, action) => {
             state.loading = false;

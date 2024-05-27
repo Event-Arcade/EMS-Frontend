@@ -3,38 +3,44 @@ import { toast } from "react-toastify";
 import http from "./httpsClient";
 
 const baseURL = "/shop";
-//TODO: when creating the new shop should update the token
 export async function createShop(formData: FormData) {
   try {
-    const { data } = await http.post(baseURL + "/createmyshop", formData);
-    if (data.flag) {
-      toast.success(data.message);
-      localStorage.setItem("token", data.data1);
-      return data.data2;
-    } else {
-      toast.error(data.message);
-      return null;
+    const response = await http.post(baseURL + "/createmyshop", formData);
+    if(response){
+      if(response.data.flag){
+        toast.success(response.data.message);
+        // replace the new token
+        localStorage.setItem("token", response.data.data1);
+        return response.data.data2;
+      }
+      else{
+        toast.error(response.data.message);
+        return null;
+      }
     }
   } catch (error) {
     console.error("Error:", error);
-    toast.error("Failed to create category");
+    toast.error((error as any).response?.data.message);
     return null;
   }
 }
 //TODO: when deleting the shop should update the token
-export async function deleteShop(shopId: string) {
+export async function deleteShop(shopId: number) {
   try {
-    const { data } = await http.delete(baseURL + `/deletemyshop/${shopId}`);
-    if (data.flag) {
-      toast.success(data.message);
-      return true;
-    } else {
-      toast.error(data.message);
-      return false;
+    const response = await http.delete(baseURL + `/deletemyshop/${shopId}`);
+    if(response){
+      if(response.data.flag){
+        toast.success(response.data.message);
+        // replace the new token
+        localStorage.setItem("token", response.data.data);
+        return true;
+      }else{
+        toast.error(response.data.message);
+        return false;}
     }
   } catch (error) {
     console.error("Error:", error);
-    toast.error("Failed to delete category");
+    toast.error((error as any).response?.data.message);
     return false;
   }
 }

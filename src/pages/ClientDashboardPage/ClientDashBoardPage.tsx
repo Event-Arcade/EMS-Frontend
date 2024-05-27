@@ -1,6 +1,5 @@
 import { useState } from "react";
 import MiniCalender from "../../components/MiniCalender/MiniCalender";
-import Header from "../../components/header/Header";
 import PageTitle from "../../components/pageTitle/PageTitle";
 import RecentSales from "../../components/planTable/RecentSales";
 import ServiceList from "../../components/serviceList/ServiceList";
@@ -16,7 +15,6 @@ function ClientDashBoardPage() {
   };
   return (
     <>
-      <Header getSideBarVisibility={getSidebarState} />
       <main
         id="main"
         className={`main ${isSidebarVisible ? "" : "main-centered"}`}

@@ -13,7 +13,6 @@ export default function StaticResourceManagementPage() {
   };
   return (
     <>
-      <Header getSideBarVisibility={getSideBarState} />
       <div className="page-content-ad">
         {!isSideBarVisible ? (
           <div className="col-lg-2"></div>
@@ -21,7 +20,7 @@ export default function StaticResourceManagementPage() {
           <div className="col-lg-1"></div>
         )}
         <div className="col-lg-7" style={{ margin: "100px 40px 40px 70px" }}>
-          <PageTitle page={"Static Resources"} />
+          <PageTitle page={"Static Resources"} title={""} />
           <CreateAdminStaticResourceForm />
           <AdminStaticResourceList />
         </div>

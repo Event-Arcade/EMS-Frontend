@@ -45,12 +45,6 @@ const ServiceDetailPage: React.FC = () => {
   };
   return (
     <>
-      {/* { //TODO: not impleneted} */}
-      <Header
-        getSideBarVisibility={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
       <div className={`sd-page ${isShopFormOpen ? "blur-background" : ""}`}>
         <ShopPageHeading />
         <ShopDetailForm />

@@ -11,18 +11,6 @@ function RecentSales() {
     setFilter(filter);
   };
 
-  const fetchData = () => {
-    fetch('http://localhost:4000/recentsales')
-      .then(res => res.json())
-      .then(data => {
-        setItems(data);
-      })
-      .catch(e => console.log(e.message));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <div className="card recent-sales overflow-auto">

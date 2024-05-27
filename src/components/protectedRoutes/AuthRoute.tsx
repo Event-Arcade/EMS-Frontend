@@ -1,8 +1,7 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 
-export default function AuthRoute() {
+export default function AuthRoute({ handleShowSignInModal }: { handleShowSignInModal: ()=>void}) {
   const { isLoggedIn } = useAppSelector((state) => state.account);
-  const navigate = useNavigate();
-  return isLoggedIn ? <Outlet /> : <>{navigate("/auth")}</>;
+  return isLoggedIn ? <Outlet /> : <>{handleShowSignInModal()}</>;
 }

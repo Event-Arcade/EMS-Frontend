@@ -33,6 +33,10 @@ export default function ServiceList({ services }: { services: ShopService[] }) {
   const endIndex = Math.min(startIndex + servicesPerSection, services.length);
   const servicesToDisplay = services.slice(startIndex, endIndex);
 
+  if(services.length === 0){
+    return <div className="shop-list">No services found</div>;
+  }
+
   return (
     <div className="shop-list">
       {/* Render the current section of shops */}

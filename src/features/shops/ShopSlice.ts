@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Shop from "../../interfaces/Shop";
-import { createShop, getAllShops, getMyShop, updateShop } from "../../services/shopService";
+import { createShop, deleteShop, getAllShops, getMyShop, updateShop } from "../../services/shopService";
 
 
 interface UserAccountsState {
@@ -76,6 +76,21 @@ export const shopGetAll = createAsyncThunk<Shop[], void>(
     }
 );
 
+export const shopDelete = createAsyncThunk<any, number>(
+    'shops/deleteShop',
+    async (id, thunkAPI) => {
+        try {
+            const response = await deleteShop(id);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Failed to delete shop' });
+            }
+            return id;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
 const shopSlice = createSlice({
     name: 'shops',
     initialState,
@@ -123,6 +138,18 @@ const shopSlice = createSlice({
         builder.addCase(shopGetAll.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as { error: string })?.error || 'Failed to get all shops';
+        });
+        builder.addCase(shopDelete.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(shopDelete.fulfilled, (state, action) => {
+            state.loading = false;
+            state.shops = state.shops.filter((shop) => shop.id !== action.payload);
+        });
+        builder.addCase(shopDelete.rejected, (state, action) => {
+            state.loading = false;
+            state.error = (action.payload as { error: string })?.error || 'Failed to delete shop';
         });
     }
 });

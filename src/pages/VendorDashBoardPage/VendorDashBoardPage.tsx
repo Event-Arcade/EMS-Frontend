@@ -13,7 +13,6 @@ export default function VendorDashboardPage() {
 
   return (
     <>
-      <Header getSideBarVisibility={getSideBarState} />
       <div className="page-content-ad">
         {isSideBarVisible ?<div className="col-lg-2"></div>: <div className="col-lg-1"></div>}
         <div className="col-lg-7" style={{ margin: "100px 40px 40px 70px" }}>

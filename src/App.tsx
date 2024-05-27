@@ -7,7 +7,6 @@ import "remixicon/fonts/remixicon.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
-import Authentication from "./pages/AuthenticationPage/AuthenticationPage";
 import EditProfile from "./features/accounts/ProfileSetting/EditProfile";
 import CalenderPage from "./pages/CalanderPage/CalenderPage";
 import StartPage from "./pages/StartPage/StartPage";
@@ -16,7 +15,7 @@ import AdminDashboard from "./pages/AdminDashboardPage/AdminDashboardPage";
 import PackageDetailsPage from "./features/package/PackageDetails/PackagDetailsPage";
 import ShopDetailPage from "./pages/ShopPage/ShopDetailPage";
 import VendorServices from "./pages/VendorServices/VendorServices";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getCurrentUser } from "./features/accounts/UserAccountSlice";
 import { useAppDispatch } from "./store/hooks";
 import AuthRoute from "./components/protectedRoutes/AuthRoute";
@@ -31,11 +30,13 @@ import StaticResourceManagementPage from "./pages/AdminStaticResourceManagementP
 import VendorRoute from "./components/protectedRoutes/VendorRoute";
 import VendorDashBoardPage from "./pages/VendorDashBoardPage/VendorDashBoardPage";
 import ClientDashBoardPage from "./pages/ClientDashboardPage/ClientDashBoardPage";
-import CreateShopService from "./features/shopServices/CreateShopService";
 import Header from "./components/header/Header";
+import AuthenticationModal from "./features/accounts/authentication/AuthenticationModal";
 
 export default function App() {
   const dispatch = useAppDispatch();
+  const [showSignInModal, setShowSignInModal] = useState(false);
+
   const initApp = useCallback(async () => {
     await dispatch(getCurrentUser());
     await dispatch(categoryGetAll());
@@ -45,65 +46,74 @@ export default function App() {
     await dispatch(feedBackGetAll());
   }, [dispatch]);
 
+  const handleShowSignUP = () => {
+    setShowSignInModal(true);
+  };
+
+  const handleClose = () => {
+    setShowSignInModal(false);
+  };
+
   useEffect(() => {
     initApp();
   }, []);
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/auth" element={<Authentication />} />
-        <Route path="/startpage" element={<StartPage />} />
-        <Route path="/packageDetails" element={<PackageDetailsPage />} />
-        <Route path="/vendorServices" element={<VendorServices />} />
-        <Route
-          path="/addshopservice"
-          element={
-            <CreateShopService
-              shopId={0}
-              close={function (): {} {
-                throw new Error("Function not implemented.");
-              }}
-            />
-          }
+    <>
+      <Router>
+        <Header
+          getSideBarVisibility={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          handleShowSignUp={handleShowSignUP}
         />
-
-        <Route path="/" element={<AuthRoute />}>
-          <Route path="/dashboard" element={<ClientDashBoardPage />} />
-          <Route
-            path="/editProfile"
-            element={
-              <EditProfile
-                close={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
+        <AuthenticationModal show={showSignInModal} handleClose={handleClose} />
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/startpage" element={<StartPage />} />
+            <Route path="/packageDetails" element={<PackageDetailsPage />} />
+            <Route path="/vendorServices" element={<VendorServices />} />
+            <Route
+              path="/"
+              element={<AuthRoute handleShowSignInModal={handleShowSignUP} />}
+            >
+              <Route path="/dashboard" element={<ClientDashBoardPage />} />
+              <Route
+                path="/editProfile"
+                element={
+                  <EditProfile
+                    close={function (): void {
+                      throw new Error("Function not implemented.");
+                    }}
+                  />
+                }
               />
-            }
-          />
-          <Route path="/calendar" element={<CalenderPage />} />
-          <Route path="/shop/:id" element={<ShopDetailPage />} />
-          <Route path="/shop-service/:id" element={<ServiceDetailPage />} />
+              <Route path="/calendar" element={<CalenderPage />} />
+              <Route path="/shop/:id" element={<ShopDetailPage />} />
+              <Route path="/shop-service/:id" element={<ServiceDetailPage />} />
 
-          <Route path="admin/" element={<AdminRoute />}>
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route
-              path="category-management"
-              element={<CategoryManagementPage />}
-            />
-            <Route
-              path="static-resource-management"
-              element={<StaticResourceManagementPage />}
-            />
-          </Route>
+              <Route path="admin/" element={<AdminRoute />}>
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route
+                  path="category-management"
+                  element={<CategoryManagementPage />}
+                />
+                <Route
+                  path="static-resource-management"
+                  element={<StaticResourceManagementPage />}
+                />
+              </Route>
 
-          <Route path="vendor/" element={<VendorRoute />}>
-            <Route path="dashboard" element={<VendorDashBoardPage />} />
-          </Route>
+              <Route path="vendor/" element={<VendorRoute />}>
+                <Route path="dashboard" element={<VendorDashBoardPage />} />
+              </Route>
 
-          <Route path="*" element={<h1>Not Found</h1>} />
-        </Route>
-      </Routes>
-    </Router>
+              <Route path="*" element={<h1>Not Found</h1>} />
+            </Route>
+          </Routes>
+        </main>
+      </Router>
+    </>
   );
 }
 

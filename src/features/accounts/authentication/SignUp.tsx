@@ -5,10 +5,11 @@ import React, {
   ChangeEvent,
 } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "../../../pages/AuthenticationPage/authenticationPage.css";
+import "./authenticationModal.css";
 import { signupUser } from "../UserAccountSlice";
 import { useAppDispatch } from "../../../store/hooks";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -39,7 +40,7 @@ export default function SignUp() {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      toast.error(" Passwords do not match! ");
       return;
     }
     const formDataToSend = new FormData();

@@ -5,4 +5,5 @@ export default function VendorRoute() {
   const { user } = useAppSelector((state) => state.account);
   const navigate = useNavigate();
   return user?.role === "vendor" ? <Outlet /> : <>{navigate("/")}</>;
+  //TODO: unAuthorized page create
 }

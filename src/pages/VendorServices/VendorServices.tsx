@@ -166,9 +166,6 @@ const VendorServices: React.FC = () => {
 
   return (
     <>
-      <Header getSideBarVisibility={function (): void {
-        throw new Error("Function not implemented.");
-      } }      />
       <div className="user-page-container">
         <EditableImage imageUrl="src/assets/vendor/userpage.jpg" />
         <div className="nav-bar">

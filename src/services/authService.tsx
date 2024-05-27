@@ -21,18 +21,19 @@ export async function login(formData: FormData) {
 export async function register(formData: FormData) {
   console.log(formData);
   try {
-    const { data } = await http.post(`${apiEndpoint}/register`, formData);
-    console.log(data);
-    if (data.flag) {
-      localStorage.setItem("token", data.data);
-      toast.success(data.message);
-      return true;
-    } else {
-      toast.error(data.message);
-      return false;
+    const response = await http.post(`${apiEndpoint}/register`, formData);
+    if (response) {
+      if (response.data.flag) {
+        toast.success(response.data.message);
+        return true;
+      } else {
+        toast.error(response.data.message);
+        return false;
+      }
     }
   } catch (error) {
     console.error("Error:", error);
+    toast.error((error as any).response?.data.message);
     return false;
   }
 }
@@ -97,16 +98,19 @@ export async function getAccounts() {
   }
 }
 
-export async function deleteAccount(userId: string) {
+export async function deleteAccount() {
   try {
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("Not authorized. Please log in.");
       return false;
     }
-    const { data } = await http.delete(apiEndpoint + "/delete/" + userId);
+    const { data } = await http.delete(apiEndpoint + "/delete");
+    console.log(data);
     if (data.flag) {
       toast.success(data.message);
+      // remove the token from local storage
+      localStorage.removeItem("token");
       return true;
     } else {
       toast.error(data.message);

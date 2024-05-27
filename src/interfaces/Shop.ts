@@ -1,5 +1,5 @@
 export default interface Shop {
-    id?: string;
+    id?: number;
     name: string;
     description?: string;
     rating?: number;
