@@ -15,8 +15,7 @@ export default function ShopForm({
 }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error, shops } = useAppSelector((state) => state.shop);
-  const { user } = useAppSelector((state) => state.account);
+  const { loading, error } = useAppSelector((state) => state.shop);
 
   const [shop, setShop] = useState<Shop>({
     name: "",
