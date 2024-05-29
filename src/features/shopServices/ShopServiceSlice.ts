@@ -29,7 +29,7 @@ export const shopServiceCreate = createAsyncThunk<ShopService, FormData>(
     }
 );
 
-export const shopServiceUpdate = createAsyncThunk<ShopService, { id: string, data: FormData }>(
+export const shopServiceUpdate = createAsyncThunk<ShopService, { id: number, data: FormData }>(
     'shopService/updateShopService',
     async (data, thunkAPI) => {
         try {
@@ -59,15 +59,16 @@ export const shopServiceGetAll = createAsyncThunk<ShopService[], void>(
     }
 );
 
-export const shopServiceDelete = createAsyncThunk<boolean, string>(
+export const shopServiceDelete = createAsyncThunk<any, number>(
     'shopService/deleteShopService',
     async (id, thunkAPI) => {
         try {
             const response = await deleteService(id);
             if (!response) {
                 return thunkAPI.rejectWithValue({ error: 'Delete failed' });
+            }else{
+                return id;
             }
-            return response;
         } catch (e) {
             return thunkAPI.rejectWithValue({ error: (e as Error).message });
         }
@@ -115,7 +116,7 @@ const ShopServiceSlice = createSlice({
         });
         builder.addCase(shopServiceDelete.fulfilled, (state, action) => {
             state.loading = false;
-            state.shopServices = state.shopServices.filter(service => service.id !== action.payload.toString() as unknown as number);
+            state.shopServices = state.shopServices.filter(service => service.id !== action.payload as number);
         });
     }}
 )

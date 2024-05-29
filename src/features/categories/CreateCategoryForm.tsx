@@ -1,12 +1,11 @@
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import Category from "../../interfaces/Category";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppDispatch } from "../../store/hooks";
 import { categoryCreate } from "./CategorySlice";
 
 export default function CreateCategoryForm() {
   const dispatch = useAppDispatch();
-  const {loading, error} = useAppSelector((state)=>state.category)
   const [category, setCategory] = useState<Category>({
     name: "",
     description: "",
@@ -31,7 +30,16 @@ export default function CreateCategoryForm() {
       description: "",
       imageFile: null,
       imageUrl: "",
-    })
+    });
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setCategory({
+        ...category,
+        imageFile: e.target.files[0],
+      });
+    }
   };
 
   return (
@@ -80,12 +88,9 @@ export default function CreateCategoryForm() {
           type="file"
           // image only accepts
           placeholder="Enter Image for the category background"
-          value={category.imageFile ? category.imageFile.name : undefined}
-          onChange={(e) => {
-            const target = e.target as HTMLInputElement;
-            const file = target.files?.[0];
-            setCategory({ ...category, imageFile: file });
-          }}
+          onChange={handleFileChange}
+          required
+          max={1}
         />
       </Form.Group>
 
@@ -99,3 +104,5 @@ export default function CreateCategoryForm() {
     </Form>
   );
 }
+
+//TODO: add loading spinner

@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import "./locationForm.css";
 import "../../components/ButtonStyle.css";
-import "../StartPage/ServiceForm/serviceForm.css";
-import ServiceForm from "./ServiceForm/ServiceForm";
 import SelectBox from "../../components/SelectBox/SelectBox";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { Rating, Stack } from "@mui/material";
+import { useAppDispatch } from "../../store/hooks";
+import {
+  updateOrderDate,
+  updateDescription,
+} from "../../features/package/PackageSlice";
+import ButtonContainer from "./ButtonContainer";
 
-function LocationForm() {
+interface LocationFormProps {
+  onNextClick: () => void;
+}
+
+function LocationForm({ onNextClick }: LocationFormProps) {
+  const dispatch = useAppDispatch();
   const [startDate, setStartDate] = useState(new Date());
   const [selectedFunctionType, setSelectedFunctionType] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -31,14 +39,19 @@ function LocationForm() {
     { label: "Others", value: "others" },
   ];
 
-  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Function Type:", selectedFunctionType);
-    console.log("Location:", selectedLocation);
-    console.log("Date:", startDate);
-    // You can add more logic, such as sending the form data to an API or performing other actions.
-    setShowForm(false); // Hide the form after submission
+    try {
+      dispatch(
+        updateDescription(
+          `Function Type: ${selectedFunctionType}, Location: ${selectedLocation}`
+        )
+      );
+      dispatch(updateOrderDate(startDate));
+    } catch (e) {
+      console.error(e);
+    }
+    setShowForm(false);
   };
 
   return (
@@ -77,7 +90,13 @@ function LocationForm() {
           <p>Function Type: {selectedFunctionType}</p>
           <p>Location: {selectedLocation}</p>
           <p>Date: {startDate.toDateString()}</p>
-          <button className="edit-selection-btn" onClick={() => setShowForm(true)}>Edit Selection</button>
+          <button
+            className="edit-selection-btn"
+            onClick={() => setShowForm(true)}
+          >
+            Edit Selection
+          </button>
+          <ButtonContainer currentStep={0} onNextClick={onNextClick} />
         </div>
       )}
     </div>

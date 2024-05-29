@@ -24,7 +24,7 @@ export async function createShop(formData: FormData) {
     return null;
   }
 }
-//TODO: when deleting the shop should update the token
+
 export async function deleteShop(shopId: number) {
   try {
     const response = await http.delete(baseURL + `/deletemyshop/${shopId}`);

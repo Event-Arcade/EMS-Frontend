@@ -11,7 +11,7 @@ export default function ShopForm({
   handleClose,
 }: {
   show: boolean;
-  handleClose: any;
+  handleClose: ()=>void;
 }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -58,6 +58,15 @@ export default function ShopForm({
       if (response) {
         const result = await dispatch(getCurrentUser()).unwrap();
         if (result) {
+          setShop({
+            name: "",
+            description: "",
+            rating: 0,
+            ownerId: "",
+            backgroundImageURL: "",
+            backgroundImageFile: null,
+          });
+          handleClose();
           navigate(`/shop/${response.id}`);
         }
       }

@@ -13,9 +13,13 @@ export async function createFeedback(formData: FormData) {
       toast.error(data.message);
       return null;
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error:", error);
-    toast.error("Failed to create feedback");
+    if(error.response.data.message) {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error("Failed to create feedback");
+    }
     return null;
   }
 }

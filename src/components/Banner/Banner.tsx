@@ -18,12 +18,7 @@ function Banner() {
   // };
   const handleStart = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/dashboard');
-    } else {
-      navigate('/auth');
-    }
+    navigate("/startpage");
   };
 
   return (

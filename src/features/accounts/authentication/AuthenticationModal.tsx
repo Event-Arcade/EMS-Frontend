@@ -13,13 +13,13 @@ export default function AuthenticationModal({
   handleClose: any;
 }) {
   const [containerToggle, setContainerToggle] = useState(true);
-  const {isLoggedIn} = useAppSelector((state) => state.account);
+  const {isLoggedIn, user} = useAppSelector((state) => state.account);
 
   useEffect(() => {
     if(isLoggedIn){
       handleClose();
     }
-  }, [isLoggedIn, handleClose]);
+  }, [isLoggedIn, user]);
 
   const handleToggle = () => {
     setContainerToggle(!containerToggle);

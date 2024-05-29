@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container, Button } from "react-bootstrap";
 import Footer from "../../components/Footer/Footer";
-import PageTitle from "../../components/pageTitle/PageTitle";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import Shop from "../../interfaces/Shop";
 import ServiceList from "../../components/serviceList/ServiceList";
 import ShopService from "../../interfaces/ShopService";
-import Header from "../../components/header/Header";
 import { Popup } from "reactjs-popup";
 import CreateShopService from "../../features/shopServices/CreateShopService";
 import "./shopPage.css";
@@ -91,7 +89,10 @@ export default function ShopDetailPage() {
             }
             modal
           >
-            {(close) => <CreateShopService close={close} shopId={shop?.id} />}
+            {
+              // @ts-ignore
+              (close) => <CreateShopService close={close} shopId={shop?.id} />
+            }
           </Popup>
         </div>
         <div className="update-button">
@@ -99,7 +100,10 @@ export default function ShopDetailPage() {
             trigger={<Button className="button"> Update Shop Details </Button>}
             modal
           >
-            {(close) => <UpdateShop close={close} shop={shop} />}
+            {
+              // @ts-ignore
+              (close) => <UpdateShop close={close} shop={shop} />
+            }
           </Popup>
         </div>
         <Button variant="danger" onClick={handleDelete}>

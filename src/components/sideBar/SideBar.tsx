@@ -1,6 +1,8 @@
 import "./sideBar.css";
 import { useAppSelector } from "../../store/hooks";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Shop from "../../interfaces/Shop";
 
 interface SideBarProps {
   isVisible: boolean;
@@ -9,11 +11,28 @@ interface SideBarProps {
 export default function SideBar({ isVisible }: SideBarProps) {
   const navigate = useNavigate();
   const { isLoggedIn, user } = useAppSelector((state) => state.account);
+  const { shops } = useAppSelector((state) => state.shop);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [userShop, setUserShop] = useState<Shop>();
+
+  useEffect(() => {
+    setIsSidebarVisible(isVisible);
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/auth");
+    } else {
+      if (user?.role == "vendor") {
+        setUserShop(shops.find((shop) => shop.ownerId == user.id));
+      }
+    }
+  }, [isLoggedIn]);
 
   return (
     <aside
       id="sidebar"
-      className={`sidebar ${isVisible ? "visible" : "hidden"}`}
+      className={`sidebar ${isSidebarVisible ? "visible" : "hidden"}`}
     >
       <ul className="sidebar-nav" id="sidebar-nav">
         <li className="nav-item">
@@ -22,13 +41,17 @@ export default function SideBar({ isVisible }: SideBarProps) {
             onClick={() => {
               if (isLoggedIn) {
                 if (user?.role == "admin") {
+                  setIsSidebarVisible(false);
                   navigate("/admin/dashboard");
                 } else if (user?.role == "client") {
+                  setIsSidebarVisible(false);
                   navigate("/dashboard");
                 } else if (user?.role == "vendor") {
+                  setIsSidebarVisible(false);
                   navigate("/vendor/dashboard");
                 }
               } else {
+                setIsSidebarVisible(false);
                 navigate("/auth");
               }
             }}
@@ -59,6 +82,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
               <a
                 className="nav-link"
                 onClick={() => {
+                  setIsSidebarVisible(false);
                   navigate("/admin/category-management");
                 }}
               >
@@ -70,6 +94,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
               <a
                 className="nav-link"
                 onClick={() => {
+                  setIsSidebarVisible(false);
                   navigate("/admin/static-resource-management");
                 }}
               >
@@ -81,6 +106,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
               <a
                 className="nav-link"
                 onClick={() => {
+                  setIsSidebarVisible(false);
                   navigate("/");
                 }}
               >
@@ -92,6 +118,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
               <a
                 className="nav-link"
                 onClick={() => {
+                  setIsSidebarVisible(false);
                   navigate("/");
                 }}
               >
@@ -107,7 +134,8 @@ export default function SideBar({ isVisible }: SideBarProps) {
               <a
                 className="nav-link"
                 onClick={() => {
-                  navigate(`/shop/${user?.id}`);
+                  setIsSidebarVisible(false);
+                  navigate(`/shop/${userShop?.id}`);
                 }}
               >
                 <i className="bi bi-gear"></i>
@@ -118,6 +146,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
               <a
                 className="nav-link"
                 onClick={() => {
+                  setIsSidebarVisible(false);
                   navigate("/");
                 }}
               >

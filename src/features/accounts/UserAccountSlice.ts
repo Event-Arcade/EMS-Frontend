@@ -19,7 +19,7 @@ const initialState: UserAccountState = {
     error: null
 }
 
-export const signupUser = createAsyncThunk<void, FormData>(
+export const signupUser = createAsyncThunk<any, FormData>(
     'useraccount/signupUser',
     async (data, thunkAPI) => {
         try {
@@ -29,7 +29,7 @@ export const signupUser = createAsyncThunk<void, FormData>(
             }
             thunkAPI.dispatch(setLoggedIn(true));
             thunkAPI.dispatch(getCurrentUser());
-            return;
+            return true;
         } catch (e) {
             return thunkAPI.rejectWithValue({ error: (e as Error).message });
         }

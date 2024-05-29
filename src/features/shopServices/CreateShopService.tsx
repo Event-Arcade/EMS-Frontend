@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { Form, Button, Container, Spinner } from "react-bootstrap";
+import { Form, Button, Container, Spinner, Row, Col } from "react-bootstrap";
 import ShopService from "../../interfaces/ShopService";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { shopServiceCreate } from "./ShopServiceSlice";
@@ -23,7 +23,10 @@ export default function CreateShopService({
     rating: undefined,
     price: 0,
     shopId: shopId,
-    categoryId: 0,
+    noOfGuests: 10,
+    indoor: true,
+    outdoor: false,
+    categoryId: 1,
     shopServiceStaticResourcesFiles: [],
   });
 
@@ -31,13 +34,24 @@ export default function CreateShopService({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setShopService({
-      ...shopService,
-      [name]:
-        name === "rating" || name === "price" || name === "categoryId"
-          ? parseInt(value)
-          : value,
-    });
+    if (name === "indoor" || name === "outdoor") {
+      setShopService({
+        ...shopService,
+        [name]: shopService[name] ? false : true,
+      });
+    }else if(name === "categoryId"|| name === "shopId" || name === "noOfGuests" || name === "price") {
+      setShopService({
+        ...shopService,
+        [name]: parseInt(value),
+      });
+    }
+
+    else {
+      setShopService({
+        ...shopService,
+        [name]: value,
+      });
+    }
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,21 +70,29 @@ export default function CreateShopService({
     formData.append("description", shopService.description || "");
     formData.append("price", shopService.price.toString());
     formData.append("shopId", shopService.shopId.toString());
+    formData.append("noOfGuests", shopService.noOfGuests?.toString() ?? "10");
+    formData.append("indoor", shopService.indoor.toString());
+    formData.append("outdoor", shopService.outdoor.toString());
     formData.append("categoryId", shopService.categoryId.toString());
     shopService.shopServiceStaticResourcesFiles?.forEach((file) => {
       formData.append("shopServiceStaticResources", file);
     });
     try {
-      await dispatch(shopServiceCreate(formData)).unwrap();
-      setShopService({
-        name: "",
-        description: "",
-        rating: undefined,
-        price: 0,
-        shopId: shopId,
-        categoryId: 0,
-        shopServiceStaticResourcesFiles: [],
-      });
+      const response = await dispatch(shopServiceCreate(formData)).unwrap();
+      if (response) {
+        setShopService({
+          name: "",
+          description: "",
+          rating: undefined,
+          price: 0,
+          noOfGuests: 10,
+          indoor: true,
+          outdoor: false,
+          shopId: shopId,
+          categoryId: 1,
+          shopServiceStaticResourcesFiles: [],
+        });
+      }
       close();
     } catch (e) {
       console.log(e);
@@ -117,7 +139,42 @@ export default function CreateShopService({
               required
             />
           </Form.Group>
-
+          <Row className="my-3 align-items-center">
+            <Col>
+              <Form.Group controlId="formNoOfGouest">
+                <Form.Label>No. of Guests</Form.Label>
+                <Form.Control
+                  type="number"
+                  name="noOfGuests"
+                  value={shopService.noOfGuests}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group  controlId="formIndoor">
+                <Form.Check
+                  type="checkbox"
+                  label="Indoor"
+                  name="indoor"
+                  checked={shopService.indoor}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId="formOutdoor">
+                <Form.Check
+                  type="checkbox"
+                  label="Outdoor"
+                  name="outdoor"
+                  checked={shopService.outdoor}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
           <Form.Group controlId="formCategoryId">
             <Form.Label>Category</Form.Label>
             <Form.Control

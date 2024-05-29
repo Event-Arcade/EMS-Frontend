@@ -19,15 +19,17 @@ export async function createService(formData: FormData) {
     }
 }
 
-export async function deleteService(serviceId: string) {
+export async function deleteService(serviceId: number) {
     try {
-        const { data } = await http.delete(baseURL + `/delete/${serviceId}`);
-        if (data.flag) {
-            toast.success(data.message);
-            return true;
-        } else {
-            toast.error(data.message);
-            return false;
+        const response = await http.delete(baseURL + `/delete/${serviceId}`);
+        if(response){
+            if(response.data.flag){
+                toast.success(response.data.message);
+                return true;}
+            else{
+                toast.error(response.data.message);
+                return false;
+            }
         }
     } catch (error) {
         console.error("Error:", error);
@@ -50,7 +52,7 @@ export async function getAllServices() {
     }
 }
 
-export async function updateService(serviceId: string, formData: FormData) {
+export async function updateService(serviceId: number, formData: FormData) {
     try {
         const { data } = await http.put(baseURL + `/update/${serviceId}`, formData);
         if (data.flag) {

@@ -10,7 +10,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import EditProfile from "./features/accounts/ProfileSetting/EditProfile";
 import CalenderPage from "./pages/CalanderPage/CalenderPage";
 import StartPage from "./pages/StartPage/StartPage";
-import ServiceDetailPage from "./pages/ServiceDetailPage/ServiceDetailPage/ServiceDetailPage";
+import ServiceDetailPage from "./pages/ServiceDetailPage/ServiceDetailPage";
 import AdminDashboard from "./pages/AdminDashboardPage/AdminDashboardPage";
 import PackageDetailsPage from "./features/package/PackageDetails/PackagDetailsPage";
 import ShopDetailPage from "./pages/ShopPage/ShopDetailPage";
@@ -32,6 +32,7 @@ import VendorDashBoardPage from "./pages/VendorDashBoardPage/VendorDashBoardPage
 import ClientDashBoardPage from "./pages/ClientDashboardPage/ClientDashBoardPage";
 import Header from "./components/header/Header";
 import AuthenticationModal from "./features/accounts/authentication/AuthenticationModal";
+import { packageGetAll } from "./features/package/PackageSlice";
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -44,6 +45,7 @@ export default function App() {
     await dispatch(shopServiceGetAll());
     await dispatch(adminStaticResourceGetAll());
     await dispatch(feedBackGetAll());
+    await dispatch(packageGetAll());
   }, [dispatch]);
 
   const handleShowSignUP = () => {
@@ -70,13 +72,13 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/startpage" element={<StartPage />} />
             <Route path="/packageDetails" element={<PackageDetailsPage />} />
             <Route path="/vendorServices" element={<VendorServices />} />
             <Route
               path="/"
               element={<AuthRoute handleShowSignInModal={handleShowSignUP} />}
             >
+              <Route path="/startpage" element={<StartPage />} />
               <Route path="/dashboard" element={<ClientDashBoardPage />} />
               <Route
                 path="/editProfile"

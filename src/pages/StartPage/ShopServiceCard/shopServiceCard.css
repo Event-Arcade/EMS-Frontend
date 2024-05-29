@@ -52,6 +52,16 @@
   letter-spacing: 3px;
   margin-bottom: 10px;
 }
+.Service-form-price{
+  font-size: 20px;
+  font-weight: bold;
+  color: #e78309;
+}
+.Service-form-rating {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
 .Service-form-item .Service-form-content .Service-form-add {
   background-color: #e78309;
   color: #fff;
@@ -84,4 +94,20 @@
 .Service-form-listPage .active {
   background-color: #b192ef;
   color: #fff;
+}
+
+.Service-form-button-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.Service-form-visit{
+  background-color: #e7a409;
+  color: #fff;
+  width: 150px;
+  height: 40px;
+  border: none;
+  margin-left: 40px;
+  border-radius: 30px;
 }

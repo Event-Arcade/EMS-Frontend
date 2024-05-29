@@ -91,9 +91,5 @@ export default function CreateAdminStaticResourceForm() {
   
 }
 
-
-
-function createResource(formData: FormData): any {
-  throw new Error("Function not implemented.");
-}
+// TODO: Add loading spinner
   

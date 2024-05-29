@@ -1,0 +1,41 @@
+.table-modern {
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.table-modern thead {
+  background: #343a40;
+  color: #ffffff;
+}
+
+.table-modern thead th {
+  border: none;
+}
+
+.table-modern tbody tr {
+  transition: background 0.3s;
+}
+
+.table-modern tbody tr:hover {
+  background: #f1f1f1;
+}
+
+.table-modern tbody td {
+  vertical-align: middle;
+}
+
+.table-sub {
+  margin: 0;
+}
+
+.table-sub thead {
+  background: #6c757d;
+  color: #ffffff;
+}
+
+.table-sub thead th,
+.table-sub tbody td {
+  border: none;
+}

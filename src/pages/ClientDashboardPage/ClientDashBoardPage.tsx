@@ -6,9 +6,10 @@ import ServiceList from "../../components/serviceList/ServiceList";
 import DashboardBanner from "./DashboardBanner";
 import "./clientDashBoardPage.css";
 import { useAppSelector } from "../../store/hooks";
+import PackageTable from "../../components/PackageTable/PackageTable";
 
 function ClientDashBoardPage() {
-  const {shopServices} = useAppSelector((state)=>state.service);
+  const { shopServices } = useAppSelector((state) => state.service);
   const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(false);
   const getSidebarState = () => {
     setIsSidebarVisible(!isSidebarVisible);
@@ -21,28 +22,14 @@ function ClientDashBoardPage() {
       >
         <PageTitle title={"Client"} page="Dashboard" />
         <section className="dashboard section" style={{ paddingTop: 0 }}>
-          <DashboardBanner />
           <div className="row">
             <div className="col-lg-9">
-              <h1
-                style={{
-                  fontWeight: 600,
-                  display: "flex",
-                  marginTop: "60px",
-                  marginBottom: "40px",
-                  justifyContent: "center",
-                  color: "rgb(117, 117, 119)",
-                }}
-              >
-                Check Out This Services
-              </h1>
               <div className="row">
                 {/* <ShopCard title="Hotel Araliya" description="Some quick example text to build on the card title and make up the bulk of the card's content." src={Shop1} />
             <ShopCard title="Lassna Flora" description="Some quick example text to build on the card title and make up the bulk of the card's content." src={Shop2}/>
             <ShopCard title="DJ Mash" description="Some quick example text to build on the card title and make up the bulk of the card's content." src={Shop3}/> */}
 
                 <div className="col-12">
-                  <ServiceList services={shopServices} />
                   <h1
                     style={{
                       fontWeight: 600,
@@ -55,8 +42,8 @@ function ClientDashBoardPage() {
                   >
                     My Plans
                   </h1>
-                  <RecentSales />
                 </div>
+                <PackageTable />
               </div>
             </div>
             <div
@@ -78,6 +65,7 @@ function ClientDashBoardPage() {
               <MiniCalender />
             </div>
           </div>
+          <DashboardBanner />
         </section>
       </main>
     </>

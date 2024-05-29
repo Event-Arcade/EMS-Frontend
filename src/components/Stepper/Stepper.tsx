@@ -1,22 +1,26 @@
-import React, { useState } from 'react';
-import './stepper.css';
-import '../TextStyle.css';
-import ProductImg2 from '../../assets/img/product-2.jpg';
-import ProductImg3 from '../../assets/img/product-3.jpg';
-import ProductImg1 from '../../assets/img/product-1.jpg';
-import Searchbar from '../header/searchBar/Searchbar';
+import React, { useState } from "react";
+import "./stepper.css";
+import "../TextStyle.css";
+import ProductImg2 from "../../assets/img/product-2.jpg";
+import ProductImg3 from "../../assets/img/product-3.jpg";
+import ProductImg1 from "../../assets/img/product-1.jpg";
+import Searchbar from "../header/searchBar/Searchbar";
+import { useAppSelector } from "../../store/hooks";
 
 interface StepperProps {
   currentStep: number;
-  onNextClick: () => void;
+  setCurrentStep: (arg0: number) => void;
   imageSrc: string;
   topic: string;
 }
 
-function Stepper({ currentStep, onNextClick, imageSrc,topic }: StepperProps) {
-  const handleNextClick = () => {
-    onNextClick();
-  };
+function Stepper({
+  currentStep,
+  setCurrentStep,
+  imageSrc,
+  topic,
+}: StepperProps) {
+  const { categories } = useAppSelector((state) => state.category);
 
   return (
     <div className="st-body">
@@ -32,18 +36,43 @@ function Stepper({ currentStep, onNextClick, imageSrc,topic }: StepperProps) {
         </div>
         <div className="middle-section">
           <ul className="step-wizard-list">
-            {[1, 2, 3, 4, 5].map((step) => (
-              <li
-                key={step}
-                className={`step-wizard-item ${currentStep === step ? 'current-item' : ''}`}
+            <li
+              key={0}
+              className={`step-wizard-item ${
+                currentStep === 0 ? "current-item" : ""
+              }`}
+              onClick={() => {
+                setCurrentStep(0);
+              }}
+            >
+              <span
+                className={`progress-count ${currentStep >= 0 ? "filled" : ""}`}
               >
-                <span className={`progress-count ${currentStep >= step ? 'filled' : ''}`}>{step}</span>
-                <span className="progress-lable">Step {step}</span>
+                {0}
+              </span>
+              <span className="progress-lable">Begin</span>
+            </li>
+            {categories.map((category, index) => (
+              <li
+                key={index + 1}
+                className={`step-wizard-item ${
+                  currentStep === index + 1 ? "current-item" : ""
+                }`}
+                onClick={() => {
+                  setCurrentStep(index + 1);
+                }}
+              >
+                <span
+                  className={`progress-count ${
+                    currentStep >= index + 1 ? "filled" : ""
+                  }`}
+                >
+                  {index + 1}
+                </span>
+                <span className="progress-lable">{category.name}</span>
               </li>
             ))}
           </ul>
-          {/* <button onClick={handleNextClick}>Next</button> */}
-          <Searchbar />
         </div>
         <div className="right-section">
           <img src={imageSrc} alt="" className="st-image" />

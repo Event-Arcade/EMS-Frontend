@@ -1,26 +1,24 @@
-import React, { useState } from 'react';
-import './mainContainer.css';
-import Stepper from '../../components/Stepper/Stepper';
-import LocationForm from './LocationForm';
-import VenueForm from './VenueForm';
-import CateringForm from './CateringForm';
-import Entertainment from './Entertainment';
-import Decoration from './Decoration';
-import ButtonContainer from './ButtonContainer';
-import ProductImg2 from '../../assets/img/product-2.jpg';
-import ProductImg3 from '../../assets/img/product-3.jpg';
-import ProductImg1 from '../../assets/img/product-1.jpg';
-import step1 from '../../assets/stepper/step1.png'
-import step2 from '../../assets/stepper/step2.png'
-import step3 from '../../assets/stepper/step3.png'
-import step4 from '../../assets/stepper/step4.png'
-import step5 from '../../assets/stepper/step5.png'
-import SelectBox from '../../components/SelectBox/SelectBox';
+import { useEffect, useState } from "react";
+import "./mainContainer.css";
+import Stepper from "../../components/Stepper/Stepper";
+import LocationForm from "./LocationForm";
+import ButtonContainer from "./ButtonContainer";
+import ProductImg2 from "../../assets/img/product-2.jpg";
+import ProductImg3 from "../../assets/img/product-3.jpg";
+import ProductImg1 from "../../assets/img/product-1.jpg";
+import step1 from "../../assets/stepper/step1.png";
+import step2 from "../../assets/stepper/step2.png";
+import step3 from "../../assets/stepper/step3.png";
+import step4 from "../../assets/stepper/step4.png";
+import step5 from "../../assets/stepper/step5.png";
+import { useAppSelector } from "../../store/hooks";
+import ServicesList from "./ServicesList";
 
 function MainContainer() {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [imageSrc, setImageSrc] = useState<string>(step1);
-  const[topic, setTopic] = useState<string>('Select Your Location');
+  const [topic, setTopic] = useState<string>("Tell us Your Event Details");
+  const { categories } = useAppSelector((state) => state.category);
 
   const updateImageSrc = () => {
     switch (currentStep) {
@@ -42,51 +40,44 @@ function MainContainer() {
     }
   };
   const updateTopic = () => {
-    switch (currentStep) {
-      case 1:
-        setTopic('Select Your Venue');
-        break;
-      case 2:
-        setTopic('Select Your Catering Service');
-        break;
-      case 3:
-        setTopic('Select Your Decoration Service');
-        break;
-      case 4:
-        setTopic('Select Your Entertainment Service');
-        break;
+    if (currentStep === 0) {
+      setTopic("Tell us Your Event Details");
+    } else {
+      setTopic(`Select Your ${categories[currentStep - 1]?.name} Service`);
     }
-  }
+  };
+
+  useEffect(() => {
+    updateImageSrc();
+    updateTopic();
+  }, [currentStep]);
 
   const handleNextClick = () => {
-    setCurrentStep((prevStep) => Math.min(prevStep + 1, 5));
+    setCurrentStep((prevStep) => Math.min(prevStep + 1, categories.length));
     updateImageSrc();
     updateTopic();
   };
 
   function showStep(step: number) {
-    switch (step) {
-      case 1:
-        return <LocationForm />;
-      case 2:
-        return <VenueForm />;
-      case 3:
-        return <CateringForm />;
-      case 4:
-        return <Decoration/>;
-      case 5:
-        return <Entertainment />;
-      default:
-        return null;
+    if(step === 0){
+      return <LocationForm onNextClick={handleNextClick} />;
+    }else if(step > 0 && step <= categories.length){
+      // @ts-ignore
+      return <ServicesList currentStep={currentStep} onNextClick={handleNextClick} categoryId={categories[step - 1].id} />;
     }
   }
 
   return (
-    <div className='main-container' id='main-container'>
-      <Stepper currentStep={currentStep} onNextClick={handleNextClick} imageSrc={imageSrc} topic={topic}/>
+    <div className="main-container" id="main-container">
+      <Stepper
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        imageSrc={imageSrc}
+        topic={topic}
+      />
       {showStep(currentStep)}
       
-      <ButtonContainer onNextClick={handleNextClick} />
+
     </div>
   );
 }

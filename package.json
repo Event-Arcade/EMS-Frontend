@@ -20,6 +20,7 @@
     "@fullcalendar/list": "^6.1.11",
     "@fullcalendar/react": "^6.1.11",
     "@fullcalendar/timegrid": "^6.1.11",
+    "@microsoft/signalr": "^8.0.0",
     "@mui/material": "^5.15.12",
     "@reduxjs/toolkit": "^2.2.4",
     "@types/react-bootstrap": "^0.32.36",

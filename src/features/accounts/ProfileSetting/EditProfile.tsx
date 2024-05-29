@@ -39,30 +39,9 @@ export default function EditProfile({ close }: { close: () => void }) {
     profilePictureFile: undefined,
   });
 
-  const getFile = useCallback(
-    async (url: string) => {
-      const response = await axios.get(url, {
-        responseType: "blob",
-      });
-      if (response.data) {
-        const file = new File([response.data], "profilePicture", {
-          type: response.data.type,
-        });
-        setCurrentUser({
-          ...currentUser,
-          profilePictureFile: file,
-        });
-      }
-    },
-    [currentUser]
-  );
-
   useEffect(() => {
     if (user) {
       setCurrentUser(user);
-      if (user?.profilePictureURL) {
-        getFile(user.profilePictureURL);
-      }
     }
   }, [user]);
 
@@ -100,6 +79,21 @@ export default function EditProfile({ close }: { close: () => void }) {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    //get the location details
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log("Latitude is :", position.coords.latitude);
+        console.log("Longitude is :", position.coords.longitude);
+        setCurrentUser({
+          ...currentUser,
+          longitude: position.coords.longitude,
+          latitude: position.coords.latitude,
+        });
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
     const formData = new FormData();
     formData.append("firstName", currentUser.firstName);
     formData.append("lastName", currentUser.lastName);
@@ -232,36 +226,6 @@ export default function EditProfile({ close }: { close: () => void }) {
             </Form.Group>
           </Col>
         </Row>
-
-        <Row>
-          <Col md={6}>
-            <Form.Group controlId="formLongitude">
-              <Form.Label>Longitude</Form.Label>
-              <Form.Control
-                type="number"
-                name="longitude"
-                value={currentUser.longitude}
-                onChange={handleChange}
-                required
-                step="any"
-              />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group controlId="formLatitude">
-              <Form.Label>Latitude</Form.Label>
-              <Form.Control
-                type="number"
-                name="latitude"
-                value={currentUser.latitude}
-                onChange={handleChange}
-                required
-                step="any"
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-
         <Row>
           <Col md={6}>
             <Form.Group controlId="formProfilePictureFile" className="mt-3">
@@ -273,9 +237,9 @@ export default function EditProfile({ close }: { close: () => void }) {
               />
             </Form.Group>
           </Col>
-          <Col md={6}>
+          <Col md={6} className="mt-4">
             {loading ? (
-              <Button variant="success" className="mt-3">
+              <Button variant="success" className="mt-3 mx-auto">
                 <Spinner
                   as="span"
                   animation="grow"
@@ -288,7 +252,11 @@ export default function EditProfile({ close }: { close: () => void }) {
               </Button>
             ) : (
               <>
-                <Button variant="primary" type="submit" className="mt-3">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="mt-3 mx-auto"
+                >
                   Save Changes
                 </Button>
                 <Button

@@ -5,6 +5,7 @@ import shopSlice from '../features/shops/ShopSlice';
 import serviceSlice from '../features/shopServices/ShopServiceSlice';
 import adminStaticResourceSlice from '../features/adminStaticResources/AdminStaticResourceSlice';
 import feedBackSlice from '../features/feedBacks/FeedBackSlice';
+import packageSlice  from '../features/package/PackageSlice';
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         service: serviceSlice,
         adminStaticResource: adminStaticResourceSlice,
         feedback: feedBackSlice,
+        package: packageSlice,
     },
     });
 

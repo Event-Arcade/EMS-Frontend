@@ -24,6 +24,7 @@ export async function register(formData: FormData) {
     const response = await http.post(`${apiEndpoint}/register`, formData);
     if (response) {
       if (response.data.flag) {
+        localStorage.setItem("token", response.data.data);
         toast.success(response.data.message);
         return true;
       } else {
@@ -48,7 +49,6 @@ export async function getCurrentUserByToken() {
     if (!token) return null;
 
     const { data } = await http.get(apiEndpoint + "/getme");
-    console.log(data.data);
     return data.data as User;
   } catch (error) {
     console.log(error);
@@ -63,6 +63,7 @@ export async function update(formData: FormData) {
       toast.error("Not authorized. Please log in.");
       return false;
     }
+    console.log(formData);
     const { data } = await http.put(apiEndpoint + "/updateaccount", formData);
     if (data.flag) {
       toast.success(data.message);

@@ -6,6 +6,9 @@ export default interface ShopService {
     price: number;
     shopId: number;
     categoryId: number;
+    noOfGuests?: number;
+    indoor: boolean;
+    outdoor: boolean;
     shopServiceStaticResourcesURLs?: string[]|null;
     shopServiceStaticResourcesFiles?: File[]|null;
 }

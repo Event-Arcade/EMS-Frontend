@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./authenticationModal.css";
-import { signupUser } from "../UserAccountSlice";
+import { getCurrentUser, signupUser } from "../UserAccountSlice";
 import { useAppDispatch } from "../../../store/hooks";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -49,8 +49,11 @@ export default function SignUp() {
     formDataToSend.append("email", formData.email);
     formDataToSend.append("password", formData.password);
     try {
-      await dispatch(signupUser(formDataToSend)).unwrap();
-      navigate("/dashboard");
+      const resposne = await dispatch(signupUser(formDataToSend)).unwrap();
+      if (resposne) {
+        await dispatch(getCurrentUser());
+        navigate("/dashboard");
+      }
     } catch (e) {
       console.log(e);
     }

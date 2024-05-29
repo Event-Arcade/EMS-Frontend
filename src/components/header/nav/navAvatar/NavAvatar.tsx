@@ -45,8 +45,6 @@ function NavAvatar() {
         >
           <Image
             src={user?.profilePictureURL}
-            alt="Profile"
-            className="rounded-circle"
             roundedCircle
           />
           <span className="d-none d-md-block ps-2 mx-2">{user?.firstName}</span>
