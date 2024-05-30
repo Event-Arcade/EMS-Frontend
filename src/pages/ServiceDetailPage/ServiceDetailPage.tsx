@@ -18,11 +18,13 @@ import {
   shopServiceDelete,
   shopServiceUpdate,
 } from "../../features/shopServices/ShopServiceSlice";
+import { setSenderId, toggleChat } from "../../features/chats/ChatSlice";
 
 const ServiceDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { feedBacks } = useAppSelector((state) => state.feedback);
   const { shopServices, loading } = useAppSelector((state) => state.service);
+  const {shops} = useAppSelector((state) => state.shop);
   const { user } = useAppSelector((state) => state.account);
   const [currentShopService, setCurrentShopService] = useState<
     ShopService | undefined
@@ -158,6 +160,14 @@ const ServiceDetailPage: React.FC = () => {
     }
   };
 
+  const handleChat = (shopId: number) => {
+    const senderId = shops.find((shop) => shop.id === shopId)?.ownerId;
+    if (senderId) {
+      dispatch(setSenderId(senderId));
+      dispatch(toggleChat(true));
+    }
+  };
+
   return (
     <>
       <Container className="mt-5">
@@ -224,14 +234,22 @@ const ServiceDetailPage: React.FC = () => {
                 </Button>
               </>
             ) : (
-              <Button
-                variant="primary"
-                onClick={() => {
-                  navigate(`/shop/${currentShopService?.shopId}`);
-                }}
-              >
-                Goto Store
-              </Button>
+              <>
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    navigate(`/shop/${currentShopService?.shopId}`);
+                  }}
+                >
+                  Goto Store
+                </Button>{" "}
+                <Button
+                  variant="primary"
+                  onClick={() => {handleChat(currentShopService?.shopId ?? 0)}}
+                >
+                  Chat with Vendor
+                </Button>
+              </>
             )}
           </Col>
         </Row>

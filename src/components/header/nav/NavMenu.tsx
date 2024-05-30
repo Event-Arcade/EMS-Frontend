@@ -3,8 +3,23 @@ import NavNotice from "./navNotice/NavNotice";
 import NavMessage from "./navMessage/NavMessage";
 import NavAvatar from "./navAvatar/NavAvatar";
 import { useAppSelector } from "../../../store/hooks";
+import { useEffect } from "react";
+import chatService from "../../../services/chatService";
 function NavMenu({ handleShowSignUp }: { handleShowSignUp: () => void }) {
-  const { isLoggedIn } = useAppSelector((state) => state.account);
+  const { isLoggedIn, user } = useAppSelector((state) => state.account);
+
+  useEffect(() => {
+    if (user) {
+      chatService.startConnection();
+      chatService.onReceiveMessage((message: any) => {
+        console.log(message);
+      });
+
+      chatService.setUserActive(user?.id || "");
+    } else {
+      chatService.stopConnection();
+    }
+  }, [user]);
 
   return (
     <nav className="header-nav ms-auto">
@@ -18,7 +33,7 @@ function NavMenu({ handleShowSignUp }: { handleShowSignUp: () => void }) {
         ) : (
           <>
             <NavNotice />
-            <NavMessage />
+            <NavMessage chatService={chatService} />
             <NavAvatar />
           </>
         )}

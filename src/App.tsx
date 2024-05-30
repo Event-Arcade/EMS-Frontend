@@ -3,7 +3,6 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "reactjs-popup/dist/index.css";
 import "./App.css";
 import "remixicon/fonts/remixicon.css";
-
 import "bootstrap/dist/js/bootstrap.min.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";

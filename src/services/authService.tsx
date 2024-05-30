@@ -81,8 +81,15 @@ export async function update(formData: FormData) {
 
 export async function getAccountById(id: string) {
   try {
-    const { data } = await http.get(`${apiEndpoint}/${id}`);
-    return data.data as User;
+    const response = await http.get(`${apiEndpoint}/getaccountbyid/${id}`);
+    if (response) {
+      if (response.data.flag) {
+        return response.data.data;
+      } else {
+        toast.error(response.data.message);
+        return null;
+      }
+    }
   } catch (error) {
     console.error("Error:", error);
     return null;

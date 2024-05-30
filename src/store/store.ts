@@ -6,6 +6,7 @@ import serviceSlice from '../features/shopServices/ShopServiceSlice';
 import adminStaticResourceSlice from '../features/adminStaticResources/AdminStaticResourceSlice';
 import feedBackSlice from '../features/feedBacks/FeedBackSlice';
 import packageSlice  from '../features/package/PackageSlice';
+import chatSlice from '../features/chats/ChatSlice';
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
         adminStaticResource: adminStaticResourceSlice,
         feedback: feedBackSlice,
         package: packageSlice,
+        chat: chatSlice,
     },
     });
 
