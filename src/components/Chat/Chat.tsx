@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./chat.css";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { User } from "../../interfaces/User";
 import { getAccountById } from "../../services/authService";
+import { sendChatMessage } from "../../features/chats/ChatSlice";
+import ChatMessage from "../../interfaces/ChatMessage";
 
 // Define the types for the Chat component props
 interface ChatProps {
@@ -12,11 +14,26 @@ interface ChatProps {
 }
 
 const Chat: React.FC<ChatProps> = ({ isVisible, onClose, chatClient }) => {
-  const { isVisibleChat, senderId } = useAppSelector((state) => state.chat);
+  const { isVisibleChat, senderId, loading, myMessages } = useAppSelector(
+    (state) => state.chat
+  );
   const { user } = useAppSelector((state) => state.account);
   const [sender, setSender] = useState<User>();
   const [chat, setChat] = useState(false);
   const [currentMessage, setCurrentMessage] = useState("");
+  const [prevMessagesMine, setPrevMessagesMine] = useState<ChatMessage[]>([]);
+  const [prevMessagesReciever, setPrevMessagesReciever] = useState<
+    ChatMessage[]
+  >([]);
+  const dispatch = useAppDispatch();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Function to scroll to the bottom
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const init = useCallback(async () => {
     setChat(isVisibleChat);
@@ -26,17 +43,31 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose, chatClient }) => {
         setSender(responseUser);
       }
     }
+    scrollToBottom();
   }, [isVisibleChat, senderId]);
 
   useEffect(() => {
     init();
+    scrollToBottom();
   }, [init]);
 
   useEffect(() => {
     if (!chat) {
       setCurrentMessage("");
     }
-  }, [chat]);
+    const msgs = myMessages.filter(
+      (m) => m.senderId === user?.id || m.receiverId === senderId
+    );
+    if (msgs) {
+      if (msgs.length > 0) {
+        const mine = msgs.filter((m) => m.senderId === user?.id);
+        const reciever = msgs.filter((m) => m.senderId === senderId);
+        setPrevMessagesMine(mine);
+        setPrevMessagesReciever(reciever);
+      }
+    }
+    scrollToBottom();
+  }, [chat, myMessages]);
 
   const handleMessageClick = () => {
     setChat(true);
@@ -44,7 +75,17 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose, chatClient }) => {
 
   const handleSendMessage = async () => {
     if (user?.id) {
-      await chatClient.sendMessage(user.id, senderId, currentMessage);
+      const msg = await dispatch(
+        sendChatMessage({
+          receiverId: senderId,
+          message: currentMessage,
+        })
+      ).unwrap();
+      if (msg) {
+        setCurrentMessage("");
+        console.log("Message sent: ", msg);
+        scrollToBottom();
+      }
     }
   };
 
@@ -65,46 +106,6 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose, chatClient }) => {
               <span>John John</span>
               <p>Lorem ipsum dolor sit amet...</p>
             </div>
-            <div className="message">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt=""
-              />
-              <span>John John</span>
-              <p>Lorem ipsum dolor sit amet...</p>
-            </div>
-            <div className="message">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt=""
-              />
-              <span>John John</span>
-              <p>Lorem ipsum dolor sit amet...</p>
-            </div>
-            <div className="message">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt=""
-              />
-              <span>John John</span>
-              <p>Lorem ipsum dolor sit amet...</p>
-            </div>
-            <div className="message">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt=""
-              />
-              <span>John John</span>
-              <p>Lorem ipsum dolor sit amet...</p>
-            </div>
-            <div className="message">
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt=""
-              />
-              <span>John John</span>
-              <p>Lorem ipsum dolor sit amet...</p>
-            </div>
           </div>
           {chat && (
             <div className="chatBox">
@@ -118,10 +119,20 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose, chatClient }) => {
                 </span>
               </div>
               <div className="center">
-                {/* <div className="chatMessage">
-                  <p>Lorem ipsum dolor sit amet</p>
-                  <span>1 hour ago</span>
-                </div> */}
+                {prevMessagesReciever.map((msg_rc, idx) => (
+                  <div className="chatMessage">
+                    <p >{msg_rc.message}</p>
+                    <span >{String(msg_rc.date)}</span>
+                  </div>
+                ))}
+
+                {prevMessagesMine.map((msg_my, idx) => (
+                  <div  className="chatMessage own">
+                    <p >{msg_my.message}</p>
+                    <span >{String(msg_my.date)}</span>
+                  </div>
+                ))}
+                <div ref={messagesEndRef} className="my-5" />
               </div>
               <div className="bottom">
                 <textarea
@@ -129,7 +140,12 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose, chatClient }) => {
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
                 />
-                <button onClick={handleSendMessage}>Send</button>
+
+                {loading ? (
+                  <button>Sending</button>
+                ) : (
+                  <button onClick={handleSendMessage}>Send</button>
+                )}
               </div>
             </div>
           )}

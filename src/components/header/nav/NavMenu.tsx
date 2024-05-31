@@ -2,24 +2,59 @@ import "./nav.css";
 import NavNotice from "./navNotice/NavNotice";
 import NavMessage from "./navMessage/NavMessage";
 import NavAvatar from "./navAvatar/NavAvatar";
-import { useAppSelector } from "../../../store/hooks";
-import { useEffect } from "react";
-import chatService from "../../../services/chatService";
+import {useAppSelector } from "../../../store/hooks";
+import { useEffect, useState } from "react";
+import { HubConnectionBuilder } from "@microsoft/signalr"; // Import the necessary package
+
+
 function NavMenu({ handleShowSignUp }: { handleShowSignUp: () => void }) {
   const { isLoggedIn, user } = useAppSelector((state) => state.account);
+  const [chatClient, setChatClient] = useState<any>();
 
   useEffect(() => {
     if (user) {
-      chatService.startConnection();
-      chatService.onReceiveMessage((message: any) => {
-        console.log(message);
-      });
+      const newConnection = new HubConnectionBuilder()
+        .withUrl("http://localhost:5257/personalChatHub", {
+          withCredentials: false,
+        })
+        .withAutomaticReconnect()
+        .build();
 
-      chatService.setUserActive(user?.id || "");
+      setChatClient(newConnection);
     } else {
-      chatService.stopConnection();
+      chatClient?.stop();
+      setChatClient(undefined);
     }
   }, [user]);
+
+
+
+  useEffect(() => {
+    if (chatClient) {
+      // Event listeners
+      chatClient.on("ReceiveMessage", (message: any) => {
+        console.log("Message received: ", message);
+      });
+      chatClient.on("UserConnected", (message: any) => {
+        console.log("User connected: ", message);
+      });
+      chatClient.on("UserOffline", (message: any) => {
+        console.log("User offline: ", message);
+      });
+
+      chatClient.start().then(() => {
+        console.log("Connection started:");
+        chatClient.invoke("SetActive", user?.id);
+      });
+    }
+    return () => {
+      if (chatClient) {
+        chatClient.stop().then(() => {
+          console.log("Connection stopped");
+        });
+      }
+    };
+  }, [chatClient]);
 
   return (
     <nav className="header-nav ms-auto">
@@ -33,7 +68,7 @@ function NavMenu({ handleShowSignUp }: { handleShowSignUp: () => void }) {
         ) : (
           <>
             <NavNotice />
-            <NavMessage chatService={chatService} />
+            <NavMessage chatService={chatClient} />
             <NavAvatar />
           </>
         )}

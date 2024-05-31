@@ -21,7 +21,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate("/auth");
+      navigate("/");
     } else {
       if (user?.role == "vendor") {
         setUserShop(shops.find((shop) => shop.ownerId == user.id));
@@ -52,7 +52,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
                 }
               } else {
                 setIsSidebarVisible(false);
-                navigate("/auth");
+                navigate("/");
               }
             }}
           >

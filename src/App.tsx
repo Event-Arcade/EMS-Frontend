@@ -16,7 +16,7 @@ import ShopDetailPage from "./pages/ShopPage/ShopDetailPage";
 import VendorServices from "./pages/VendorServices/VendorServices";
 import { useCallback, useEffect, useState } from "react";
 import { getCurrentUser } from "./features/accounts/UserAccountSlice";
-import { useAppDispatch } from "./store/hooks";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 import AuthRoute from "./components/protectedRoutes/AuthRoute";
 import { categoryGetAll } from "./features/categories/CategorySlice";
 import { shopGetAll } from "./features/shops/ShopSlice";
@@ -32,10 +32,16 @@ import ClientDashBoardPage from "./pages/ClientDashboardPage/ClientDashBoardPage
 import Header from "./components/header/Header";
 import AuthenticationModal from "./features/accounts/authentication/AuthenticationModal";
 import { packageGetAll } from "./features/package/PackageSlice";
+import {
+  getAllChatMessages,
+  getAllUnReadChatMessages,
+  getChatUsersIds,
+} from "./features/chats/ChatSlice";
 
 export default function App() {
   const dispatch = useAppDispatch();
   const [showSignInModal, setShowSignInModal] = useState(false);
+  const { user, isLoggedIn } = useAppSelector((state) => state.account);
 
   const initApp = useCallback(async () => {
     await dispatch(getCurrentUser());
@@ -45,6 +51,9 @@ export default function App() {
     await dispatch(adminStaticResourceGetAll());
     await dispatch(feedBackGetAll());
     await dispatch(packageGetAll());
+    await dispatch(getAllChatMessages());
+    await dispatch(getAllUnReadChatMessages());
+    await dispatch(getChatUsersIds());
   }, [dispatch]);
 
   const handleShowSignUP = () => {
@@ -58,6 +67,12 @@ export default function App() {
   useEffect(() => {
     initApp();
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      initApp();
+    }
+  }, [isLoggedIn]);
   return (
     <>
       <Router>

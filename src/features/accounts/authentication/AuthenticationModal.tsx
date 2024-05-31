@@ -13,10 +13,10 @@ export default function AuthenticationModal({
   handleClose: any;
 }) {
   const [containerToggle, setContainerToggle] = useState(true);
-  const {isLoggedIn, user} = useAppSelector((state) => state.account);
+  const { isLoggedIn, user } = useAppSelector((state) => state.account);
 
   useEffect(() => {
-    if(isLoggedIn){
+    if (isLoggedIn) {
       handleClose();
     }
   }, [isLoggedIn, user]);
@@ -33,7 +33,6 @@ export default function AuthenticationModal({
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-
       <Modal.Body>
         <div
           className={containerToggle ? "authcontainer" : "authcontainer active"}

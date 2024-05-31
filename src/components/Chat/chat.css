@@ -152,6 +152,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-y: scroll;
 
     .top {
       background-color: #f6be0785;
@@ -178,12 +179,14 @@
       }
     }
     .center {
-      height: 350px;
+      height: 500px;
       overflow: scroll;
-      padding: 10px;
+      padding: 0 10px;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      margin-bottom: auto;
+
 
       .chatMessage{
         width: 50%;

@@ -31,7 +31,7 @@ export default function SignIn() {
         navigate("/dashboard");
       }
     }
-  }, [user]);
+  }, [isLoggedIn]);
 
   return (
     <div className="form-container sign-in">

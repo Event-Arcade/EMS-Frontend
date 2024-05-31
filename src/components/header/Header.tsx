@@ -5,6 +5,7 @@ import { FaBars } from "react-icons/fa";
 import { useState } from "react";
 import SideBar from "../sideBar/SideBar";
 import NavMenu from "./nav/NavMenu";
+import { useAppSelector } from "../../store/hooks";
 
 interface HeaderProps {
   getSideBarVisibility: () => void;
@@ -16,6 +17,7 @@ export default function Header({
   handleShowSignUp,
 }: HeaderProps) {
   const [isVisibleSideBar, setIsVisibleSideBar] = useState<boolean>(false);
+  const { isLoggedIn } = useAppSelector((state) => state.account);
 
   const toggleSideBar = () => {
     setIsVisibleSideBar(!isVisibleSideBar);
@@ -24,8 +26,12 @@ export default function Header({
 
   return (
     <header id="header" className="header fixed-top d-flex align-items-center">
-      <FaBars className="menu-icon" onClick={toggleSideBar} />
-      <SideBar isVisible={isVisibleSideBar} />
+      {isLoggedIn && (
+        <>
+          <FaBars className="menu-icon" onClick={toggleSideBar} />
+          <SideBar isVisible={isVisibleSideBar} />
+        </>
+      )}
       {/* logo */}
       <Logo />
       {/* searchbar */}
