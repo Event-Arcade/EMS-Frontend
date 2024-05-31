@@ -1,32 +1,32 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./chat.css";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { User } from "../../interfaces/User";
-import { getAccountById } from "../../services/authService";
-import { sendChatMessage } from "../../features/chats/ChatSlice";
-import ChatMessage from "../../interfaces/ChatMessage";
+import {
+  chatGetUserInboxMessages,
+  chatSendMessage,
+  setSenderId,
+  setChatBarVisibility,
+  setChatInboxVisibility,
+  chatGetUserInbox,
+} from "../../features/chats/ChatSlice";
+import { Badge } from "react-bootstrap";
+import ChatInbox from "../../interfaces/ChatInbox";
+import { getNewChatInbox } from "../../services/chatService";
 
-// Define the types for the Chat component props
-interface ChatProps {
-  isVisible: boolean; // Boolean value indicating whether the chat window is visible
-  onClose: () => void; // Function to handle closing the chat window
-  chatClient: any;
-}
-
-const Chat: React.FC<ChatProps> = ({ isVisible, onClose, chatClient }) => {
-  const { isVisibleChat, senderId, loading, myMessages } = useAppSelector(
-    (state) => state.chat
-  );
-  const { user } = useAppSelector((state) => state.account);
-  const [sender, setSender] = useState<User>();
-  const [chat, setChat] = useState(false);
-  const [currentMessage, setCurrentMessage] = useState("");
-  const [prevMessagesMine, setPrevMessagesMine] = useState<ChatMessage[]>([]);
-  const [prevMessagesReciever, setPrevMessagesReciever] = useState<
-    ChatMessage[]
-  >([]);
+const Chat: React.FC = () => {
   const dispatch = useAppDispatch();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const {
+    senderId,
+    loading,
+    myChatInboxs,
+    myChatInbox,
+    chatBarVisibility,
+    chatInboxVisibility,
+  } = useAppSelector((state) => state.chat);
+  const { user } = useAppSelector((state) => state.account);
+  const [currentChatInbox, setCurrentChatInbox] = useState<ChatInbox>();
+  const [currentMessage, setCurrentMessage] = useState("");
 
   // Function to scroll to the bottom
   const scrollToBottom = () => {
@@ -35,48 +35,10 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose, chatClient }) => {
     }
   };
 
-  const init = useCallback(async () => {
-    setChat(isVisibleChat);
-    if (senderId) {
-      const responseUser = await getAccountById(senderId);
-      if (responseUser) {
-        setSender(responseUser);
-      }
-    }
-    scrollToBottom();
-  }, [isVisibleChat, senderId]);
-
-  useEffect(() => {
-    init();
-    scrollToBottom();
-  }, [init]);
-
-  useEffect(() => {
-    if (!chat) {
-      setCurrentMessage("");
-    }
-    const msgs = myMessages.filter(
-      (m) => m.senderId === user?.id || m.receiverId === senderId
-    );
-    if (msgs) {
-      if (msgs.length > 0) {
-        const mine = msgs.filter((m) => m.senderId === user?.id);
-        const reciever = msgs.filter((m) => m.senderId === senderId);
-        setPrevMessagesMine(mine);
-        setPrevMessagesReciever(reciever);
-      }
-    }
-    scrollToBottom();
-  }, [chat, myMessages]);
-
-  const handleMessageClick = () => {
-    setChat(true);
-  };
-
   const handleSendMessage = async () => {
     if (user?.id) {
       const msg = await dispatch(
-        sendChatMessage({
+        chatSendMessage({
           receiverId: senderId,
           message: currentMessage,
         })
@@ -89,49 +51,107 @@ const Chat: React.FC<ChatProps> = ({ isVisible, onClose, chatClient }) => {
     }
   };
 
+  const handleInboxClose = () => {
+    dispatch(setChatInboxVisibility(false));
+    dispatch(setSenderId(""));
+  };
+
+  const handleMessageClick = async (id: string) => {
+    dispatch(setSenderId(id));
+    dispatch(setChatInboxVisibility(true));
+  };
+
+  const setChatInbox = useCallback(async () => {
+    if (senderId !== "") {
+      const temp = myChatInboxs.find((cht) => cht.id === senderId);
+      if (temp) {
+        setCurrentChatInbox(temp);
+        const result = await dispatch(
+          chatGetUserInboxMessages(senderId)
+        ).unwrap();
+        if (result) {
+          dispatch(setChatInboxVisibility(true));
+          scrollToBottom();
+        }
+      } else {
+        const result = await getNewChatInbox(senderId);
+        if (result) {
+          setCurrentChatInbox(result);
+          dispatch(setChatInboxVisibility(true));
+          scrollToBottom();
+        }
+      }
+    } else {
+      return;
+    }
+  }, [chatInboxVisibility, myChatInbox]);
+
+  useEffect(() => {
+    setChatInbox();
+  }, [senderId]);
+
   return (
-    <div className={`chat-window ${isVisible ? "visible" : ""}`}>
+    <div className={`chat-window ${chatBarVisibility ? "visible" : ""}`}>
       <div className="chat-header">
-        <i className="bi bi-x-lg " onClick={onClose} style={{}}></i>
+        <i
+          className="bi bi-x-lg "
+          onClick={() => {
+            dispatch(setChatBarVisibility(false));
+          }}
+          style={{}}
+        ></i>
       </div>
       <div className="chat-content">
         <div className="chat">
           <div className="messages">
             <h1>Messages</h1>
-            <div className="message" onClick={handleMessageClick}>
-              <img
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt=""
-              />
-              <span>John John</span>
-              <p>Lorem ipsum dolor sit amet...</p>
-            </div>
+            <hr />
+            {myChatInboxs.map((cht) => (
+              <>
+                <div
+                  className="message"
+                  onClick={() => {
+                    handleMessageClick(cht?.id ?? "");
+                  }}
+                >
+                  <img src={cht?.profilePictureURL} alt="" />
+                  {cht.unreadMessages && cht.unreadMessages > 0 && (
+                    <Badge bg="secondary">{cht.unreadMessages}</Badge>
+                  )}
+                  {cht.isActive && <Badge bg="primary">Online</Badge>}
+                  <span>{cht.firstName}</span>
+                  <p>{cht.lastMessage}</p>
+                  <p>{cht.lastMessageDate?.toString()}</p>
+                </div>
+                <hr />
+              </>
+            ))}
           </div>
-          {chat && (
+          {chatInboxVisibility && (
             <div className="chatBox">
               <div className="top">
                 <div className="user">
-                  <img src={sender?.profilePictureURL || ""} alt="" />
-                  {sender?.firstName}
+                  <img src={currentChatInbox?.profilePictureURL || ""} alt="" />
+                  {currentChatInbox?.firstName}
                 </div>
-                <span className="close" onClick={() => setChat(false)}>
+                <span className="close" onClick={handleInboxClose}>
                   X
                 </span>
               </div>
               <div className="center">
-                {prevMessagesReciever.map((msg_rc, idx) => (
-                  <div className="chatMessage">
-                    <p >{msg_rc.message}</p>
-                    <span >{String(msg_rc.date)}</span>
+                {myChatInbox.map((msg_rc, idx) => (
+                  <div
+                    className={
+                      msg_rc.senderId !== senderId
+                        ? "chatMessage own"
+                        : "chatMessage"
+                    }
+                  >
+                    <p>{msg_rc.message}</p>
+                    <span>{String(msg_rc.date)}</span>
                   </div>
                 ))}
 
-                {prevMessagesMine.map((msg_my, idx) => (
-                  <div  className="chatMessage own">
-                    <p >{msg_my.message}</p>
-                    <span >{String(msg_my.date)}</span>
-                  </div>
-                ))}
                 <div ref={messagesEndRef} className="my-5" />
               </div>
               <div className="bottom">

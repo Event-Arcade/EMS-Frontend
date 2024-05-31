@@ -1,10 +1,11 @@
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { setLogout } from "../../../../features/accounts/UserAccountSlice";
 import { useNavigate } from "react-router-dom";
-import { Dropdown, Image } from "react-bootstrap";
+import { Badge, Dropdown, Image } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ShopForm from "../../../../features/shops/ShopForm";
+import { setChatBarVisibility, setChatInboxVisibility } from "../../../../features/chats/ChatSlice";
 
 function NavAvatar() {
   const { user } = useAppSelector((state) => state.account);
@@ -20,6 +21,8 @@ function NavAvatar() {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     dispatch(setLogout());
+    dispatch(setChatBarVisibility(false));
+    dispatch(setChatInboxVisibility(false));
     navigate("/");
   };
 
@@ -36,6 +39,7 @@ function NavAvatar() {
     }
   };
 
+  //TODO: Add a badge for user
   return (
     <>
       <Dropdown align="end" className="nav-item pe-3">
@@ -43,10 +47,8 @@ function NavAvatar() {
           as="a"
           className="nav-link nav-profile d-flex align-items-center pe-0"
         >
-          <Image
-            src={user?.profilePictureURL}
-            roundedCircle
-          />
+          <Image src={user?.profilePictureURL} roundedCircle />
+          <Badge bg="success">.</Badge>
           <span className="d-none d-md-block ps-2 mx-2">{user?.firstName}</span>
         </Dropdown.Toggle>
 

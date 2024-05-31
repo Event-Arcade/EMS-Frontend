@@ -33,9 +33,7 @@ import Header from "./components/header/Header";
 import AuthenticationModal from "./features/accounts/authentication/AuthenticationModal";
 import { packageGetAll } from "./features/package/PackageSlice";
 import {
-  getAllChatMessages,
-  getAllUnReadChatMessages,
-  getChatUsersIds,
+  chatGetUsersInboxs,
 } from "./features/chats/ChatSlice";
 
 export default function App() {
@@ -51,9 +49,7 @@ export default function App() {
     await dispatch(adminStaticResourceGetAll());
     await dispatch(feedBackGetAll());
     await dispatch(packageGetAll());
-    await dispatch(getAllChatMessages());
-    await dispatch(getAllUnReadChatMessages());
-    await dispatch(getChatUsersIds());
+    await dispatch(chatGetUsersInboxs());
   }, [dispatch]);
 
   const handleShowSignUP = () => {

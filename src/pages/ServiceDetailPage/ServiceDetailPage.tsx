@@ -18,13 +18,17 @@ import {
   shopServiceDelete,
   shopServiceUpdate,
 } from "../../features/shopServices/ShopServiceSlice";
-import { setSenderId, toggleChat } from "../../features/chats/ChatSlice";
+import {
+  setSenderId,
+  setChatBarVisibility,
+  setChatInboxVisibility,
+} from "../../features/chats/ChatSlice";
 
 const ServiceDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { feedBacks } = useAppSelector((state) => state.feedback);
   const { shopServices, loading } = useAppSelector((state) => state.service);
-  const {shops} = useAppSelector((state) => state.shop);
+  const { shops } = useAppSelector((state) => state.shop);
   const { user } = useAppSelector((state) => state.account);
   const [currentShopService, setCurrentShopService] = useState<
     ShopService | undefined
@@ -164,7 +168,8 @@ const ServiceDetailPage: React.FC = () => {
     const senderId = shops.find((shop) => shop.id === shopId)?.ownerId;
     if (senderId) {
       dispatch(setSenderId(senderId));
-      dispatch(toggleChat(true));
+      dispatch(setChatInboxVisibility(true));
+      dispatch(setChatBarVisibility(true));
     }
   };
 
@@ -245,7 +250,9 @@ const ServiceDetailPage: React.FC = () => {
                 </Button>{" "}
                 <Button
                   variant="primary"
-                  onClick={() => {handleChat(currentShopService?.shopId ?? 0)}}
+                  onClick={() => {
+                    handleChat(currentShopService?.shopId ?? 0);
+                  }}
                 >
                   Chat with Vendor
                 </Button>

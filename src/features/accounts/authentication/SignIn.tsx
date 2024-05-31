@@ -27,11 +27,11 @@ export default function SignIn() {
         navigate("/admin/dashboard");
       } else if (user?.role === "vendor") {
         navigate("/vendor/dashboard");
-      } else {
+      } else if(user?.role === "client") {
         navigate("/dashboard");
       }
     }
-  }, [isLoggedIn]);
+  }, [user, isLoggedIn]);
 
   return (
     <div className="form-container sign-in">

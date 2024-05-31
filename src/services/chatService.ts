@@ -3,36 +3,6 @@ import http from "./httpsClient";
 
 const baseURL = "/chat";
 
-export async function getChatMessages() {
-  try {
-    const response = await http.get(baseURL + `/getall`);
-    if(response){
-        return response.data;
-    }else{
-        return null;
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    toast.error("Failed to fetch messages");
-    return;
-  }
-}
-
-export async function getChatMessageById(msgId: number) {
-  try {
-    const response = await http.get(baseURL + `/get/${msgId}`);
-    if(response){
-        return response.data;
-    }else{
-        return null;
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    toast.error("Failed to fetch messages");
-    return;
-  }
-}
-
 export async function sendNewMessage(formData: any) {
   try {
     const response = await http.post(baseURL + "/send", formData);
@@ -48,9 +18,9 @@ export async function sendNewMessage(formData: any) {
   }
 }
 
-export async function getUnreadMessages() {
+export async function getChatUsers() {
     try {
-        const response = await http.get(baseURL + `/getunread`);
+        const response = await http.get(baseURL + `/get-my-chats`);
         if(response){
             return response.data;
         }else{
@@ -63,9 +33,54 @@ export async function getUnreadMessages() {
     }
 }
 
-export async function getChatUsers() {
+export async function getChatUser(id : string) {
     try {
-        const response = await http.get(baseURL + `/get-my-chat-users`);
+        const response = await http.get(baseURL + `/get-my-chat/${id}`);
+        if(response){
+            return response.data;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        toast.error("Failed to fetch messages");
+        return;
+    }
+}
+
+export async function getChatUserInbox(id : string) {
+    try {
+        const response = await http.get(baseURL + `/get-chat-history/${id}`);
+        if(response){
+            return response.data;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        toast.error("Failed to fetch messages");
+        return;
+    }
+}
+
+export async function setChatAsReaded(id: string) {
+    try {
+        const response = await http.post(baseURL + `/set-message-read/${id}`);
+        if(response){
+            return response.data;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        toast.error("Failed to fetch messages");
+        return;
+    }
+}
+
+export async function getNewChatInbox(id: string) {
+    try {
+        const response = await http.get(baseURL + `/get-new-chat/${id}`);
         if(response){
             return response.data;
         }else{
