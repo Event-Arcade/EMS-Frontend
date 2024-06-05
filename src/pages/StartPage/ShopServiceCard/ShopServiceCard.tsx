@@ -2,8 +2,9 @@ import { Badge, Carousel } from "react-bootstrap";
 import "./shopServiceCard.css";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { addSubPackage } from "../../../features/package/PackageSlice";
-import SubPackage from '../../../interfaces/SubPackage';
+import { addSubPackageToTemporary, removeSubPackageFromTemporary } from "../../../features/package/PackageSlice";
+import SubPackage from "../../../interfaces/SubPackage";
+import { useMemo } from "react";
 
 interface ShopService {
   id: number;
@@ -21,20 +22,39 @@ export default function ShopServiceCard({
 }) {
   const naviagate = useNavigate();
   const dispatch = useAppDispatch();
-  const { description, orderDate } = useAppSelector((state) => state.package);
+  const { description, orderDate, tempararyPackage } = useAppSelector(
+    (state) => state.package
+  );
 
-  const handleClick = () => {
+  const isServiceSelected = useMemo(() => {
+    return tempararyPackage.subPackages.some(
+      (subPackage) => subPackage.serviceId === shopService.id
+    );
+  }, [tempararyPackage.subPackages, shopService.id]);
+
+  // add the selected service to the package
+  const handleAddService = () => {
     const data: SubPackage = {
       description: description,
       orderTime: orderDate,
       serviceId: shopService.id,
     };
     try {
-      dispatch(addSubPackage(data));
+      dispatch(addSubPackageToTemporary(data));
     } catch (e) {
       console.error(e);
     }
   };
+
+  // remove the selected service from the package
+  const handleRemoveService = () => {
+    try {
+      dispatch(removeSubPackageFromTemporary(shopService.id));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <div className="Service-form-item">
       <Carousel>
@@ -57,9 +77,15 @@ export default function ShopServiceCard({
           </Badge>
         </div>
         <div className="Service-form-button-row">
-          <button className="Service-form-add" onClick={handleClick}>
-            Book
-          </button>
+          {!isServiceSelected ? (
+            <button className="Service-form-add" onClick={handleAddService}>
+              Book
+            </button>
+          ) : (
+            <button className="Service-form-add" onClick={handleRemoveService}>
+              Remove
+            </button>
+          )}
           <button
             className="Service-form-visit"
             onClick={() => {

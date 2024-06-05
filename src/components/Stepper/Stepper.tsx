@@ -1,26 +1,22 @@
-import React, { useState } from "react";
 import "./stepper.css";
 import "../TextStyle.css";
-import ProductImg2 from "../../assets/img/product-2.jpg";
-import ProductImg3 from "../../assets/img/product-3.jpg";
-import ProductImg1 from "../../assets/img/product-1.jpg";
-import Searchbar from "../header/searchBar/Searchbar";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useMemo } from "react";
+import { setCurrentStep } from "../../features/package/PackageSlice";
+import step1 from "./../../assets/stepper/step1.png";
 
-interface StepperProps {
-  currentStep: number;
-  setCurrentStep: (arg0: number) => void;
-  imageSrc: string;
-  topic: string;
-}
-
-function Stepper({
-  currentStep,
-  setCurrentStep,
-  imageSrc,
-  topic,
-}: StepperProps) {
+function Stepper() {
+  const dispatch = useAppDispatch();
   const { categories } = useAppSelector((state) => state.category);
+  const { currentStep } = useAppSelector((state) => state.package);
+
+  const topic = useMemo(() => {
+    if (currentStep === 0) {
+      return "Tell us Your Event Details";
+    } else {
+      return `Select Your ${categories[currentStep - 1]?.name} Service`;
+    }
+  }, [currentStep, categories]);
 
   return (
     <div className="st-body">
@@ -41,9 +37,6 @@ function Stepper({
               className={`step-wizard-item ${
                 currentStep === 0 ? "current-item" : ""
               }`}
-              onClick={() => {
-                setCurrentStep(0);
-              }}
             >
               <span
                 className={`progress-count ${currentStep >= 0 ? "filled" : ""}`}
@@ -59,7 +52,7 @@ function Stepper({
                   currentStep === index + 1 ? "current-item" : ""
                 }`}
                 onClick={() => {
-                  setCurrentStep(index + 1);
+                  dispatch(setCurrentStep(index + 1));
                 }}
               >
                 <span
@@ -75,7 +68,15 @@ function Stepper({
           </ul>
         </div>
         <div className="right-section">
-          <img src={imageSrc} alt="" className="st-image" />
+          {currentStep === 0 ? (
+            <img src={step1} alt="" className="st-image" />
+          ) : (
+            <img
+              src={categories[currentStep-1].imageUrl}
+              alt=""
+              className="st-image"
+            />
+          )}
         </div>
       </section>
     </div>

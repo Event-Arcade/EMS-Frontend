@@ -1,47 +1,25 @@
-import { useCallback, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import "./servicesList.css";
 import "./locationForm.css";
 import SelectBox from "../../components/SelectBox/SelectBox";
 import { useAppSelector } from "../../store/hooks";
-import ShopService from "../../interfaces/ShopService";
 import ButtonContainer from "./ButtonContainer";
 import ShopServiceCard from "./ShopServiceCard/ShopServiceCard";
 
-export default function ServicesList({
-  currentStep,
-  categoryId,
-  onNextClick,
-}: {
-  currentStep: number;
-  categoryId: number;
-  onNextClick: () => void;
-}) {
+export default function ServicesList({ categoryId }: { categoryId: number }) {
   const { shopServices } = useAppSelector((state) => state.service);
-  const [selectedItems, setSelectedItems] = useState<ShopService[]>([]);
-  const [tempCategoryId, setTempCategoryId] = useState<number | null>(null);
-  const items = useCallback(() => {
-    setTempCategoryId(categoryId);
-    return shopServices.filter((service) => service.categoryId === categoryId);
-  }, [shopServices, categoryId]);
-
   const [selectNoOfGuest, setSelectNoOfGuest] = useState("");
   const [selectedBudget, setselectedBudget] = useState("");
   const [selectedRating, setselectedRating] = useState("");
 
-  useEffect(() => {
-    const result = items();
-    if (result) {
-      setSelectedItems(result);
-    }
-  }, [items]);
-
-  // filter the services when onOfGuest, budget or rating changes
-  useEffect(() => {
-    let result = items();
+  const selectedItems = useMemo(() => {
+    let result = shopServices.filter(
+      (service) => service.categoryId === categoryId
+    );
     if (selectNoOfGuest) {
       result = result.filter(
         (item) =>
-          item.noOfGuests && item.noOfGuests <= parseInt(selectNoOfGuest)
+          item.noOfGuests && item.noOfGuests >= parseInt(selectNoOfGuest)
       );
     }
     if (selectedBudget) {
@@ -49,14 +27,17 @@ export default function ServicesList({
     }
     if (selectedRating) {
       result = result.filter(
-        (item) => item.rating && item.rating <= parseInt(selectedRating)
+        (item) => item.rating && item.rating >= parseInt(selectedRating)
       );
     }
-    if (result.length === 0) {
-      result = items();
-    }
-    setSelectedItems(result);
-  }, [selectNoOfGuest, selectedBudget, selectedRating, tempCategoryId]);
+    return result;
+  }, [
+    shopServices,
+    categoryId,
+    selectNoOfGuest,
+    selectedBudget,
+    selectedRating,
+  ]);
 
   const noOfGuest = [
     { label: "Under 50", value: 50 },
@@ -108,7 +89,7 @@ export default function ServicesList({
           style={{ width: "200px", margin: "40px 50px 10px 0px" }}
         />
       </div>
-      <ButtonContainer currentStep={currentStep} onNextClick={onNextClick} />
+      <ButtonContainer />
       <div className="Service-form-container">
         <div className="Service-form-list">
           {selectedItems.map((item, index) => (

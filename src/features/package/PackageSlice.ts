@@ -4,6 +4,7 @@ import { createPackage, deletePackage, getAllPackages, getAllSubPackages, getPac
 import SubPackage from '../../interfaces/SubPackage';
 
 interface PackageStatus {
+    currentStep: number;
     tempararyPackage: Package;
     description: string,
     orderDate: Date;
@@ -14,6 +15,7 @@ interface PackageStatus {
 };
 
 const initialState: PackageStatus = {
+    currentStep: 0,
     tempararyPackage: {
         userId: "",
         subPackages: []
@@ -147,7 +149,7 @@ export const packageSlice = createSlice({
         updateOrderDate: (state, action) => {
             state.orderDate = action.payload;
         },
-        addSubPackage: (state, action) => {
+        addSubPackageToTemporary: (state, action) => {
             // check if the subpackage already has the subpackage using id
             const subPackage = state.tempararyPackage.subPackages.find((p) => p.serviceId === action.payload.serviceId);
             if (subPackage) {
@@ -155,11 +157,23 @@ export const packageSlice = createSlice({
             } 
             state.tempararyPackage.subPackages.push(action.payload);
         },
+        removeSubPackageFromTemporary: (state, action) => {
+            state.tempararyPackage.subPackages = state.tempararyPackage.subPackages.filter((p) => p.serviceId !== action.payload);
+        },
         packageRemoveEntity: (state, action) => {
             state.packages = state.packages.filter((p) => p.id !== action.payload);
         },
         subPackageRemoveEntity: (state, action) => {
             state.subPackages = state.subPackages.filter((p) => p.id !== action.payload);
+        },
+        setCurrentStep: (state, action) => {
+            state.currentStep = action.payload;
+        },
+        incrementStep: (state) => {
+            state.currentStep += 1;
+        },
+        decrementStep: (state) => {
+            state.currentStep -= 1;
         }
     },
     extraReducers: (builder) => {
@@ -258,5 +272,5 @@ export const packageSlice = createSlice({
     },
 });
 
-export const { clearState, updateDescription, updateOrderDate, addSubPackage, subPackageRemoveEntity, packageRemoveEntity } = packageSlice.actions;
+export const { clearState, updateDescription, updateOrderDate, addSubPackageToTemporary, subPackageRemoveEntity, packageRemoveEntity , removeSubPackageFromTemporary,setCurrentStep,incrementStep, decrementStep} = packageSlice.actions;
 export default packageSlice.reducer;
