@@ -12,9 +12,7 @@ export default function VendorSubPackageTable() {
 
   const mySubPackages = useMemo(() => {
     // sort the subpackages by date
-    return subPackages.sort((a, b) => {
-      return new Date(b.orderTime).getTime() - new Date(a.orderTime).getTime();
-    });
+    return subPackages;
   }, [subPackages]);
 
   const statusToBadge = (status: number) => {
@@ -67,7 +65,7 @@ export default function VendorSubPackageTable() {
   };
 
   const getShopName = (shopId: number) => {
-    const shop = shops.find((shop) => shop.id === shopId);
+    const shop = shops.find((shop) => shop.id == shopId);
     return shop?.name ?? "Unknown";
   }
 
@@ -84,7 +82,7 @@ export default function VendorSubPackageTable() {
             <th>Description</th>
             <th>Order Time</th>
             <th>Package ID</th>
-            <th>Service ID</th>
+            <th>Service Name</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>

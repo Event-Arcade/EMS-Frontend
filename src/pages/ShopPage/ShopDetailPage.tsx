@@ -1,6 +1,6 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import ServiceList from "../../components/serviceList/ServiceList";
 import { Popup } from "reactjs-popup";
@@ -17,6 +17,9 @@ export default function ShopDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  // conformation dialog state
+  const [show, setShow] = useState(false);
 
   const currentShopId = useMemo(() => {
     return id ? Number(id) : null;
@@ -36,12 +39,13 @@ export default function ShopDetailPage() {
     }
   }, [shops, shopServices]);
 
-  const handleDelete = async () => {
-    // TODO: add confirmation dialog
+  // conformation dialog handlers
+  const handleDeleteConform = async () => {
     try {
       const resposne = await dispatch(
         shopDelete(currentShopId as unknown as number)
       ).unwrap();
+      handleClose();
       if (resposne) {
         await dispatch(getCurrentUser()).unwrap();
         navigate("/");
@@ -51,15 +55,16 @@ export default function ShopDetailPage() {
     }
   };
 
+  // conformation dialog handlers
+  const handleClose = () => setShow(false);
+
   return (
     <>
       <Container className="shop-page-container">
         <div
           className="shop-header"
           style={{
-            backgroundImage: `url(${
-              currentShop?.backgroundImageURL
-            })`,
+            backgroundImage: `url(${currentShop?.backgroundImageURL})`,
           }}
         >
           <div className="shop-header-overlay"></div>
@@ -74,11 +79,9 @@ export default function ShopDetailPage() {
           <p>Rating: {currentShop?.rating}</p>
         </div>
         <div className="service-list">
-          <ServiceList
-            services={currentShopServices}
-          />
+          <ServiceList services={currentShopServices} />
         </div>
-        {user?.id == currentShop?.ownerId &&
+        {user?.id == currentShop?.ownerId && (
           <>
             <div className="update-button">
               <Popup
@@ -93,7 +96,10 @@ export default function ShopDetailPage() {
                 {
                   // @ts-ignore
                   (close) => (
-                    <CreateShopService close={close} shopId={currentShopId || 0} />
+                    <CreateShopService
+                      close={close}
+                      shopId={currentShopId || 0}
+                    />
                   )
                 }
               </Popup>
@@ -111,12 +117,42 @@ export default function ShopDetailPage() {
                 }
               </Popup>
             </div>
-            <Button variant="danger" onClick={handleDelete}>
+            <Button
+              variant="danger"
+              onClick={() => {
+                setShow(true);
+              }}
+            >
               Delete Shop
             </Button>
           </>
-        }
+        )}
       </Container>
+
+      {/* conformation dialog for shop delete */}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure you want to delete this shop?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ul>
+            <li>Shop Name: {currentShop?.name}</li>
+            <li>Shop Description: {currentShop?.description}</li>
+          </ul>
+          <p>
+            This action cannot be undone. Are you sure you want to delete this
+            shop?
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="warning" onClick={handleDeleteConform}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

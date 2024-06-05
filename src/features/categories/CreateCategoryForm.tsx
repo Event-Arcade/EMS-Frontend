@@ -1,11 +1,12 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import Category from "../../interfaces/Category";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { categoryCreate } from "./CategorySlice";
 
 export default function CreateCategoryForm() {
   const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.category);
   const [category, setCategory] = useState<Category>({
     name: "",
     description: "",
@@ -94,15 +95,25 @@ export default function CreateCategoryForm() {
         />
       </Form.Group>
 
-      <Button
-        style={{ width: 100, margin: "20px" }}
-        variant="warning"
-        type="submit"
-      >
-        Submit
-      </Button>
+      {!loading ? (
+        <Button
+          style={{ width: 100, margin: "20px" }}
+          variant="warning"
+          type="submit"
+        >
+          Submit
+        </Button>
+      ) : (
+        <Button
+          style={{ width: 100, margin: "20px" }}
+          variant="warning"
+          type="submit"
+          disabled
+        >
+          Loading...
+        </Button>
+      )}
     </Form>
   );
 }
 
-//TODO: add loading spinner
