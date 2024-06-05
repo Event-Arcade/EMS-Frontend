@@ -33,7 +33,7 @@ export default function ServiceList({ services }: { services: ShopService[] }) {
   const endIndex = Math.min(startIndex + servicesPerSection, services.length);
   const servicesToDisplay = services.slice(startIndex, endIndex);
 
-  if(services.length === 0){
+  if (services.length === 0) {
     return <div className="shop-list">No services found</div>;
   }
 
@@ -44,8 +44,6 @@ export default function ServiceList({ services }: { services: ShopService[] }) {
         {servicesToDisplay.map((service, index) => (
           <div className="col-md-4" key={index}>
             <ShopServiceCard shopService={service} />
-              {/* // TODO: src should be capable of providing more than one urls
-              // TODO: this card shod be rename as ServiceCard */}
           </div>
         ))}
       </div>

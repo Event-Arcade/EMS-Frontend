@@ -3,7 +3,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./authenticationModal.css";
 import { MouseEvent } from "react";
 import { loginUser } from "../UserAccountSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 export default function SignIn() {
@@ -11,6 +11,7 @@ export default function SignIn() {
     (state) => state.account
   );
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,9 +29,14 @@ export default function SignIn() {
       if (user?.role === "admin") {
         navigate("/admin/dashboard");
       } else if (user?.role === "vendor") {
+        console.log(location);
         navigate("/vendor/dashboard");
       } else if (user?.role === "client") {
-        navigate("/dashboard");
+        if (location.pathname !== "/dashboard") {
+          navigate(location.pathname);
+        } else {
+          navigate("/dashboard");
+        }
       }
     }
   }, [user, isLoggedIn]);
@@ -67,7 +73,9 @@ export default function SignIn() {
           onChange={(e) => setPassword(e.target.value)}
         />
         {loading ? (
-          <button disabled type="submit">Loading ...</button>
+          <button disabled type="submit">
+            Loading ...
+          </button>
         ) : (
           <button type="submit">Sign In</button>
         )}

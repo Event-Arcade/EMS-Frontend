@@ -39,7 +39,7 @@ function NavAvatar() {
     }
   };
 
-  //TODO: Add a badge for user
+  //TODO: change this badge component into online status like messanger
   return (
     <>
       <Dropdown align="end" className="nav-item pe-3">

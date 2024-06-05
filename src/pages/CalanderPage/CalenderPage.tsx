@@ -1,5 +1,3 @@
-import CalendarComponent from "./CalendarComponent";
-
 interface EventType {
   id: string; 
   title: string; 
@@ -30,7 +28,6 @@ const CalenderPage: React.FC = () => {
     },];
   return (
     <>
-      <CalendarComponent events={eventsData} />
     </>
   );
 };

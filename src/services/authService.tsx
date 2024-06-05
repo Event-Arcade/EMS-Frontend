@@ -1,4 +1,3 @@
-import { useRevalidator } from "react-router-dom";
 import { User } from "../interfaces/User";
 import http from "./httpsClient";
 import { toast } from "react-toastify";
@@ -20,7 +19,6 @@ export async function login(formData: FormData) {
 }
 
 export async function register(formData: FormData) {
-  console.log(formData);
   try {
     const response = await http.post(`${apiEndpoint}/register`, formData);
     if (response) {

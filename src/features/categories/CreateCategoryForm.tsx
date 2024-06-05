@@ -10,7 +10,7 @@ export default function CreateCategoryForm() {
     name: "",
     description: "",
     imageFile: null,
-    imageUrl: "",
+    categoryImagePath: "",
   });
 
   const handleSubmit = async (e: FormEvent) => {
@@ -29,7 +29,7 @@ export default function CreateCategoryForm() {
       name: "",
       description: "",
       imageFile: null,
-      imageUrl: "",
+      categoryImagePath: "",
     });
   };
 

@@ -1,13 +1,9 @@
-import  {
-  useState,
-  MouseEvent,
-  ChangeEvent,
-} from "react";
+import { useState, MouseEvent, ChangeEvent } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./authenticationModal.css";
 import { getCurrentUser, signupUser } from "../UserAccountSlice";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function SignUp() {
@@ -27,6 +23,7 @@ export default function SignUp() {
   });
   const { loading } = useAppSelector((state) => state.account);
   const dispatch = useAppDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -52,7 +49,11 @@ export default function SignUp() {
       const resposne = await dispatch(signupUser(formDataToSend)).unwrap();
       if (resposne) {
         await dispatch(getCurrentUser());
-        navigate("/dashboard");
+        if (location.pathname !== "/dashboard") {
+          navigate(location.pathname);
+        } else {
+          navigate("/dashboard");
+        }
       }
     } catch (e) {
       console.log(e);

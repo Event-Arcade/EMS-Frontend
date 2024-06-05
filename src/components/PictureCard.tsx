@@ -4,31 +4,16 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import "./ButtonStyle.css";
-import SlidingPic1 from "../assets/SlidingPic1.jpg";
-import SlidingPic2 from "../assets/SlidingPic2.jpg";
-import SlidingPic3 from "../assets/SlidingPic3.jpg";
+import { useAppSelector } from "../store/hooks";
 
 export const PictureCard = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 5; // 2 rows of 5 cards each
-  const imageSources = [
-    SlidingPic1,
-    SlidingPic2,
-    SlidingPic3,
-    SlidingPic1,
-    SlidingPic2,
-    SlidingPic1,
-    SlidingPic2,
-    SlidingPic3,
-    SlidingPic1,
-    SlidingPic2,
-    SlidingPic1,
-    SlidingPic2,
-  ];
+  const {shopServices} = useAppSelector((state) => state.service);
 
-  const totalPages = Math.ceil(imageSources.length / cardsPerPage);
+  const cardsPerPage = 5; // 2 rows of 5 cards each
+  const totalPages = Math.ceil(shopServices.length / cardsPerPage);
   const startIndex = (currentPage - 1) * cardsPerPage;
-  const currentCards = imageSources.slice(startIndex, startIndex + cardsPerPage);
+  const currentCards = shopServices.slice(startIndex, startIndex + cardsPerPage);
 
   const goToNextPage = () => {
     if (currentPage < totalPages) {
@@ -60,15 +45,15 @@ export const PictureCard = () => {
         className="g-4"
         style={{ paddingLeft: "150px", paddingRight: "150px",marginTop:"100px"}}
       >
-        {currentCards.map((src, idx) => (
+        {shopServices.map((service, idx) => (
           <Col key={idx} style={colStyle}>
             <Card style={{ width: "210px" }}>
-              <Card.Img variant="top" src={src} />
+              <Card.Img variant="top" src={service.shopServiceStaticResourcesURLs && service.shopServiceStaticResourcesURLs[0] || " "} />
               <Card.Body>
                 <Card.Title style={{ fontSize: "15px", fontWeight: 600 }}>
-                  Hotel Sleek
+                  {service.name}
                 </Card.Title>
-                <Card.Text style={{ fontSize: "10px" }}>Kegalle</Card.Text>
+                <Card.Text style={{ fontSize: "10px" }}>{service.description}</Card.Text>
                 <Button
                   variant="primary"
                   className="bg-orange"

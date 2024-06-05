@@ -13,9 +13,7 @@ export default function PackageTable() {
 
   const data = useMemo(() => {
     // filter the packages by date
-    return packages.sort((a, b) => {
-      return new Date(b.subPackages[0].orderTime).getTime() - new Date(a.subPackages[0].orderTime).getTime();
-    });
+    return packages
   }, [packages]);
 
   const getStatusBadge = (status: number) => {

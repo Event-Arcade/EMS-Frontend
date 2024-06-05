@@ -21,6 +21,12 @@ export const store = configureStore({
         chat: chatSlice,
         notification: notificationSlice,
     },
+    // middleware: to remove the warning of serializableCheck
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+          serializableCheck: false
+          },
+        ),
     });
 
 export type RootState = ReturnType<typeof store.getState>;

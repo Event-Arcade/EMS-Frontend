@@ -163,6 +163,9 @@ const ServiceDetailPage: React.FC = () => {
   };
 
   const handleChat = (shopId: number) => {
+    if (!user) {
+      return;
+    }
     const senderId = shops.find((shop) => shop.id === shopId)?.ownerId;
     if (senderId) {
       dispatch(setSenderId(senderId));
@@ -245,15 +248,18 @@ const ServiceDetailPage: React.FC = () => {
                   }}
                 >
                   Goto Store
-                </Button>{" "}
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    handleChat(currentShopService?.shopId ?? 0);
-                  }}
-                >
-                  Chat with Vendor
                 </Button>
+                {user && (
+                  <Button
+                    className="mx-4"
+                    variant="primary"
+                    onClick={() => {
+                      handleChat(currentShopService?.shopId ?? 0);
+                    }}
+                  >
+                    Chat with Vendor
+                  </Button>
+                )}
               </>
             )}
           </Col>

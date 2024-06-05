@@ -2,6 +2,6 @@ export default interface Category {
     id?: number;
     name: string;
     description: string;
-    imageUrl?: string;
+    categoryImagePath?: string;
     imageFile?: File | null;
     }

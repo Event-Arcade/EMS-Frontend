@@ -27,7 +27,6 @@ function Stepper() {
             <p>Within a Few Clicks, Make Your Selection</p>
           </div>
           <div className="st-search">
-            {/* Your search components go here */}
           </div>
         </div>
         <div className="middle-section">
@@ -72,7 +71,7 @@ function Stepper() {
             <img src={step1} alt="" className="st-image" />
           ) : (
             <img
-              src={categories[currentStep-1].imageUrl}
+              src={categories[currentStep - 1].categoryImagePath}
               alt=""
               className="st-image"
             />

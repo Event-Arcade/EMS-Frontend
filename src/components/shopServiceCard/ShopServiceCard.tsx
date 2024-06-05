@@ -2,15 +2,7 @@ import React from "react";
 import { Card, Button, Badge, Carousel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./shopServiceCard.css"; // Custom CSS file for additional styling
-
-interface ShopService {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  rating: number;
-  shopServiceStaticResourcesURLs: string[];
-}
+import ShopService from "../../interfaces/ShopService";
 
 interface ShopServiceCardProps {
   shopService: ShopService;
@@ -19,32 +11,16 @@ interface ShopServiceCardProps {
 const ShopServiceCard: React.FC<ShopServiceCardProps> = ({ shopService }) => {
   const navigate = useNavigate();
 
-  const isVideo = (url: string) => {
-    const videoExtensions = ['mp4', 'webm', 'ogg'];
-    const extension = url.split('.').pop()?.split('?')[0];
-    return videoExtensions.includes(extension || '');
-  };
-
   return (
     <Card className="shop-service-card">
       <Carousel>
-        {shopService.shopServiceStaticResourcesURLs.map((url, index) => (
+        {shopService.shopServiceStaticResourcesURLs && shopService.shopServiceStaticResourcesURLs.map((url, index) => (
           <Carousel.Item key={index}>
-            {isVideo(url) ? (
-              <video
-                className="d-block w-100 shop-service-card-img"
-                controls
-              >
-                <source src={url} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            ) : (
-              <img
-                className="d-block w-100 shop-service-card-img"
-                src={url}
-                alt={`Slide ${index}`}
-              />
-            )}
+            <img
+              className="d-block w-100 shop-service-card-img"
+              src={url}
+              alt={`Slide ${index}`}
+            />
           </Carousel.Item>
         ))}
       </Carousel>

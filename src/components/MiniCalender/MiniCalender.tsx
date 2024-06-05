@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import Calendar from 'react-calendar';
-import './miniCalender.css';
+import { useState } from "react";
+import Calendar from "react-calendar";
+import "./miniCalender.css";
 
 type ValuePiece = Date | null;
 
@@ -11,9 +11,9 @@ const MiniCalender = () => {
 
   return (
     <div>
-      <Calendar onChange={onChange} value={value} />
+      <Calendar onChange={onChange} value={value} selectRange={true} />
     </div>
   );
-}
+};
 
-export default MiniCalender
+export default MiniCalender;

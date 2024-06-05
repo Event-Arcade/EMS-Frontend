@@ -7,11 +7,8 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage";
 import EditProfile from "./features/accounts/ProfileSetting/EditProfile";
-import CalenderPage from "./pages/CalanderPage/CalenderPage";
-import StartPage from "./pages/StartPage/StartPage";
 import ServiceDetailPage from "./pages/ServiceDetailPage/ServiceDetailPage";
 import AdminDashboard from "./pages/AdminDashboardPage/AdminDashboardPage";
-import PackageDetailsPage from "./features/package/PackageDetails/PackagDetailsPage";
 import ShopDetailPage from "./pages/ShopPage/ShopDetailPage";
 import VendorServices from "./pages/VendorServices/VendorServices";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -56,7 +53,14 @@ import VendorDashBoardPage from "./pages/VendorDashBoardPage/VendorDashBoardPage
 import ClientDashBoardPage from "./pages/ClientDashboardPage/ClientDashBoardPage";
 import Header from "./components/header/Header";
 import AuthenticationModal from "./features/accounts/authentication/AuthenticationModal";
-import { packageGetAll, packageGetAllSubPackages, packageGetById, packageGetSubPackageById, packageRemoveEntity, subPackageRemoveEntity } from "./features/package/PackageSlice";
+import {
+  packageGetAll,
+  packageGetAllSubPackages,
+  packageGetById,
+  packageGetSubPackageById,
+  packageRemoveEntity,
+  subPackageRemoveEntity,
+} from "./features/package/PackageSlice";
 import {
   chatGetUserInbox,
   chatGetUsersInboxs,
@@ -73,6 +77,8 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 import AdminStaticResourceManagementListing from "./pages/AdminStaticResourceManagementPage/AdminStaticResourceManagementListing";
 import VendorListing from "./pages/VendorListingPage/VendorListing";
 import ClientListing from "./pages/ClientListingPage/ClientListing";
+import StartPage from "./pages/StartPage/StartPage";
+import CalendarComponent from "./pages/CalanderPage/CalendarComponent";
 
 export enum DatabaseChangeEventType {
   Add = 1,
@@ -113,6 +119,7 @@ export default function App() {
     }
   }, [user, isLoggedIn]);
 
+  // chat client event listeners
   useEffect(() => {
     if (chatClient !== null) {
       chatClient.start().then(() => {
@@ -287,16 +294,24 @@ export default function App() {
   }, [chatClient]);
 
   const initApp = useCallback(async () => {
-    await dispatch(getCurrentUser());
     await dispatch(categoryGetAll());
     await dispatch(shopGetAll());
     await dispatch(shopServiceGetAll());
     await dispatch(adminStaticResourceGetAll());
     await dispatch(feedBackGetAll());
-    await dispatch(packageGetAll());
-    await dispatch(chatGetUsersInboxs());
-    await dispatch(notificationGetAll());
-    await dispatch(packageGetAllSubPackages());
+    const token = localStorage.getItem("token");
+    if (token) {
+      const result = await dispatch(getCurrentUser()).unwrap();
+      if (result?.role === "client") {
+        await dispatch(packageGetAll());
+        await dispatch(chatGetUsersInboxs());
+        await dispatch(notificationGetAll());
+      } else if (result?.role === "vendor") {
+        await dispatch(packageGetAllSubPackages());
+        await dispatch(chatGetUsersInboxs());
+        await dispatch(notificationGetAll());
+      }
+    }
   }, [dispatch]);
 
   const handleShowSignUP = () => {
@@ -324,8 +339,9 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/packageDetails" element={<PackageDetailsPage />} />
             <Route path="/vendorServices" element={<VendorServices />} />
+            <Route path="/shop/:id" element={<ShopDetailPage />} />
+            <Route path="/shop-service/:id" element={<ServiceDetailPage />} />
 
             {/* client auth paths */}
             <Route
@@ -348,11 +364,7 @@ export default function App() {
                 path="/help-resources"
                 element={<AdminStaticResourceManagementListing />}
               />
-              <Route path="/calendar" element={<CalenderPage />} />
-              <Route path="/shop/:id" element={<ShopDetailPage />} />
-              <Route path="/shop-service/:id" element={<ServiceDetailPage />} />
-
-
+              <Route path="/calendar" element={<CalendarComponent />} />
 
               {/* admin paths */}
               <Route path="admin/" element={<AdminRoute />}>
@@ -365,18 +377,9 @@ export default function App() {
                   path="static-resource-management"
                   element={<StaticResourceManagementPage />}
                 />
-                <Route
-                  path="vendor-details"
-                  element={<VendorListing />}
-                />
-                <Route
-                  path="client-details"
-                  element={<ClientListing/>}
-                />
-
+                <Route path="vendor-details" element={<VendorListing />} />
+                <Route path="client-details" element={<ClientListing />} />
               </Route>
-
-
 
               {/* vendor paths */}
               <Route path="vendor/" element={<VendorRoute />}>
