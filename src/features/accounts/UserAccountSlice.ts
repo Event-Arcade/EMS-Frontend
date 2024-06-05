@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from '../../interfaces/User';
-import { login, register, getCurrentUserByToken, update, getAccounts, deleteAccount, getAccountById, updateToAdminAccount } from '../../services/authService';
+import { login, register, getCurrentUserByToken, update, getAccounts, deleteAccount, getAccountById, updateToAdminAccount, updatePassword } from '../../services/authService';
 
 
 interface UserAccountState {
@@ -137,6 +137,21 @@ export const userAccountUpdateToAdmin = createAsyncThunk<any, string>(
                 return thunkAPI.rejectWithValue({ error: 'Get user by id failed' });
             }
             return id;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
+export const userAccountUpdatePassword = createAsyncThunk<any, FormData>(
+    'useraccount/userAccountUpdatePassword',
+    async (data, thunkAPI) => {
+        try {
+            const response = await updatePassword(data);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Update password failed' });
+            }
+            return response;
         } catch (e) {
             return thunkAPI.rejectWithValue({ error: (e as Error).message });
         }
@@ -280,6 +295,17 @@ const userAccountSlice = createSlice({
             }
         });
         builder.addCase(userAccountUpdateToAdmin.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
+        builder.addCase(userAccountUpdatePassword.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(userAccountUpdatePassword.fulfilled, (state) => {
+            state.loading = false;
+        });
+        builder.addCase(userAccountUpdatePassword.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
         });

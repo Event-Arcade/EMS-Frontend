@@ -148,3 +148,21 @@ export async function updateToAdminAccount(id: string) {
     return false;
   }
 }
+
+export async function updatePassword(data: FormData){
+  try {
+    const response = await http.put(`${apiEndpoint}/updatepassword`, data);
+    if (response) {
+      if (response.data.flag) {
+        toast.success(response.data.message);
+        return true;
+      } else {
+        toast.error(response.data.message);
+        return false;
+      }
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return false;
+  }
+}
