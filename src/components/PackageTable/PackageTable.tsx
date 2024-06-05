@@ -1,24 +1,22 @@
 import Table from "react-bootstrap/Table";
 import { Button, Badge, Container } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { useEffect, useState } from "react";
-import Package from "../../interfaces/Package";
+import {  useMemo } from "react";
 import React from "react";
 import { packageDelete } from "../../features/package/PackageSlice";
+import DashboardBanner from "../../pages/ClientDashboardPage/DashboardBanner";
 
 export default function PackageTable() {
-  const { user } = useAppSelector((state) => state.account);
   const { packages } = useAppSelector((state) => state.package);
-  const [data, setData] = useState<Package[]>([]);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (user?.role === "client") {
-      setData(packages);
-    } else {
-      setData(packages.filter((pkg) => pkg.userId === user?.id));
-    }
-  }, [user, packages]);
+
+  const data = useMemo(() => {
+    // filter the packages by date
+    return packages.sort((a, b) => {
+      return new Date(b.subPackages[0].orderTime).getTime() - new Date(a.subPackages[0].orderTime).getTime();
+    });
+  }, [packages]);
 
   const getStatusBadge = (status: number) => {
     switch (status) {
@@ -43,6 +41,14 @@ export default function PackageTable() {
     }
   };
 
+  if(data.length === 0){
+    return (
+      <Container className="mt-4">
+       <DashboardBanner/>
+      </Container>
+    );
+  }
+
   return (
     <Container className="mt-4">
       <Table striped bordered hover responsive>
@@ -59,7 +65,7 @@ export default function PackageTable() {
           </tr>
         </thead>
         <tbody>
-          {packages.map((pkg) => (
+          {data.map((pkg) => (
             <React.Fragment key={pkg.id}>
               {pkg.subPackages.map((subPkg, idx) => (
                 <tr key={subPkg.id}>

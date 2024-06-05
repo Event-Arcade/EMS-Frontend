@@ -92,3 +92,41 @@ export async function getAllSubPackages(){
   }
 }
 
+export async function getSubPackageById(id: number){
+  try {
+    const response = await http.get(baseURL + `/get-sub-package-by-id/${id}`);
+    if(response){
+        if(response.data.flag){
+            return response.data.data;
+          }
+        else{
+            toast.error(response.data.message);
+            return null;
+        }
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error("Failed to fetch sub package");
+    return null;
+  }
+}
+
+export async function getPackageById(id: number){
+  try {
+    const response = await http.get(baseURL + `/get/${id}`);
+    if(response){
+        if(response.data.flag){
+            return response.data.data;
+          }
+        else{
+            toast.error(response.data.message);
+            return null;
+        }
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error("Failed to fetch package");
+    return null;
+  }
+}
+

@@ -29,15 +29,15 @@ export async function deleteFeedback(feedbackId: number) {
     const {data} = await http.delete(baseURL + `/delete/${feedbackId}`);
     if (data.flag) {
       toast.success(data.message);
-      return true;
+      return feedbackId;
     } else {
       toast.error(data.message);
-      return false;
+      return null;
     }
   } catch (error) {
     console.error("Error:", error);
     toast.error("Failed to delete feedback");
-    return false;
+    return null;
   }
 }
 
@@ -53,6 +53,22 @@ export async function getAllFeedbacks() {
   } catch (error) {
     console.error("Error:", error);
     toast.error("Failed to fetch feedbacks");
+    return null;
+  }
+}
+
+export async function getFeedbackById(feedbackId: number) {
+  try {
+    const {data} = await http.get(baseURL + `/get/${feedbackId}`);
+    if (data.flag) {
+      return data.data;
+    } else {
+      toast.error(data.message);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error("Failed to fetch feedback");
     return null;
   }
 }

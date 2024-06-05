@@ -1,5 +1,7 @@
 export interface User {
     id?: string;
+    onlineId?: string;
+    isActive?: boolean;
     firstName: string;
     lastName: string;
     street: string;

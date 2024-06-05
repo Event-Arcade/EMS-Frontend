@@ -5,13 +5,15 @@ const baseURL = "/category";
 
 export async function createCategory(formData: FormData) {
   try {
-    const { data } = await http.post(baseURL + "/create", formData);
-    if (data.flag) {
-      toast.success(data.message);
-      return data.data;
-    } else {
-      toast.error(data.message);
-      return null;
+    const response = await http.post(baseURL + "/create", formData);
+    if (response) {
+      if (response.data.flag) {
+        toast.success(response.data.message);
+        return response.data.data;
+      } else {
+        toast.error(response.data.message);
+        return null;
+      }
     }
   } catch (error) {
     console.error("Error:", error);
@@ -22,55 +24,73 @@ export async function createCategory(formData: FormData) {
 
 export async function deleteCategory(categoryId: number) {
   try {
-    const { data } = await http.delete(baseURL + `/delete/${categoryId}`);
-    if (data.flag) {
-      toast.success(data.message);
-      return true;
-    } else {
-      toast.error(data.message);
-      return false;
+    const response = await http.delete(baseURL + `/delete/${categoryId}`);
+    if (response) {
+      if (response.data.flag) {
+        toast.success(response.data.message);
+        return categoryId;
+      } else {
+        toast.error(response.data.message);
+        return null;
+      }
     }
   } catch (error) {
     console.error("Error:", error);
     toast.error("Failed to delete category");
-    return false;
+    return null;
   }
 }
 
 export async function getAllCategories() {
   try {
-    const { data } = await http.get(baseURL + "/getall");
-    return data.data;
+    const response = await http.get(baseURL + "/getall");
+    if (response) {
+      if (response.data.flag) {
+        return response.data.data;
+      } else {
+        toast.error(response.data.message);
+        return [];
+      }
+    }
   } catch (error) {
     console.error("Error:", error);
-    toast.error("Failed to fetch categories");
-    return;
+    toast.error("Failed to get all categories");
+    return [];
   }
 }
 
-export async function getCategoryById(categoryId: string) {
+export async function getCategoryById(categoryId: number) {
   try {
-    const { data } = await http.get(`/get/${categoryId}`);
-    return data.data;
+    const response = await http.get(baseURL + `/getbyid/${categoryId}`);
+    if (response) {
+      if (response.data.flag) {
+        return response.data.data;
+      } else {
+        toast.error(response.data.message);
+        return null;
+      }
+    }
   } catch (error) {
     console.error("Error:", error);
-    toast.error("Failed to fetch category");
-    return;
+    toast.error("Failed to get category by id");
+    return null;
   }
 }
 
 export async function updateCategory(categoryId: number, formData: FormData) {
   try {
-    const { data } = await http.put(
+    const response = await http.put(
       baseURL + `/update/${categoryId}`,
       formData
     );
-    if (data.flag) {
-      toast.success(data.message);
-      return data.data;
-    } else {
-      toast.error(data.message);
-      return null;
+    if (response) {
+      if (response.data.flag) {
+        toast.success(response.data.message);
+        return response.data.data;
+      } else {
+        toast.error(response.data.message);
+        return null;
+      }
     }
   } catch (error) {
     console.error("Error:", error);

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Category from "../../interfaces/Category";
-import { createCategory, deleteCategory, getAllCategories, updateCategory } from "../../services/categoryService";
+import { createCategory, deleteCategory, getAllCategories, getCategoryById, updateCategory } from "../../services/categoryService";
 
 interface CategoryState {
     loading : boolean;
@@ -74,12 +74,31 @@ export const categoryDelete = createAsyncThunk<number, number>(
     }
 );
 
+export const categoryGetById = createAsyncThunk<Category, number>(
+    'category/getById',
+    async (data, thunkAPI) => {
+        try {
+            const response = await getCategoryById(data);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Get all users failed' });
+            }
+            return response;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
 
 
 const categorySlice = createSlice({
     name: 'category',
     initialState,
-    reducers:{},
+    reducers:{
+        categoryRemoveEntity: (state, action) => {
+            state.categories = state.categories?.filter((category) => category.id !== action.payload);
+        }
+    },
     extraReducers: (builder) =>{
         builder.addCase(categoryCreate.pending, (state) => {
             state.loading = true;
@@ -131,8 +150,25 @@ const categorySlice = createSlice({
         builder.addCase(categoryDelete.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
+        });
+        builder.addCase(categoryGetById.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(categoryGetById.fulfilled, (state, action) => {
+            state.loading = false;
+            const index = state.categories?.findIndex((category) => category.id === action.payload.id);
+            if(index !== -1){
+                state.categories?.splice(index, 1, action.payload);
+            }else{
+                state.categories?.push(action.payload);
+            }
         });   
+        builder.addCase(categoryGetById.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
     }
 });
-
+export const { categoryRemoveEntity } = categorySlice.actions;
 export default categorySlice.reducer;

@@ -1,10 +1,4 @@
-import React, { useState } from "react";
-import Header from "../../components/header/Header";
-import SideBar from "../../components/sideBar/SideBar";
 import CalendarComponent from "./CalendarComponent";
-import Footer from "../../components/Footer/Footer";
-// import Calendar from "react-calendar";
-// import { EventType } from './CalendarComponent';
 
 interface EventType {
   id: string; 
@@ -13,11 +7,6 @@ interface EventType {
   end?: string; 
 }
 const CalenderPage: React.FC = () => {
-  const [isSideBarVisible, setIsSideBarVisible] = useState(false);
-
-  const toggleSideBar = () => {
-    setIsSideBarVisible(!isSideBarVisible);
-  };
   const eventsData: EventType[] = [
     {
       id: "1",
@@ -41,9 +30,7 @@ const CalenderPage: React.FC = () => {
     },];
   return (
     <>
-      {/* <SideBar isVisible={isSideBarVisible}/> */}
       <CalendarComponent events={eventsData} />
-      <Footer/>
     </>
   );
 };

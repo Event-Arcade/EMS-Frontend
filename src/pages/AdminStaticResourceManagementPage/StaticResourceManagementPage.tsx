@@ -26,7 +26,6 @@ export default function StaticResourceManagementPage() {
         </div>
         <div className="col-lg-2" style={{ background: "none" }}></div>
       </div>
-      <Footer />
     </>
   );
 }

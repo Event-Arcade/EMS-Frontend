@@ -8,20 +8,15 @@ import NavMenu from "./nav/NavMenu";
 import { useAppSelector } from "../../store/hooks";
 
 interface HeaderProps {
-  getSideBarVisibility: () => void;
   handleShowSignUp: () => void;
 }
 
-export default function Header({
-  getSideBarVisibility,
-  handleShowSignUp,
-}: HeaderProps) {
+export default function Header({ handleShowSignUp }: HeaderProps) {
   const [isVisibleSideBar, setIsVisibleSideBar] = useState<boolean>(false);
   const { isLoggedIn } = useAppSelector((state) => state.account);
 
   const toggleSideBar = () => {
     setIsVisibleSideBar(!isVisibleSideBar);
-    getSideBarVisibility();
   };
 
   return (

@@ -1,0 +1,21 @@
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .card {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table {
+    margin-top: 20px;
+  }
+  
+  .badge {
+    padding: 0.5em;
+    font-size: 0.9em;
+  }
+  
+  img.rounded-circle {
+    object-fit: cover;
+  }
+  

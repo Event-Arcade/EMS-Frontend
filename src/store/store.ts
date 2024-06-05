@@ -7,6 +7,7 @@ import adminStaticResourceSlice from '../features/adminStaticResources/AdminStat
 import feedBackSlice from '../features/feedBacks/FeedBackSlice';
 import packageSlice  from '../features/package/PackageSlice';
 import chatSlice from '../features/chats/ChatSlice';
+import notificationSlice from '../features/notifications/NotificationSlice';
 
 export const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
         feedback: feedBackSlice,
         package: packageSlice,
         chat: chatSlice,
+        notification: notificationSlice,
     },
     });
 

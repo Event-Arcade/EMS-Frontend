@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -11,7 +17,6 @@ import {
   Form,
   Spinner,
 } from "react-bootstrap";
-import Footer from "../../components/Footer/Footer";
 import ShopService from "../../interfaces/ShopService";
 import FeedbackList from "../../features/feedBacks/FeeddbackList/FeedBackList";
 import {
@@ -25,14 +30,11 @@ import {
 } from "../../features/chats/ChatSlice";
 
 const ServiceDetailPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
   const { feedBacks } = useAppSelector((state) => state.feedback);
   const { shopServices, loading } = useAppSelector((state) => state.service);
   const { shops } = useAppSelector((state) => state.shop);
   const { user } = useAppSelector((state) => state.account);
-  const [currentShopService, setCurrentShopService] = useState<
-    ShopService | undefined
-  >();
   const [updateShopService, setUpdateShopService] = useState<ShopService>({
     name: "",
     description: "",
@@ -51,14 +53,11 @@ const ServiceDetailPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const tempService = shopServices.find(
-      (service) => service.id === parseInt(id!)
-    );
-    if (tempService) {
-      setCurrentShopService(tempService);
-    }
-  }, [feedBacks, id, shopServices]);
+  const currentShopService = useMemo(() => {
+    return shopServices.find((s) => s.id == id);
+  }, [id, shopServices]);
+
+  useEffect(() => {}, [feedBacks]);
 
   useEffect(() => {
     if (currentShopService) {
@@ -66,7 +65,6 @@ const ServiceDetailPage: React.FC = () => {
         (service) => service.id === currentShopService.id
       );
       if (tempService) {
-        setCurrentShopService(tempService);
         setUpdateShopService(currentShopService);
       }
     }
@@ -260,12 +258,8 @@ const ServiceDetailPage: React.FC = () => {
             )}
           </Col>
         </Row>
-        <FeedbackList
-          isVendor={user?.role === "vendor"}
-          serviceId={currentShopService?.id ?? 0}
-        />
+        {id && <FeedbackList serviceId={parseInt(id)} />}
       </Container>
-      <Footer />
 
       {/* Update Modal */}
       <Modal

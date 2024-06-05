@@ -6,8 +6,8 @@
 }
 
 .profile-picture img {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
 }
 
@@ -36,8 +36,8 @@
 }
 
 .feedback-images .feedback-thumbnail {
-  width: 100%;
+  margin-top: 10px;
+  width: 150px;
   height: auto;
-  object-fit: cover;
   border-radius: 8px;
 }

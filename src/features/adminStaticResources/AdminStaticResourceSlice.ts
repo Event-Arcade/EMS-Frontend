@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import AdminStaticResource from "../../interfaces/AdminStaticResource";
-import { createAdminStaticResource, deleteAdminStaticResource, getAllAdminStaticResources, updateAdminStaticResource } from "../../services/adminStaticResourceService";
+import { createAdminStaticResource, deleteAdminStaticResource, getAdminStaticResourceById, getAllAdminStaticResources, updateAdminStaticResource } from "../../services/adminStaticResourceService";
 
 interface AdminStaticResourceState {
     staticResources: AdminStaticResource[];
@@ -73,10 +73,29 @@ export const adminStaticResourceDelete = createAsyncThunk<boolean, number>(
     }
 );
 
+export const adminStaticResourceGetById = createAsyncThunk<AdminStaticResource, number>(
+    'adminStaticResource/getAdminStaticResourceById',
+    async (staticResourceId, thunkAPI) => {
+        try {
+            const response = await getAdminStaticResourceById(staticResourceId);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Get static resource failed' });
+            }
+            return response;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
 export const adminStaticResourceSlice = createSlice({
     name: 'adminStaticResource',
     initialState,
-    reducers: {},
+    reducers: {
+        adminStaticResourceRemoveEntity : (state, action) => {
+            state.staticResources = state.staticResources.filter(staticResource => staticResource.id !== action.payload);
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(adminStaticResourceCreate.pending, (state, action) => {
             state.loading = true;
@@ -125,8 +144,21 @@ export const adminStaticResourceSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as { error: string })?.error || 'Failed to delete static resource';
         });
+        builder.addCase(adminStaticResourceGetById.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(adminStaticResourceGetById.fulfilled, (state, action) => {
+            state.loading = false;
+            const index = state.staticResources.findIndex(staticResource => staticResource.id === action.payload.id);
+            if (index !== -1) {
+                state.staticResources[index] = action.payload;
+            }
+            else{
+                state.staticResources.push(action.payload);
+            }
+        });
         
     }
 });
-
+export const { adminStaticResourceRemoveEntity } = adminStaticResourceSlice.actions;
 export default adminStaticResourceSlice.reducer;

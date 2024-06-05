@@ -1,13 +1,12 @@
-import React, {
+import  {
   useState,
   MouseEvent,
-  ChangeEventHandler,
   ChangeEvent,
 } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./authenticationModal.css";
 import { getCurrentUser, signupUser } from "../UserAccountSlice";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -26,6 +25,7 @@ export default function SignUp() {
     latitude: "",
     profilePicture: null as File | null,
   });
+  const { loading } = useAppSelector((state) => state.account);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +115,13 @@ export default function SignUp() {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Sign Up</button>
+        {!loading ? (
+          <button type="submit">Sign Up</button>
+        ) : (
+          <button disabled type="submit">
+            Loading ...
+          </button>
+        )}
       </form>
     </div>
   );

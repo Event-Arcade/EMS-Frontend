@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../components/header/Header";
-import Footer from "../../components/Footer/Footer";
 import EditableImage from "./EditableImage";
 import { useLocation } from "react-router-dom";
 import ServicesSection from "./ServicesSection";
@@ -24,12 +22,12 @@ type Sections = {
 const VendorServices: React.FC = () => {
   const location = useLocation();
   const {
-    businessName,
-    description,
-    price,
-    location: loc,
-    eventType,
-    service,
+    businessName = "Default Business Name",
+    description = "Default Description",
+    price = "Default Price",
+    location: loc = "Default Location",
+    eventType = "Default Event Type",
+    service = "Default Service",
   } = location.state as {
     businessName: string;
     description: string;
@@ -182,7 +180,6 @@ const VendorServices: React.FC = () => {
         </div>
         <section id="content">{sections[activeSection]}</section>
       </div>
-      <Footer />
     </>
   );
 };

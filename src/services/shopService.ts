@@ -5,7 +5,7 @@ import http from "./httpsClient";
 const baseURL = "/shop";
 export async function createShop(formData: FormData) {
   try {
-    const response = await http.post(baseURL + "/createmyshop", formData);
+    const response = await http.post(baseURL + "/create", formData);
     if(response){
       if(response.data.flag){
         toast.success(response.data.message);
@@ -27,7 +27,7 @@ export async function createShop(formData: FormData) {
 
 export async function deleteShop(shopId: number) {
   try {
-    const response = await http.delete(baseURL + `/deletemyshop/${shopId}`);
+    const response = await http.delete(baseURL + `/delete/${shopId}`);
     if(response){
       if(response.data.flag){
         toast.success(response.data.message);
@@ -47,7 +47,7 @@ export async function deleteShop(shopId: number) {
 
 export async function getAllShops() {
   try {
-    const { data } = await http.get(baseURL + "/allshops");
+    const { data } = await http.get(baseURL + "/getall");
     if(data.flag){
         return data.data;
         }
@@ -82,7 +82,7 @@ export async function getMyShop() {
 export async function updateShop(shopId: string, formData: FormData) {
   try {
     const { data } = await http.put(baseURL+
-      `/updatemyshop/${shopId}`,
+      `/update/${shopId}`,
       formData
     );
     if (data.flag) {
@@ -99,6 +99,20 @@ export async function updateShop(shopId: string, formData: FormData) {
   }
 }
 
+export async function getShopById(shopId: number) {
+  try {
+    const { data } = await http.get(baseURL+`/get/${shopId}`);
+    if (data.flag) {
+      return data.data;
+    }
+    else{
+        toast.error(data.message);
+        return null;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error("Failed to fetch category");
+    return null;
+  }
+}
 
-
-//TODO: add phone number to create user account

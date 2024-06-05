@@ -7,7 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 
 export default function SignIn() {
-  const { isLoggedIn, user } = useAppSelector((state) => state.account);
+  const { isLoggedIn, user, loading } = useAppSelector(
+    (state) => state.account
+  );
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
@@ -27,7 +29,7 @@ export default function SignIn() {
         navigate("/admin/dashboard");
       } else if (user?.role === "vendor") {
         navigate("/vendor/dashboard");
-      } else if(user?.role === "client") {
+      } else if (user?.role === "client") {
         navigate("/dashboard");
       }
     }
@@ -64,7 +66,11 @@ export default function SignIn() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Sign In</button>
+        {loading ? (
+          <button disabled type="submit">Loading ...</button>
+        ) : (
+          <button type="submit">Sign In</button>
+        )}
       </form>
     </div>
   );

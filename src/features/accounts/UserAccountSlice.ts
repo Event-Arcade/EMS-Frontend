@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from '../../interfaces/User';
-import { login, register, getCurrentUserByToken, update, getAccounts, deleteAccount } from '../../services/authService';
+import { login, register, getCurrentUserByToken, update, getAccounts, deleteAccount, getAccountById, updateToAdminAccount } from '../../services/authService';
 
 
 interface UserAccountState {
@@ -113,6 +113,36 @@ export const deleteUser = createAsyncThunk<any, void>(
     }
 );
 
+export const getUsersById = createAsyncThunk<User, string>(
+    'useraccount/getUsersById',
+    async (id, thunkAPI) => {
+        try {
+            const response = await getAccountById(id);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Get user by id failed' });
+            }
+            return response;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
+export const userAccountUpdateToAdmin = createAsyncThunk<any, string>(
+    'useraccount/userAccountUpdateToAdmin',
+    async (id, thunkAPI) => {
+        try {
+            const response = await updateToAdminAccount(id);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Get user by id failed' });
+            }
+            return id;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
 const userAccountSlice = createSlice({
     name: 'useraccount',
     initialState,
@@ -126,6 +156,15 @@ const userAccountSlice = createSlice({
         setLogout: (state) => {
             state.isLoggedIn = false;
             state.user = null;
+        },
+        setUserActiveState: (state, action) => {
+            const user = state.users?.find((user) => user.id === action.payload.id);
+            if (user) {
+                user.isActive = action.payload.isActive;
+            }
+        }, 
+        userRemoveEntity: (state, action) => {
+            state.users = state.users?.filter((user) => user.id !== action.payload) || null;
         }
     },
     extraReducers: (builder) =>{
@@ -210,9 +249,42 @@ const userAccountSlice = createSlice({
             state.loading = false;
             state.error = action.payload as string;
         });
-        
+        builder.addCase(getUsersById.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(getUsersById.fulfilled, (state, action) => {
+            state.loading = false;
+            if (state.users) {
+                const index = state.users.findIndex((user) => user.id === action.payload.id);
+                if (index !== -1) {
+                    state.users[index] = action.payload as User;
+                } else {
+                    state.users.push(action.payload);
+                }
+            }
+        });
+        builder.addCase(getUsersById.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
+        builder.addCase(userAccountUpdateToAdmin.fulfilled, (state, action) => {
+            state.loading = false;
+            if (state.users) {
+                const index = state.users.findIndex((user) => user.id === action.payload);
+                if (index !== -1) {
+                    state.users[index].role = 'admin';
+                } else {
+                    state.error = 'User not found';
+                }
+            }
+        });
+        builder.addCase(userAccountUpdateToAdmin.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
     }
 });
 
-export const { setLoggedIn, setUser, setLogout } = userAccountSlice.actions;
+export const { setLoggedIn, setUser, setLogout, setUserActiveState, userRemoveEntity } = userAccountSlice.actions;
 export default userAccountSlice.reducer;

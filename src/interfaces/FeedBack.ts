@@ -5,6 +5,6 @@ export default interface FeedBack {
     rating : number;    
     serviceId: number;
     applicationUserId: string;
-    feedBackStaticResourceUrls? : string[];
+    feedBackStaticResourcesUrls? : string[];
     feedBackStaticResourceFiles? : File[];
   }

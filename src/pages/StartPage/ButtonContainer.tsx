@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import "./buttonContainer.css";
 import { clearState, packageCreate } from "../../features/package/PackageSlice";
+import { useNavigate } from "react-router-dom";
 
 interface ButtonContainerProps {
   currentStep: number;
@@ -11,6 +12,7 @@ interface ButtonContainerProps {
 function ButtonContainer({ currentStep, onNextClick }: ButtonContainerProps) {
   const { categories } = useAppSelector((state) => state.category);
   const dispatch = useAppDispatch();
+  const naviage = useNavigate();
   const { tempararyPackage } = useAppSelector((state) => state.package);
   const handleSubmitPackage = async () => {
     try {
@@ -20,6 +22,7 @@ function ButtonContainer({ currentStep, onNextClick }: ButtonContainerProps) {
       const resposne = await dispatch(packageCreate(data)).unwrap();
       if(resposne){
         dispatch(clearState());
+        naviage("/dashboard");
       }
     } catch (e) {
       console.error(e);

@@ -3,7 +3,6 @@ import SiteLogo from "../../assets/SiteLogo.png";
 
 const Footer = () => {
   return (
-    //<div className="body-div"></div>
     <div className="mfooter">
       <div className="sb_footer section_padding">
         <div className="sb_footer-links">

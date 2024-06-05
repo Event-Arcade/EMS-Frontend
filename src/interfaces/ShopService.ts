@@ -7,6 +7,7 @@ export default interface ShopService {
     shopId: number;
     categoryId: number;
     noOfGuests?: number;
+    shopServiceOwner?: string;
     indoor: boolean;
     outdoor: boolean;
     shopServiceStaticResourcesURLs?: string[]|null;

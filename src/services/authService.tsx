@@ -1,3 +1,4 @@
+import { useRevalidator } from "react-router-dom";
 import { User } from "../interfaces/User";
 import http from "./httpsClient";
 import { toast } from "react-toastify";
@@ -81,7 +82,7 @@ export async function update(formData: FormData) {
 
 export async function getAccountById(id: string) {
   try {
-    const response = await http.get(`${apiEndpoint}/getaccountbyid/${id}`);
+    const response = await http.get(`${apiEndpoint}/get/${id}`);
     if (response) {
       if (response.data.flag) {
         return response.data.data;
@@ -98,7 +99,7 @@ export async function getAccountById(id: string) {
 
 export async function getAccounts() {
   try {
-    const { data } = await http.get(apiEndpoint);
+    const { data } = await http.get(`${apiEndpoint}/getall`);
     return data.data as User[];
   } catch (error) {
     console.error("Error:", error);
@@ -127,6 +128,25 @@ export async function deleteAccount() {
   } catch (error) {
     console.error("Error:", error);
     toast.error("An error occurred while deleting the account.");
+    return false;
+  }
+}
+
+export async function updateToAdminAccount(id: string) {
+  try {
+    const data = new FormData();
+    data.append("userId", id);
+    const response = await http.post(`${apiEndpoint}/update-user-role`, data);
+    if (response.status === 200) {
+      toast.success("User role updated successfully.");
+      return true;
+    } else {
+      toast.error("Failed to update user role.");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    toast.error("An error occurred while updating the account.");
     return false;
   }
 }

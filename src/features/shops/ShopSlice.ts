@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Shop from "../../interfaces/Shop";
-import { createShop, deleteShop, getAllShops, getMyShop, updateShop } from "../../services/shopService";
+import { createShop, deleteShop, getAllShops, getMyShop, getShopById, updateShop } from "../../services/shopService";
 
 
 interface UserAccountsState {
@@ -91,10 +91,28 @@ export const shopDelete = createAsyncThunk<any, number>(
     }
 );
 
+export const shopGetById = createAsyncThunk<Shop, number>(
+    'shops/getShopById',
+    async (id, thunkAPI) => {
+        try {
+            const response = await getShopById(id);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Get shop by id failed' });
+            }
+            return response;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
 const shopSlice = createSlice({
     name: 'shops',
     initialState,
     reducers: {
+        shopRemoveEntity: (state, action) => {
+            state.shops = state.shops.filter((shop) => shop.id !== action.payload);
+        }
     },
     extraReducers: (builder) =>{
         builder.addCase(shopCreate.pending, (state) => {
@@ -151,7 +169,24 @@ const shopSlice = createSlice({
             state.loading = false;
             state.error = (action.payload as { error: string })?.error || 'Failed to delete shop';
         });
+        builder.addCase(shopGetById.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(shopGetById.fulfilled, (state, action) => {
+            state.loading = false;
+            const index = state.shops.findIndex((shop) => shop.id === action.payload.id);
+            if (index !== -1) {
+                state.shops[index] = action.payload;
+            } else {
+                state.shops.push(action.payload);
+            }
+        });
+        builder.addCase(shopGetById.rejected, (state, action) => {
+            state.loading = false;
+            state.error = (action.payload as { error: string })?.error || 'Failed to get shop by id';
+        });
     }
 });
-
+export const { shopRemoveEntity } = shopSlice.actions;
 export default shopSlice.reducer;

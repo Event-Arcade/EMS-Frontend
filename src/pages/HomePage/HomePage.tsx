@@ -58,7 +58,6 @@ export default function HomePage() {
         <Banner />
         <div className="picture-card-text">Featured Videos</div>
         <VideoGallery />
-        <Footer />
       </div>
     </>
   );

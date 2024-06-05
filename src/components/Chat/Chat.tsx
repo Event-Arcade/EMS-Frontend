@@ -7,7 +7,7 @@ import {
   setSenderId,
   setChatBarVisibility,
   setChatInboxVisibility,
-  chatGetUserInbox,
+  chatSetChatAsReaded,
 } from "../../features/chats/ChatSlice";
 import { Badge } from "react-bootstrap";
 import ChatInbox from "../../interfaces/ChatInbox";
@@ -31,12 +31,12 @@ const Chat: React.FC = () => {
   // Function to scroll to the bottom
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current.scrollIntoView({ behavior: "instant" });
     }
   };
 
   const handleSendMessage = async () => {
-    if (user?.id) {
+    if (user?.id && senderId && currentMessage !== "") {
       const msg = await dispatch(
         chatSendMessage({
           receiverId: senderId,
@@ -59,9 +59,12 @@ const Chat: React.FC = () => {
   const handleMessageClick = async (id: string) => {
     dispatch(setSenderId(id));
     dispatch(setChatInboxVisibility(true));
+    if (myChatInboxs.find((cht) => cht.id === id)?.unreadMessages) {
+      await dispatch(chatSetChatAsReaded(id));
+    }
   };
 
-  const setChatInbox = useCallback(async () => {
+  const setChatInbox = async () => {
     if (senderId !== "") {
       const temp = myChatInboxs.find((cht) => cht.id === senderId);
       if (temp) {
@@ -84,11 +87,15 @@ const Chat: React.FC = () => {
     } else {
       return;
     }
-  }, [chatInboxVisibility, myChatInbox]);
+  };
 
   useEffect(() => {
     setChatInbox();
   }, [senderId]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [myChatInbox]);
 
   return (
     <div className={`chat-window ${chatBarVisibility ? "visible" : ""}`}>
@@ -139,7 +146,7 @@ const Chat: React.FC = () => {
                 </span>
               </div>
               <div className="center">
-                {myChatInbox.map((msg_rc, idx) => (
+                {myChatInbox.map((msg_rc) => (
                   <div
                     className={
                       msg_rc.senderId !== senderId

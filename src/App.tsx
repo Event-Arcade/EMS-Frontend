@@ -14,16 +14,41 @@ import AdminDashboard from "./pages/AdminDashboardPage/AdminDashboardPage";
 import PackageDetailsPage from "./features/package/PackageDetails/PackagDetailsPage";
 import ShopDetailPage from "./pages/ShopPage/ShopDetailPage";
 import VendorServices from "./pages/VendorServices/VendorServices";
-import { useCallback, useEffect, useState } from "react";
-import { getCurrentUser } from "./features/accounts/UserAccountSlice";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  getCurrentUser,
+  getUsersById,
+  setUserActiveState,
+  userRemoveEntity,
+} from "./features/accounts/UserAccountSlice";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import AuthRoute from "./components/protectedRoutes/AuthRoute";
-import { categoryGetAll } from "./features/categories/CategorySlice";
-import { shopGetAll } from "./features/shops/ShopSlice";
-import { shopServiceGetAll } from "./features/shopServices/ShopServiceSlice";
+import {
+  categoryGetAll,
+  categoryGetById,
+  categoryRemoveEntity,
+} from "./features/categories/CategorySlice";
+import {
+  shopGetAll,
+  shopGetById,
+  shopRemoveEntity,
+} from "./features/shops/ShopSlice";
+import {
+  shopServiceGetAll,
+  shopServiceGetById,
+  shopServiceRemoveEntity,
+} from "./features/shopServices/ShopServiceSlice";
 import AdminRoute from "./components/protectedRoutes/AdminRoute";
-import { adminStaticResourceGetAll } from "./features/adminStaticResources/AdminStaticResourceSlice";
-import { feedBackGetAll } from "./features/feedBacks/FeedBackSlice";
+import {
+  adminStaticResourceGetAll,
+  adminStaticResourceGetById,
+  adminStaticResourceRemoveEntity,
+} from "./features/adminStaticResources/AdminStaticResourceSlice";
+import {
+  feedBackGetAll,
+  feedBackGetById,
+  feedBackRemoveEntity,
+} from "./features/feedBacks/FeedBackSlice";
 import CategoryManagementPage from "./pages/AdminCategoryManagementPage/CategoryManagementPage";
 import StaticResourceManagementPage from "./pages/AdminStaticResourceManagementPage/StaticResourceManagementPage";
 import VendorRoute from "./components/protectedRoutes/VendorRoute";
@@ -31,15 +56,235 @@ import VendorDashBoardPage from "./pages/VendorDashBoardPage/VendorDashBoardPage
 import ClientDashBoardPage from "./pages/ClientDashboardPage/ClientDashBoardPage";
 import Header from "./components/header/Header";
 import AuthenticationModal from "./features/accounts/authentication/AuthenticationModal";
-import { packageGetAll } from "./features/package/PackageSlice";
+import { packageGetAll, packageGetAllSubPackages, packageGetById, packageGetSubPackageById, packageRemoveEntity, subPackageRemoveEntity } from "./features/package/PackageSlice";
 import {
+  chatGetUserInbox,
   chatGetUsersInboxs,
+  chatSetMarkAsReaded,
+  pushNewMessage,
+  toggleUserActiveState,
 } from "./features/chats/ChatSlice";
+import Footer from "./components/Footer/Footer";
+import {
+  addNewNotification,
+  notificationGetAll,
+} from "./features/notifications/NotificationSlice";
+import { HubConnectionBuilder } from "@microsoft/signalr";
+import AdminStaticResourceManagementListing from "./pages/AdminStaticResourceManagementPage/AdminStaticResourceManagementListing";
+import VendorListing from "./pages/VendorListingPage/VendorListing";
+import ClientListing from "./pages/ClientListingPage/ClientListing";
+
+export enum DatabaseChangeEventType {
+  Add = 1,
+  Update = 2,
+  Delete = 3,
+}
+
+export enum EntityType {
+  Package = 1,
+  Feedback = 2, // done
+  Service = 3, // done
+  Shop = 4, // done
+  User = 5,
+  Category = 6, // done
+  AdminStaticResource = 7, // done
+  SubPackage = 8,
+}
 
 export default function App() {
   const dispatch = useAppDispatch();
   const [showSignInModal, setShowSignInModal] = useState(false);
   const { user, isLoggedIn } = useAppSelector((state) => state.account);
+  const { chatInboxVisibility, chatBarVisibility, senderId } = useAppSelector(
+    (state) => state.chat
+  );
+
+  const chatClient = useMemo(() => {
+    if (user !== null) {
+      return new HubConnectionBuilder()
+        .withUrl("http://localhost:5257/personalChatHub", {
+          withCredentials: false,
+        })
+        .configureLogging("information")
+        .withAutomaticReconnect()
+        .build();
+    } else {
+      return null;
+    }
+  }, [user, isLoggedIn]);
+
+  useEffect(() => {
+    if (chatClient !== null) {
+      chatClient.start().then(() => {
+        console.log("Connection started:");
+        chatClient.invoke("SetActive", user?.id);
+      });
+      // Event listeners
+      chatClient.on("ReceiveMessage", (message: any) => {
+        console.log("Message received: ", message);
+        //check chat inbox is open
+        if (
+          senderId == message.senderId &&
+          chatInboxVisibility === true &&
+          chatBarVisibility === true
+        ) {
+          dispatch(pushNewMessage(message));
+          dispatch(chatSetMarkAsReaded(message.senderId));
+        } else {
+          dispatch(chatGetUserInbox(message.senderId));
+        }
+      });
+      chatClient.on("UserConnected", (message: any) => {
+        console.log("User connected: ", message);
+        // set user active in chat slice
+        dispatch(toggleUserActiveState(message));
+        // set user active in account slice
+        dispatch(setUserActiveState({ id: message, isActive: true }));
+      });
+      chatClient.on("ReceiveNotification", (message: any) => {
+        console.log("Notification received: ", message);
+        dispatch(addNewNotification(message));
+      });
+      chatClient.on("UserOffline", (message: any) => {
+        console.log("User offline: ", message);
+        // set user inactive in chat slice
+        dispatch(toggleUserActiveState(message));
+        // set user inactive in account slice
+        dispatch(setUserActiveState({ id: message, isActive: false }));
+      });
+      chatClient.on("ReceiveDatabaseChangeEvent", (message: any) => {
+        console.log("ReceiveDatabaseChangeEvent : ", message);
+        switch (message.entityType) {
+          case EntityType.AdminStaticResource:
+            switch (message.eventType) {
+              case DatabaseChangeEventType.Add:
+                dispatch(adminStaticResourceGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Update:
+                dispatch(adminStaticResourceGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Delete:
+                dispatch(adminStaticResourceRemoveEntity(message.entityId));
+                break;
+              default:
+                break;
+            }
+            break;
+          case EntityType.Category:
+            switch (message.eventType) {
+              case DatabaseChangeEventType.Add:
+                dispatch(categoryGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Update:
+                dispatch(categoryGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Delete:
+                dispatch(categoryRemoveEntity(message.entityId));
+                break;
+              default:
+                break;
+            }
+            break;
+          case EntityType.Shop:
+            switch (message.eventType) {
+              case DatabaseChangeEventType.Add:
+                dispatch(shopGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Update:
+                dispatch(shopGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Delete:
+                dispatch(shopRemoveEntity(message.entityId));
+                break;
+              default:
+                break;
+            }
+            break;
+          case EntityType.Service:
+            switch (message.eventType) {
+              case DatabaseChangeEventType.Add:
+                dispatch(shopServiceGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Update:
+                dispatch(shopServiceGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Delete:
+                dispatch(shopServiceRemoveEntity(message.entityId));
+                break;
+              default:
+                break;
+            }
+            break;
+          case EntityType.Feedback:
+            switch (message.eventType) {
+              case DatabaseChangeEventType.Add:
+                dispatch(feedBackGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Update:
+                dispatch(feedBackGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Delete:
+                dispatch(feedBackRemoveEntity(message.entityId));
+                break;
+              default:
+                break;
+            }
+            break;
+          case EntityType.Package:
+            switch (message.eventType) {
+              case DatabaseChangeEventType.Add:
+                dispatch(packageGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Update:
+                dispatch(packageGetById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Delete:
+                dispatch(packageRemoveEntity(message.entityId));
+                break;
+              default:
+                break;
+            }
+            break;
+          case EntityType.SubPackage:
+            switch (message.eventType) {
+              case DatabaseChangeEventType.Add:
+                dispatch(packageGetSubPackageById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Update:
+                dispatch(packageGetSubPackageById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Delete:
+                dispatch(subPackageRemoveEntity(message.entityId));
+                break;
+              default:
+                break;
+            }
+            break;
+          case EntityType.User:
+            switch (message.eventType) {
+              case DatabaseChangeEventType.Add:
+                dispatch(getUsersById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Update:
+                dispatch(getUsersById(message.entityId));
+                break;
+              case DatabaseChangeEventType.Delete:
+                dispatch(userRemoveEntity(message.entityId));
+                break;
+              default:
+                break;
+            }
+            break;
+          default:
+            break;
+        }
+      });
+    }
+    return () => {
+      chatClient?.stop();
+      console.log("Connection stopped");
+    };
+  }, [chatClient]);
 
   const initApp = useCallback(async () => {
     await dispatch(getCurrentUser());
@@ -50,6 +295,8 @@ export default function App() {
     await dispatch(feedBackGetAll());
     await dispatch(packageGetAll());
     await dispatch(chatGetUsersInboxs());
+    await dispatch(notificationGetAll());
+    await dispatch(packageGetAllSubPackages());
   }, [dispatch]);
 
   const handleShowSignUP = () => {
@@ -72,18 +319,15 @@ export default function App() {
   return (
     <>
       <Router>
-        <Header
-          getSideBarVisibility={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          handleShowSignUp={handleShowSignUP}
-        />
+        <Header handleShowSignUp={handleShowSignUP} />
         <AuthenticationModal show={showSignInModal} handleClose={handleClose} />
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/packageDetails" element={<PackageDetailsPage />} />
             <Route path="/vendorServices" element={<VendorServices />} />
+
+            {/* client auth paths */}
             <Route
               path="/"
               element={<AuthRoute handleShowSignInModal={handleShowSignUP} />}
@@ -100,10 +344,17 @@ export default function App() {
                   />
                 }
               />
+              <Route
+                path="/help-resources"
+                element={<AdminStaticResourceManagementListing />}
+              />
               <Route path="/calendar" element={<CalenderPage />} />
               <Route path="/shop/:id" element={<ShopDetailPage />} />
               <Route path="/shop-service/:id" element={<ServiceDetailPage />} />
 
+
+
+              {/* admin paths */}
               <Route path="admin/" element={<AdminRoute />}>
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route
@@ -114,8 +365,20 @@ export default function App() {
                   path="static-resource-management"
                   element={<StaticResourceManagementPage />}
                 />
+                <Route
+                  path="vendor-details"
+                  element={<VendorListing />}
+                />
+                <Route
+                  path="client-details"
+                  element={<ClientListing/>}
+                />
+
               </Route>
 
+
+
+              {/* vendor paths */}
               <Route path="vendor/" element={<VendorRoute />}>
                 <Route path="dashboard" element={<VendorDashBoardPage />} />
               </Route>
@@ -124,6 +387,7 @@ export default function App() {
             </Route>
           </Routes>
         </main>
+        <Footer />
       </Router>
     </>
   );

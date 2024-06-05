@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ShopService from "../../interfaces/ShopService";
-import { createService, deleteService, getAllServices, updateService } from "../../services/shopServiceAPI";
+import { createService, deleteService, getAllServices, getServiceById, updateService } from "../../services/shopServiceAPI";
 
 interface ShopServiceState{
     loading : boolean;
@@ -75,10 +75,29 @@ export const shopServiceDelete = createAsyncThunk<any, number>(
     }
 );
 
+export const shopServiceGetById = createAsyncThunk<ShopService, number>(
+    'shopService/getShopServiceById',
+    async (id, thunkAPI) => {
+        try {
+            const response = await getServiceById(id);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Get by id failed' });
+            }
+            return response;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
+
 const ShopServiceSlice = createSlice({
     name: 'shopService',
     initialState,
-    reducers: {},
+    reducers: {
+        shopServiceRemoveEntity: (state, action) => {
+            state.shopServices = state.shopServices.filter(service => service.id !== action.payload);
+        }
+    },
     extraReducers: builder => {
         builder.addCase(shopServiceCreate.pending, (state, action) => {
             state.loading = true;
@@ -114,11 +133,39 @@ const ShopServiceSlice = createSlice({
             state.loading = false;
             state.shopServices = action.payload as ShopService[];
         });
+        builder.addCase(shopServiceGetAll.rejected, (state, action) => {
+            state.loading = false;
+            state.error = (action.payload as { error: string })?.error || " Get all failed";
+        });
+        builder.addCase(shopServiceDelete.pending, (state, action) => {
+            state.loading = true;
+        });
         builder.addCase(shopServiceDelete.fulfilled, (state, action) => {
             state.loading = false;
             state.shopServices = state.shopServices.filter(service => service.id !== action.payload as number);
         });
+        builder.addCase(shopServiceDelete.rejected, (state, action) => {
+            state.loading = false;
+            state.error = (action.payload as { error: string })?.error || " Delete failed";
+        });
+        builder.addCase(shopServiceGetById.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(shopServiceGetById.fulfilled, (state, action) => {
+            state.loading = false;
+            const index = state.shopServices.findIndex(service => service.id === action.payload.id);
+            if (index !== -1) {
+                state.shopServices[index] = action.payload as ShopService;
+            } else {
+                state.shopServices.push(action.payload as ShopService);
+            }
+        });
+        builder.addCase(shopServiceGetById.rejected, (state, action) => {
+            state.loading = false;
+            state.error = (action.payload as { error: string })?.error || " Get by id failed";
+        });
+
     }}
 )
-
+export const { shopServiceRemoveEntity } = ShopServiceSlice.actions;
 export default ShopServiceSlice.reducer;

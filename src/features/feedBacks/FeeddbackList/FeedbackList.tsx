@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { Container, Button, Modal, Form, Spinner } from "react-bootstrap";
 import FeedBack from "../../../interfaces/FeedBack";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -9,32 +9,38 @@ import { shopGetAll } from "../../shops/ShopSlice";
 
 interface FeedbackListProps {
   serviceId: number;
-  isVendor: boolean;
 }
 
-export default function FeedBackList({
-  serviceId,
-  isVendor,
-}: FeedbackListProps) {
-  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+export default function FeedBackList({ serviceId }: FeedbackListProps) {
   const dispatch = useAppDispatch();
   const { loading, feedBacks } = useAppSelector((state) => state.feedback);
-  const [serviceFeedbacks, setServiceFeedbacks] = useState<FeedBack[]>([]);
+  const { shopServices } = useAppSelector((state) => state.service);
+  const { user } = useAppSelector((state) => state.account);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [serviceFeedbacks, setServiceFeedbacks] = useState<FeedBack[]>(
+    feedBacks.filter((f) => f.serviceId === serviceId)
+  );
   const [newFeedback, setNewFeedback] = useState<FeedBack>({
     comment: "",
     rating: 1,
     serviceId: 0,
     applicationUserId: "",
-    feedBackStaticResourceUrls: [],
+    feedBackStaticResourcesUrls: [],
     feedBackStaticResourceFiles: [],
   });
   const [commentError, setCommentError] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
+  const [currentService] = useState(
+    shopServices.find((s) => s.id == serviceId)
+  );
+
+  const currentServiceId = useMemo(() => serviceId, [serviceId]);
 
   useEffect(() => {
-    const temps = feedBacks.filter((f) => f.serviceId === serviceId);
-    setServiceFeedbacks(temps);
-  }, [feedBacks, serviceId]);
+    setServiceFeedbacks(
+      feedBacks.filter((f) => f.serviceId === currentServiceId)
+    );
+  }, [feedBacks]);
 
   const close = () => {
     setShowFeedbackModal(false);
@@ -43,7 +49,7 @@ export default function FeedBackList({
       rating: 1,
       serviceId: 0,
       applicationUserId: "",
-      feedBackStaticResourceUrls: [],
+      feedBackStaticResourcesUrls: [],
       feedBackStaticResourceFiles: [],
     });
     setCommentError(null);
@@ -117,24 +123,42 @@ export default function FeedBackList({
 
   return (
     <Container className="my-4">
+      {user?.id &&
+        user.id !== currentService?.shopServiceOwner &&
+        user.role == "client" && (
+          <Button
+            variant="primary"
+            onClick={() => {
+              setShowFeedbackModal(true);
+            }}
+          >
+            Add Feedback
+          </Button>
+        )}
       <div className="mt-4">
-        <h3>Customer Reviews</h3>
-        <div className="feedback-list">
-          {serviceFeedbacks.map((feedback) => (
-            <FeedbackItem key={feedback.id} feedback={feedback} />
-          ))}
-        </div>
+        {serviceFeedbacks.length === 0 ? (
+          <h3>No Feedbacks yet</h3>
+        ) : (
+          <>
+            <h3>Customer Reviews</h3>
+            <div className="feedback-list">
+              {serviceFeedbacks.map((feedback) => (
+                <FeedbackItem
+                  key={feedback.id}
+                  id={feedback.id || 1}
+                  comment={feedback.comment}
+                  postedOn={feedback.postedOn || new Date()}
+                  rating={feedback.rating}
+                  feedbackStaticResourceUrls={
+                    feedback.feedBackStaticResourcesUrls || []
+                  }
+                  commentorId={feedback.applicationUserId}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
-      {!isVendor && (
-        <Button
-          variant="primary"
-          onClick={() => {
-            setShowFeedbackModal(true);
-          }}
-        >
-          Add Feedback
-        </Button>
-      )}
       <Modal show={showFeedbackModal} onHide={close}>
         <Modal.Header closeButton>
           <Modal.Title>Add Feedback</Modal.Title>

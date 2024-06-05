@@ -106,6 +106,20 @@ export const chatSetChatAsReaded = createAsyncThunk<ChatInbox, string>(
     }
 );
 
+export const chatSetMarkAsReaded = createAsyncThunk<ChatInbox, string>(
+    'chat/setMarkAsReaded',
+    async (id, thunkAPI) => {
+        try {
+            const response = await setChatAsReaded(id);
+            if (!response) {
+                return thunkAPI.rejectWithValue({ error: 'Get all messages failed' });
+            }
+            return response;
+        } catch (e) {
+            return thunkAPI.rejectWithValue({ error: (e as Error).message });
+        }
+    }
+);
 
 const chatSlice = createSlice({
     name: "chat",
@@ -140,6 +154,14 @@ const chatSlice = createSlice({
         },
         pushNewMessage: (state, action) => {
             state.myChatInbox = [...state.myChatInbox, action.payload];
+            state.myChatInboxs = state.myChatInboxs.map((cht) => {
+                if (cht.id === action.payload.senderId) {
+                    cht.lastMessage = action.payload.message;
+                    cht.lastMessageDate = action.payload.date;
+                }
+                return cht;
+
+            });
         }
     
     },
@@ -228,6 +250,22 @@ const chatSlice = createSlice({
             });
         });
         builder.addCase(chatSetChatAsReaded.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        });
+        builder.addCase(chatSetMarkAsReaded.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(chatSetMarkAsReaded.fulfilled, (state, action) => {
+            state.loading = false;
+            // replacing the chat inbox with the updated one
+            const index = state.myChatInboxs.findIndex((cht) => cht.id === action.payload.id);
+            if (index !== -1) {
+                state.myChatInboxs[index] = action.payload;
+            }
+
+        });
+        builder.addCase(chatSetMarkAsReaded.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
         });

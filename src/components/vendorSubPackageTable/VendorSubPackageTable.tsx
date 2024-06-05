@@ -1,30 +1,21 @@
 import { Container, Button, Badge } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import SubPackage from "../../interfaces/SubPackage";
-import { useCallback, useEffect, useState } from "react";
-import { getAllSubPackages } from "../../services/packageService";
 import { packageUpdateSubPackage } from "../../features/package/PackageSlice";
+import { useMemo } from "react";
+import { Link } from "react-router-dom";
 
 export default function VendorSubPackageTable() {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.account);
-  const { packages } = useAppSelector((state) => state.package);
-  const { shops } = useAppSelector((state) => state.shop);
-  const { shopServices } = useAppSelector((state) => state.service);
+  const { subPackages } = useAppSelector((state) => state.package);
+  const {shops} = useAppSelector((state) => state.shop);
 
-  const [mySubPackages, setSubMyPackages] = useState<SubPackage[]>([]);
-
-  const init = useCallback(async () => {
-    const response = await getAllSubPackages();
-    if (response) {
-      setSubMyPackages(response);
-    }
-  }, [packages, shopServices, shops, user]);
-
-  useEffect(() => {
-    init();
-  }, [init]);
+  const mySubPackages = useMemo(() => {
+    // sort the subpackages by date
+    return subPackages.sort((a, b) => {
+      return new Date(b.orderTime).getTime() - new Date(a.orderTime).getTime();
+    });
+  }, [subPackages]);
 
   const statusToBadge = (status: number) => {
     switch (status) {
@@ -42,7 +33,7 @@ export default function VendorSubPackageTable() {
   };
 
   const handleAccept = async (id: number) => {
-    const mySubPackage = mySubPackages.find((subPkg) => subPkg.id === id);
+    const mySubPackage = subPackages.find((subPkg) => subPkg.id === id);
     const data = new FormData();
     data.append("status", "2");
     data.append("id", id.toString());
@@ -52,14 +43,14 @@ export default function VendorSubPackageTable() {
     data.append("serviceId", mySubPackage?.serviceId.toString() ?? "");
 
     try {
-        await dispatch(packageUpdateSubPackage({ id, data }));
+      await dispatch(packageUpdateSubPackage({ id, data }));
     } catch (e) {
-        console.error(e);
+      console.error(e);
     }
   };
 
   const handleReject = (id: number) => {
-    const mySubPackage = mySubPackages.find((subPkg) => subPkg.id === id);
+    const mySubPackage = subPackages.find((subPkg) => subPkg.id === id);
     const data = new FormData();
     data.append("status", "3");
     data.append("id", id.toString());
@@ -69,13 +60,18 @@ export default function VendorSubPackageTable() {
     data.append("serviceId", mySubPackage?.serviceId.toString() ?? "");
 
     try {
-        dispatch(packageUpdateSubPackage({ id, data }));
+      dispatch(packageUpdateSubPackage({ id, data }));
     } catch (e) {
-        console.error(e);
+      console.error(e);
     }
   };
 
-  if (mySubPackages.length === 0) {
+  const getShopName = (shopId: number) => {
+    const shop = shops.find((shop) => shop.id === shopId);
+    return shop?.name ?? "Unknown";
+  }
+
+  if (subPackages.length === 0) {
     return <Container className="mt-4">No Sub Packages</Container>;
   }
 
@@ -100,7 +96,7 @@ export default function VendorSubPackageTable() {
               <td>{subPkg.description}</td>
               <td>{new Date(subPkg.orderTime).toLocaleString()}</td>
               <td>{subPkg.packageId}</td>
-              <td>{subPkg.serviceId}</td>
+              <td><Link to={`/shop-service/${subPkg.serviceId}`}>{getShopName(subPkg.serviceId)}</Link></td>
               <td>{statusToBadge(parseInt(subPkg.status || "0"))}</td>
               <td>
                 <Button
