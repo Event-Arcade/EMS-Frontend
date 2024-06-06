@@ -1,0 +1,50 @@
+name: Build and Deploy React App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build React App
+      run: npm run build
+
+    - name: Docker build
+      run: docker build -t myreactapp:latest .
+
+    - name: Login to AWS ECR
+      id: ecr-login
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to ECR
+      env:
+        ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+        ECR_REPOSITORY: myreactapp
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker tag myreactapp:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Deploy to ECS
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: my-task-def
+        container-name: myreactapp
+        image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        service: my-service
+        cluster: my-cluster

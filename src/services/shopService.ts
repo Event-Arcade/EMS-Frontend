@@ -79,7 +79,7 @@ export async function getMyShop() {
   }
 }
 
-export async function updateShop(shopId: string, formData: FormData) {
+export async function updateShop(shopId: number, formData: FormData) {
   try {
     const { data } = await http.put(baseURL+
       `/update/${shopId}`,

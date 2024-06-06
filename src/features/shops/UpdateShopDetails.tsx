@@ -45,17 +45,17 @@ export default function UpdateShop({ shop, close }: UpdateShopProps) {
 const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-        const formData = new FormData();
-        formData.append("name", updatedShop.name || "");
-        formData.append("description", updatedShop.description || "");
-        if (updatedShop.backgroundImageFile) {
-            formData.append("backgroundImage", updatedShop.backgroundImageFile);
-        }
-        await dispatch(shopUpdate({id: shop.id || "", formData: formData})).unwrap();
-        close();
-        navigate(`/shop/${shop.id}`);
+      const formData = new FormData();
+      formData.append("name", updatedShop.name || "");
+      formData.append("description", updatedShop.description || "");
+      if (updatedShop.backgroundImageFile) {
+        formData.append("backgroundImage", updatedShop.backgroundImageFile);
+      }
+      await dispatch(shopUpdate({id: shop.id || 0, formData: formData})).unwrap();
+      close();
+      navigate(`/shop/${shop.id}`);
     } catch (error) {
-        console.error("Error updating shop:", error);
+      console.error("Error updating shop:", error);
     }
   };
 

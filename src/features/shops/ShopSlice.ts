@@ -46,7 +46,7 @@ export const shopCreate = createAsyncThunk<Shop, FormData>(
     }
 );
 
-export const shopUpdate = createAsyncThunk<Shop, {id: string, formData : FormData}>(
+export const shopUpdate = createAsyncThunk<Shop, {id: number, formData : FormData}>(
     'shops/updateshop',
     async (data, thunkAPI) => {
         try {

@@ -151,18 +151,6 @@ export default function SideBar({ isVisible }: SideBarProps) {
                 <span>My Shop</span>
               </a>
             </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                onClick={() => {
-                  setIsSidebarVisible(false);
-                  navigate("/");
-                }}
-              >
-                <i className="bi bi-gear"></i>
-                <span>Orders</span>
-              </a>
-            </li>
           </>
         )}
         <li

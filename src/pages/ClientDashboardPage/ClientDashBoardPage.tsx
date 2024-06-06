@@ -1,8 +1,4 @@
-import { useState } from "react";
 import MiniCalender from "../../components/MiniCalender/MiniCalender";
-import PageTitle from "../../components/pageTitle/PageTitle";
-import RecentSales from "../../components/planTable/RecentSales";
-import ServiceList from "../../components/serviceList/ServiceList";
 import "./clientDashBoardPage.css";
 import { useAppSelector } from "../../store/hooks";
 import PackageTable from "../../components/PackageTable/PackageTable";

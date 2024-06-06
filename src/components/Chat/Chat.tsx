@@ -31,7 +31,7 @@ const Chat: React.FC = () => {
   // Function to scroll to the bottom
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "instant" });
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
