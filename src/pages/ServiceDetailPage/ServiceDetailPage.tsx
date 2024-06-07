@@ -18,7 +18,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import ShopService from "../../interfaces/ShopService";
-import FeedbackList from "../../features/feedBacks/FeeddbackList/FeedBackList";
+import FeedBackList from "../../features/feedBacks/FeeddbackList/FeedBackList";
 import {
   shopServiceDelete,
   shopServiceUpdate,
@@ -264,7 +264,7 @@ const ServiceDetailPage: React.FC = () => {
             )}
           </Col>
         </Row>
-        {id && <FeedbackList serviceId={parseInt(id)} />}
+        {id && <FeedBackList serviceId={parseInt(id)} />}
       </Container>
 
       {/* Update Modal */}
