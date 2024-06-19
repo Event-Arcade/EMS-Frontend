@@ -1,10 +1,14 @@
 .popup-content {
+  top:10px;
     padding: 20px;
     border-radius: 15px;
     background-color: white;
     max-width: 600px;
     width: 100%;
     border-style: none;
+    z-index: 1000;
+    max-height: 80%;
+  overflow-y: auto;
   }
   
   .popup-header {
@@ -15,7 +19,8 @@
   }
   
   .popup-title {
-    margin: 0;
+    margin-top: 0px;
+    margin-bottom: -50px;
   }
   
   

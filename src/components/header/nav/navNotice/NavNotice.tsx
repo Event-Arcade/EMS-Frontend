@@ -157,7 +157,7 @@ function NavNotice() {
     switch (eventType) {
       case DatabaseChangeEventType.Add:
         // return right icon based on event type
-        return "bi bi bi-bell text-success";
+        return "bi bi bi-bell-fill text-info";
       case DatabaseChangeEventType.Update:
         return "bi bi bi-pencil-square text-info";
       case DatabaseChangeEventType.Delete:
@@ -176,7 +176,7 @@ function NavNotice() {
     return (
       <li className="nav-item dropdown">
         <a className="nav-link nav-icon" data-bs-toggle="dropdown">
-          <i className="bi bi-bell"></i>
+          <i className="bi bi-bell-fill"></i>
         </a>
         <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notification">
           <li className="dropdown-header">You have no notifications</li>
@@ -187,12 +187,13 @@ function NavNotice() {
   return (
     <li className="nav-item dropdown">
       <a className="nav-link nav-icon" data-bs-toggle="dropdown">
-        <i className="bi bi-bell"></i>
-        <span className="badge bg-primary badge-number">
+        <i className="bi bi-bell-fill"></i>
+        <span className="badge bg-danger badge-number">
           {notifications.length}
         </span>
       </a>
-      <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notification">
+      <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow notification" style={{ maxHeight: "600px", overflowY: "auto", width: "400px" }}>
+
         <li className="dropdown-header">
           You have {notifications.length} notifications
           <a>
@@ -213,13 +214,15 @@ function NavNotice() {
                 <p>{notification.message}</p>
                 <p>{calculateArrivedTime(notification.createdAt)}</p>
                 <button
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-outline-warning btn-sm"
+                  style={{borderRadius:"20px"}}
                   onClick={() => handleMarkAsRead(notification.id)}
                 >
-                  mark as read
+                  Mark as read
                 </button>
                 <button
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-outline-warning btn-sm"
+                  style={{width:"100px", marginLeft:"30px",borderRadius:"20px"}}
                   onClick={() => handleNotificationClicked(notification.id)}
                 >
                   view

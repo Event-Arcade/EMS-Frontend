@@ -73,6 +73,7 @@ function LocationForm() {
             value={selectedFunctionType}
             onChange={(value) => setSelectedFunctionType(value)}
             style={{ width: "200px", margin: "40px 50px 10px 100px" }}
+            className="custom-select-box"
           />
           <SelectBox
             options={location}
@@ -80,6 +81,8 @@ function LocationForm() {
             value={selectedLocation}
             onChange={(value) => setSelectedLocation(value)}
             style={{ width: "200px", margin: "40px 50px 10px 0px" }}
+            className="custom-select-box"
+
           />
           <DatePicker
             selected={startDate}
@@ -91,9 +94,10 @@ function LocationForm() {
       </form>
       <div className="selection-form">
         <h3>Your Order Details :</h3>
+        <div className="selection-form-details">
         <h5>Function Type: {selectedFunctionType}</h5>
         <h5>Location: {selectedLocation}</h5>
-        <h5>Date: {startDate.toDateString()}</h5>
+        <h5>Date: {startDate.toDateString()}</h5></div>
         <button className="edit-selection-btn mt-5" onClick={handleSubmit}>
           Confirm Your Details
         </button>

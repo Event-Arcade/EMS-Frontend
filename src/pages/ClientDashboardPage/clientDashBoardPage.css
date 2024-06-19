@@ -1,4 +1,4 @@
-#main{
+.dashboard-section{
   margin-top: 60px;
   padding: 20px 0px;
   transition: all 0.3s;
@@ -8,19 +8,18 @@
 }
 
 @media (max-width: 1199px) {
-  #main {
+  .dashboard-section {
     padding: 20px;
   }
 }
 
-#main-centered {
+/* #main-centered {
   margin-top: 60px;
-  padding: 20px 30px;
+  padding: 20px 00px;
   transition: all 0.3s;
-  /* Add styles to center the main content */
   margin:  auto;
-  max-width: 80%; /* Adjust this value as needed */
-}
+  max-width: 80%; 
+} */
 
 /* ShopList.css */
 

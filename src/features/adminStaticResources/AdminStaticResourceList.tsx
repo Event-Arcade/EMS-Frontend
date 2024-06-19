@@ -35,6 +35,14 @@ export default function AdminStaticResourceList() {
   
     return (
       <div>
+         <hr
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "150%",
+        }}
+      ></hr>
       <h3 style={{ padding: "40px 0px 20px 0", color: "#BDBDBD" }}>
         Existing Static Resources
       </h3>
@@ -99,7 +107,7 @@ export default function AdminStaticResourceList() {
                   />
                   <div>
                     <Button
-                      style={{ width: "100px", marginTop: "20px" }}
+                      style={{ width: "100px", marginTop: "20px"}}
                       variant="success"
                       onClick={() => {
                         if (resource.id) {

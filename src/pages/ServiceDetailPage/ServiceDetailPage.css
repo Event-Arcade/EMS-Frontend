@@ -1,0 +1,11 @@
+.bt-icon-custom-style {
+  font-size: 25px;
+  cursor: pointer;
+  background: rgb(223, 221, 221);
+  border-radius: 50%;  
+  padding: 10px;  
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}

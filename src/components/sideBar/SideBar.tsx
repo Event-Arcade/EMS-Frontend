@@ -94,7 +94,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
                   navigate("/admin/category-management");
                 }}
               >
-                <i className="bi bi-gear"></i>
+                <i className="bi bi-clipboard-heart"></i>
                 <span>Category</span>
               </a>
             </li>
@@ -106,7 +106,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
                   navigate("/admin/static-resource-management");
                 }}
               >
-                <i className="bi bi-gear"></i>
+                <i className="bi bi-card-text"></i>
                 <span>Static Resorces</span>
               </a>
             </li>
@@ -118,7 +118,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
               }}
             >
               <a className="nav-link">
-                <i className="bi bi-gear"></i>
+                <i className="bi bi-shop"></i>
                 <span>Vendors</span>
               </a>
             </li>
@@ -130,7 +130,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
               }}
             >
               <a className="nav-link">
-                <i className="bi bi-gear"></i>
+                <i className="bi bi-people"></i>
                 <span>Clients</span>
               </a>
             </li>
@@ -147,7 +147,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
                   navigate(`/shop/${userShop?.id}`);
                 }}
               >
-                <i className="bi bi-gear"></i>
+                <i className="bi bi-bag-check"></i>
                 <span>My Shop</span>
               </a>
             </li>
@@ -161,7 +161,7 @@ export default function SideBar({ isVisible }: SideBarProps) {
           }}
         >
           <a className="nav-link">
-            <i className="bi bi-gear"></i>
+            <i className="bi bi-patch-question"></i>
             <span>Help Guides</span>
           </a>
         </li>

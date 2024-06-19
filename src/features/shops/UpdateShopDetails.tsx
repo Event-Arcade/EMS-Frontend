@@ -61,7 +61,7 @@ const handleSubmit = async (e: FormEvent) => {
 
   return (
     <Container className="update-shop-container">
-      <h2 className="mb-4">Update Shop Details</h2>
+      <h3 style={{justifyContent:"center", display:"flex", marginTop:"-50px"}}>Update Shop Details</h3>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formName">
           <Form.Label>Name</Form.Label>
@@ -104,7 +104,7 @@ const handleSubmit = async (e: FormEvent) => {
           </Button>
         ) : (
           <>
-            <Button variant="primary" type="submit" className="mt-3">
+            <Button variant="warning" type="submit" className="mt-3">
               Update Shop
             </Button>
             <Button variant="danger" onClick={close} className="mt-3 ms-3">

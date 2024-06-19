@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ShopForm from "../../../../features/shops/ShopForm";
 import { setChatBarVisibility, setChatInboxVisibility } from "../../../../features/chats/ChatSlice";
+import defaultProfilePicture from "../../../../assets/images/user/default.png";
 
 function NavAvatar() {
   const { user } = useAppSelector((state) => state.account);
@@ -47,8 +48,9 @@ function NavAvatar() {
           as="a"
           className="nav-link nav-profile d-flex align-items-center pe-0"
         >
-          <Image src={user?.profilePictureURL} roundedCircle />
-          <Badge bg="success">.</Badge>
+          <Image  alt="defaultprofile" src={user?.profilePictureURL || defaultProfilePicture} roundedCircle className="rounded-circle"/>
+          {/* <Badge bg="success">.</Badge> */}
+          <div className="online-status"></div>
           <span className="d-none d-md-block ps-2 mx-2">{user?.firstName}</span>
         </Dropdown.Toggle>
 

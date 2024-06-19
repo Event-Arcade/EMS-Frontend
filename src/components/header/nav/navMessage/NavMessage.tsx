@@ -35,9 +35,9 @@ function NavMessage() {
     <>
       <li className="nav-item dropdown">
         <a className="nav-link nav-icon" data-bs-toggle={"dropdown"}>
-          <i className="bi bi-chat-left-text"></i>
+          <i className="bi bi-envelope-fill"></i>
           {unreadMsgConut > 0 && (
-            <span className="badge bg-success badge-number">
+            <span className="badge bg-danger badge-number">
               {unreadMsgConut}
             </span>
           )}
@@ -48,7 +48,7 @@ function NavMessage() {
               You have {unreadMsgConut} new messages
               <a>
                 <span
-                  className="badge rounded-pill bg-primary p-2 ms-2"
+                  className="badge rounded-pill bg-warning p-2 ms-2"
                   onClick={handleOpenChat}
                 >
                   View all
@@ -129,7 +129,7 @@ function NavMessage() {
               You have no new messages
               <a>
                 <span
-                  className="badge rounded-pill bg-primary p-2 ms-2"
+                  className="badge rounded-pill bg-warning p-2 ms-2"
                   onClick={handleOpenChat}
                 >
                   View all

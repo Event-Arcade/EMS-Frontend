@@ -1,0 +1,202 @@
+.chat-window {
+  position: fixed;
+  top: 60px;
+  right: -100%; /* Initially hidden */
+  width: 25%; /* 1/4 of the page width */
+  height: 91%;
+  background-color: #fff;
+  box-shadow: -3px 0 8px rgba(0, 0, 0, 0.3);
+  transition: right 0.3s ease-in-out;
+  z-index: 1000; /* Make sure it's above other elements */
+  min-width: 400px;
+}
+
+.chat-window.visible {
+  right: 0; /* Visible when `visible` class is applied */
+}
+
+.chat-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.chat-content {
+  padding: 10px;
+  overflow-y: auto;
+  height: calc(100% - 40px); /* Adjust height based on header height */
+}
+
+.chat {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: scroll;
+}
+
+h1 {
+  font-weight: 300;
+  font-size: 25px;
+}
+
+.message {
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  position: relative; /* Ensure relative positioning for online-status */
+}
+
+.chat-profile-container {
+  position: relative;
+  width: 60px; /* Increased size */
+  height: 60px; /* Increased size */
+}
+
+.chat-profile-picture {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-online-status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: rgb(6, 202, 6);
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  border: 2px solid white;
+}
+
+.unread-messages {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: red;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+}
+
+.message-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1; /* Make sure it takes available space */
+}
+
+.message-details span {
+  font-weight: bold;
+  font-size: 14px; /* Decreased font size */
+}
+
+.message-details p {
+  font-size: 12px; /* Decreased font size */
+  white-space: nowrap; /* Ensure single line */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis */
+}
+
+.chatBox {
+  flex: 1;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: scroll;
+}
+
+.top {
+  background-color: #f6be0785;
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user img {
+  width: 60px; /* Increased size */
+  height: 60px; /* Increased size */
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.close {
+  cursor: pointer;
+}
+
+.center {
+  height: 500px;
+  overflow: scroll;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: auto;
+}
+
+.chatMessage {
+  width: 50%;
+}
+
+.chatMessage.own {
+  align-self: flex-end;
+  text-align: right;
+}
+
+.chatMessage span {
+  font-size: 12px;
+  background-color: #f7c14b39;
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.bottom {
+  border-top: 2px solid #f6be0785;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+textarea {
+  flex: 3;
+  height: 100%;
+  border: none;
+  padding: 10px;
+}
+
+button {
+  flex: 1;
+  background-color: #f6be0785;
+  height: 100%;
+  border: none;
+  cursor: pointer;
+}

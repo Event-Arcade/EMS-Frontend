@@ -79,13 +79,14 @@
 .chat-window {
   position: fixed;
   top: 60px;
-  right: -25%; /* Initially hidden */
+  right: -100%; /* Initially hidden */
   width: 25%; /* 1/4 of the page width */
-  height: 91%;
+  height: 92%;
   background-color: #fff;
   box-shadow: -3px 0 8px rgba(0, 0, 0, 0.3);
   transition: right 0.3s ease-in-out;
   z-index: 1000; /* Make sure it's above other elements */
+  min-width: 400px;
 }
 
 .chat-window.visible {
@@ -132,16 +133,65 @@
       align-items: center;
       gap: 20px;
       cursor: pointer;
+      position: relative;
+      height: 40px;
 
-      img {
-        width: 40px;
-        height: 40px;
+      .chat-profile-container {
+        position: relative;
+        width: 60px; /* Increased size */
+        height: 60px; /* Increased size */
+      }
+      
+      .chat-profile-picture {
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
         object-fit: cover;
       }
-
-      span {
+      
+      .chat-online-status {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: rgb(6, 202, 6);
+        border-radius: 50%;
+        width: 17px;
+        height: 17px;
+        border: 2px solid white;
+      }
+      
+      .unread-messages {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: red;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+      }
+      
+      .message-details {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        flex: 1; /* Make sure it takes available space */
+      }
+      
+      .message-details span {
         font-weight: bold;
+        font-size: 14px; /* Decreased font size */
+      }
+      
+      .message-details p {
+        font-size: 12px; /* Decreased font size */
+        white-space: nowrap; /* Ensure single line */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Add ellipsis */
       }
     }
   }
@@ -168,8 +218,8 @@
         gap: 20px;
 
         img {
-          width: 30px;
-          height: 30px;
+          width: 50px;
+          height: 50px;
           border-radius: 50%;
           object-fit: cover;
         }

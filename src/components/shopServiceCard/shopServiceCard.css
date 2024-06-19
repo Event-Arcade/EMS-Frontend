@@ -29,6 +29,9 @@
   .shop-service-card-text {
     font-size: 12px;
     color: #555;
+    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   }
   
   .shop-service-card-footer {

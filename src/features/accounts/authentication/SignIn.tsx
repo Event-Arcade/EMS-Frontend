@@ -44,22 +44,9 @@ export default function SignIn() {
   return (
     <div className="form-container sign-in">
       <form onSubmit={handleSubmit}>
-        <h1>Sign in</h1>
-        <div className="social-icons">
-          <a href="#" className="icon">
-            <i className="fa-brands fa-google-plus-g"></i>
-          </a>
-          <a href="#" className="icon">
-            <i className="fa-brands fa-facebook-f"></i>
-          </a>
-          <a href="#" className="icon">
-            <i className="fa-brands fa-twitter"></i>
-          </a>
-          <a href="#" className="icon">
-            <i className="fa-brands fa-linkedin"></i>
-          </a>
-        </div>
-        <span>or use your email password</span>
+        <h1 className="form-container-h" style={{fontFamily:"sans-serif"}}>Sign in</h1>
+        
+        <span className="form-container-span" style={{marginBottom:"20px"}}>Use Your Email & Password</span>
         <input
           type="email"
           placeholder="Email"

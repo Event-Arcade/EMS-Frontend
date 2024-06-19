@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getAllUsers } from "../../features/accounts/UserAccountSlice";
 import { Link } from "react-router-dom";
 import { setChatBarVisibility, setChatInboxVisibility, setSenderId } from "../../features/chats/ChatSlice";
+import PageTitle from "../../components/pageTitle/PageTitle";
 
 export default function AdminDashboardPage() {
   const dispatch = useAppDispatch();
@@ -45,19 +46,22 @@ export default function AdminDashboardPage() {
   };
 
   return (
+    
     <Container fluid className="p-4">
+       <PageTitle page={"Admin Dashboard"} title={""} />
       <Row className="mb-4">
         <Col>
-          <h1>Admin Dashboard</h1>
+          <h4 className="dashboard-main-topic" style={{ color: "#f68905" }}>Dashboard</h4>
+          <h5 style={{marginTop:"50px"}}>User Details</h5>
         </Col>
       </Row>
-      <Row className="mb-4">
+      <Row className="mb-4" style={{background:"white" ,padding:"50px"}}>
         <Col md={4}>
           <Card className="text-center">
             <Card.Body>
               <Card.Title>Total Users</Card.Title>
               <Card.Text>{totalUsers}</Card.Text>
-              <ProgressBar
+              <ProgressBar variant="warning"
                 now={(activeUsers / totalUsers) * 100}
                 label={`${Math.round(
                   (activeUsers / totalUsers) * 100
@@ -84,6 +88,11 @@ export default function AdminDashboardPage() {
         </Col>
       </Row>
       <Row className="mb-4">
+        <Col>
+          <h5>Shop Details</h5>
+        </Col>
+      </Row>
+      <Row className="mb-4" style={{background:"white" ,padding:"50px",marginBottom:"20px"}}>
         <Col md={12}>
           <Card>
             <Card.Body>
@@ -109,6 +118,7 @@ export default function AdminDashboardPage() {
                       <td>{getServicesCount(shop.id || 0)}</td>
                       <td>
                         <Button
+                        variant="warning"
                           onClick={() => {
                             dispatch(setSenderId(shop.ownerId));
                             dispatch(setChatInboxVisibility(true));

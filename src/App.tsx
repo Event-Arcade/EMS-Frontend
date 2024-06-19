@@ -79,6 +79,8 @@ import VendorListing from "./pages/VendorListingPage/VendorListing";
 import ClientListing from "./pages/ClientListingPage/ClientListing";
 import StartPage from "./pages/StartPage/StartPage";
 import CalendarComponent from "./pages/CalanderPage/CalendarComponent";
+import './components/sideBar/sideBar.css'
+import SideBar from "./components/sideBar/SideBar";
 
 export enum DatabaseChangeEventType {
   Add = 1,
@@ -322,6 +324,12 @@ export default function App() {
     setShowSignInModal(false);
   };
 
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+
+  const toggleSideBar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
+
   useEffect(() => {
     initApp();
   }, []);
@@ -334,9 +342,10 @@ export default function App() {
   return (
     <>
       <Router>
-        <Header handleShowSignUp={handleShowSignUP} />
+        <Header handleShowSignUp={handleShowSignUP} toggleSideBar={toggleSideBar}  />
+        <SideBar isVisible={isSidebarVisible} />
         <AuthenticationModal show={showSignInModal} handleClose={handleClose} />
-        <main>
+        <main className={`main-content ${isSidebarVisible ? "shifted" : ""}`}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/vendorServices" element={<VendorServices />} />
@@ -389,8 +398,9 @@ export default function App() {
               <Route path="*" element={<h1>Not Found</h1>} />
             </Route>
           </Routes>
-        </main>
         <Footer />
+
+        </main>
       </Router>
     </>
   );

@@ -90,9 +90,8 @@ export default function FeedbackItem({
             </Col>
             {user?.id == commentorId && (
               <Col>
-                <Button variant="danger" onClick={handleDeleteFeedback}>
-                  Remove
-                </Button>
+                
+                <i className="bi bi-trash3 feedback-icon-custom-style " style={{color:"red"}} onClick={handleDeleteFeedback}></i>
               </Col>
             )}
           </Row>

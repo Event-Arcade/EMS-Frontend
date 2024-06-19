@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import AdminStaticResource from "../../interfaces/AdminStaticResource";
 import { useState } from "react";
@@ -27,7 +27,7 @@ export default function CreateAdminStaticResourceForm() {
 
   return (
     <>
-      <h2
+      {/* <h2
         style={{
           padding: "40px 0 0 0",
           color: "#B0BEC5",
@@ -36,15 +36,20 @@ export default function CreateAdminStaticResourceForm() {
         }}
       >
         Static Resources
-      </h2>
-      <hr
+      </h2> */}
+      {/* <hr
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
         }}
-      ></hr>
-      <h3 style={{ padding: "40px 0px 20px 0", color: "#BDBDBD" }}>
+      ></hr> */}
+      <Row className="mb-4">
+        <Col>
+          <h4 style={{ color: "#f68905" }}>Static Resources</h4>
+        </Col>
+      </Row>
+      <h3 style={{ padding: "20px 0px 20px 0", color: "#BDBDBD" }}>
         Add New Resource
       </h3>
       <Form onSubmit={handleSubmit}>

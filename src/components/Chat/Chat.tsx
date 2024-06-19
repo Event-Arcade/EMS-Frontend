@@ -121,14 +121,18 @@ const Chat: React.FC = () => {
                     handleMessageClick(cht?.id ?? "");
                   }}
                 >
-                  <img src={cht?.profilePictureURL} alt="" />
+                  <div className="chat-profile-container">
+                    <img src={cht?.profilePictureURL} alt="" className="chat-profile-picture" />
+                    {cht.isActive && <div className="chat-online-status"></div>}
+                  </div>
                   {cht.unreadMessages && cht.unreadMessages > 0 && (
-                    <Badge bg="secondary">{cht.unreadMessages}</Badge>
+                    <div className="unread-messages">{cht.unreadMessages}</div>
                   )}
-                  {cht.isActive && <Badge bg="primary">Online</Badge>}
-                  <span>{cht.firstName}</span>
-                  <p>{cht.lastMessage}</p>
-                  <p>{cht.lastMessageDate?.toString()}</p>
+                  <div className="message-details">
+                    <span>{cht.firstName}</span>
+                    <p>{cht.lastMessage}</p>
+                    <p>{cht.lastMessageDate?.toString()}</p>
+                  </div>
                 </div>
                 <hr />
               </>

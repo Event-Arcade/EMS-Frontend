@@ -102,7 +102,7 @@ export default function CreateShopService({
   return (
     <div className="popup-content">
       <div className="popup-header">
-        <h4 className="popup-title">Create Shop Service</h4>
+        <h3 className="popup-title">Create New Service</h3>
       </div>
       <Container>
         <Form onSubmit={handleSubmit}>
@@ -211,11 +211,11 @@ export default function CreateShopService({
             </Button>
           ) : (
             <>
-              <Button variant="primary" type="submit" className="mt-3">
-                Submit Shop Service
+              <Button variant="warning" style={{ width:"100px"}} type="submit" className="mt-3">
+                Submit
               </Button>
 
-              <Button variant="danger" onClick={close} className="mt-3 mx-5">
+              <Button variant="danger" onClick={close} className="mt-3 mx-5" style={{ width:"100px"}}>
                 Cancel
               </Button>
             </>

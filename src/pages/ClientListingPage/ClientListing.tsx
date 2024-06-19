@@ -20,6 +20,7 @@ import {
   setChatInboxVisibility,
   setSenderId,
 } from "../../features/chats/ChatSlice";
+import PageTitle from "../../components/pageTitle/PageTitle";
 
 export default function ClientListing() {
   const dispatch = useAppDispatch();
@@ -53,10 +54,12 @@ export default function ClientListing() {
   return (
     <>
       <Container fluid className="p-4">
+      <PageTitle page={"Clients"} title={""} />
         <Row className="mb-4">
-          <Col>
-            <h1>Clients List</h1>
-          </Col>
+        <Col>
+          <h4 style={{ color: "#f68905" }}>Clients</h4>
+          <h5 style={{marginTop:"50px",marginBottom:"-20px"}}>Client List</h5>
+        </Col>
         </Row>
         <Row className="mb-4">
           <Col md={12}>
@@ -100,7 +103,7 @@ export default function ClientListing() {
                     </td>
                     <td>
                       <Button
-                        variant="primary"
+                        variant="link"
                         onClick={() => {
                           dispatch(setSenderId(client.id));
                           dispatch(setChatInboxVisibility(true));
@@ -146,7 +149,7 @@ export default function ClientListing() {
             Close
           </Button>
           <Button
-            variant="primary"
+            variant="warning"
             onClick={() => {
               handleConfirmationUpgradeToAdmin(tempUserId);
               handleClose();

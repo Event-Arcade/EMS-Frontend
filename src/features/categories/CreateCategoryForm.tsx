@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import Category from "../../interfaces/Category";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { categoryCreate } from "./CategorySlice";
@@ -45,9 +45,14 @@ export default function CreateCategoryForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <Row className="mb-4">
+        <Col>
+          <h4 style={{ color: "#f68905" }}>Category</h4>
+        </Col>
+      </Row>
       <h2
         style={{
-          padding: "40px 0px 20px 0",
+          padding: "0px 0px 20px 0",
           color: "#BDBDBD",
           fontSize: "30px",
           textAlign: "left",

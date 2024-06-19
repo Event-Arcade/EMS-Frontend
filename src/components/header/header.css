@@ -1,9 +1,13 @@
 .header {
   transition: all 0.5s;
-  height: 60px;
+  height: 70px;
   box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   background-color: #fff;
   padding-left: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
 }
 
 .header .toggle-sidebar-btn {
@@ -11,4 +15,18 @@
   color: #575758;
   padding-left: 10px;
   cursor: pointer;
+}
+
+.bi-list {
+  cursor: pointer;
+  font-size: 2.5rem;
+  font-weight:bold
+}
+
+@media (max-width: 800px) {
+  .bi-list {
+    font-size: 30px;
+    margin-right: -20px;
+    z-index: 1000;
+  }
 }

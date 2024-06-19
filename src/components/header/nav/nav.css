@@ -8,8 +8,8 @@
 }
 
 .header-nav .nav-icon {
-  font-size: 22px;
-  color: #012970;
+  font-size: 25px;
+  color: black;
   margin-right: 25px;
   position: relative;
 }
@@ -31,8 +31,11 @@
   position: absolute;
   inset: -2px -5px auto auto;
   font-weight: normal;
-  font-size: 12px;
-  padding: 3px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
 }
 
 .header-nav .notification {
@@ -136,21 +139,33 @@
 }
 
 .nav-link-btn-home {
-  color: #fff;
-  background-color: #f53005;
-  background-image: linear-gradient(62deg, #f53005 22%, #f7b868 100%);
+  color: black !important;
+  background-color: #f68905;
+
   width: 120px;
-  margin-right: 100px;
+  margin-right: 40px;
   padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 14px;
+  border-radius: 5px;
+  font-size: 16px;
   font-weight: 600;
   transition: 0.3s;
   border-width: 0;
 }
 
-.rounded-circle{
+.rounded-circle {
   height: 40px;
-  width:40px;
-
+  width: 40px;
+}
+.online-status {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  background-color: rgb(6, 202, 6);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

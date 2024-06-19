@@ -1,9 +1,9 @@
-#main-container{ 
-  margin-top: 40px;
-  margin-left: 270px;
+.main-container{ 
+  margin-top:0px;
+  margin-left: 0px;
   /* padding: 20px 30px; */
   padding: 0;
-  width: 1150px;
+  width: 100%;
   transition: all 0.3s;
   
 }

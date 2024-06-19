@@ -13,6 +13,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { getAllUsers } from "../../features/accounts/UserAccountSlice";
 import { Link } from "react-router-dom";
 import { setChatBarVisibility, setChatInboxVisibility, setSenderId } from "../../features/chats/ChatSlice";
+import PageTitle from "../../components/pageTitle/PageTitle";
 
 export default function VendorListing() {
   const dispatch = useAppDispatch();
@@ -51,9 +52,11 @@ export default function VendorListing() {
 
   return (
     <Container fluid className="p-4">
+       <PageTitle page={"Vendors"} title={""} />
       <Row className="mb-4">
         <Col>
-          <h1>Vendors List</h1>
+          <h4 style={{ color: "#f68905" }}>Vendors</h4>
+          <h5 style={{marginTop:"50px",marginBottom:"-20px"}}>Vendor List</h5>
         </Col>
       </Row>
       <Row className="mb-4">
@@ -105,7 +108,7 @@ export default function VendorListing() {
                   <td>{getServices(getShopId(vendor.id))}</td>
                   <td>
                     <Button
-                      variant="primary"
+                      variant="warning"
                       size="sm"
                       onClick={() => {
                         dispatch(setSenderId(vendor.id));

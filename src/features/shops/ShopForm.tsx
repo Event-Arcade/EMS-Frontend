@@ -126,7 +126,7 @@ export default function ShopForm({
           </Button>
         ) : (
           <>
-            <Button variant="primary" onClick={handleSubmit} className="mt-3">
+            <Button variant="warning" onClick={handleSubmit} className="mt-3">
               Begin Journey
             </Button>
             <Button

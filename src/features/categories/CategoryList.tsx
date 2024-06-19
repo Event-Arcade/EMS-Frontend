@@ -43,7 +43,7 @@ export default function CategoryList() {
   useEffect(() => {}, [categories]);
   return (
     <div>
-      <h2
+      {/* <h2
         style={{
           padding: "40px 0 0 0",
           color: "#B0BEC5",
@@ -52,12 +52,13 @@ export default function CategoryList() {
         }}
       >
         Category Section
-      </h2>
+      </h2> */}
       <hr
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          width: "150%",
         }}
       ></hr>
       <h3 style={{ padding: "40px 0px 20px 0", color: "#BDBDBD" }}>

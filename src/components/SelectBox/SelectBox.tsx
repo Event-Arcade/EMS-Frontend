@@ -7,9 +7,10 @@ interface SelectBoxProps {
   value: string;
   onChange: (value: string) => void;
   style: React.CSSProperties;
+  className?: string;
 }
 
-function SelectBox({ options, defaultLabel, value, onChange, style }: SelectBoxProps) {
+function SelectBox({ options, defaultLabel, value, onChange, style ,className,...props }: SelectBoxProps) {
   return (
     <Form.Select aria-label="Default select example" style={style} value={value} onChange={(e) => onChange(e.target.value)}>
       <option>{defaultLabel}</option>

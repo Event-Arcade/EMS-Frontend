@@ -220,7 +220,7 @@ export default function FeedBackList({ serviceId }: FeedbackListProps) {
             </Button>
           ) : (
             <>
-              <Button variant="primary" onClick={handleSubmit} className="mt-3">
+              <Button variant="warning" onClick={handleSubmit} className="mt-3">
                 Create FeedBack
               </Button>
               <Button variant="danger" onClick={close} className="mt-3 ms-3">

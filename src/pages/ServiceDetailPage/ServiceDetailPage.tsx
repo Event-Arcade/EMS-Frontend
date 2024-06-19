@@ -18,7 +18,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import ShopService from "../../interfaces/ShopService";
-import FeedBackList from "../../features/feedBacks/FeeddbackList/FeedBackList";
+import FeedBackList from "../../features/feedBacks/FeeddbackList/FeedbackList";
 import {
   shopServiceDelete,
   shopServiceUpdate,
@@ -28,6 +28,7 @@ import {
   setChatBarVisibility,
   setChatInboxVisibility,
 } from "../../features/chats/ChatSlice";
+import "./ServiceDetailPage.css"
 
 const ServiceDetailPage: React.FC = () => {
   const { id } = useParams();
@@ -176,7 +177,7 @@ const ServiceDetailPage: React.FC = () => {
 
   return (
     <>
-      <Container className="mt-5">
+      <Container className="mt-8">
         <Row>
           <Col md={6}>
             <Carousel>
@@ -194,7 +195,7 @@ const ServiceDetailPage: React.FC = () => {
             </Carousel>
           </Col>
           <Col md={6}>
-            <h2>{currentShopService?.name}</h2>
+            <h3>{currentShopService?.name}</h3>
             <p>{currentShopService?.description}</p>
             <p>
               <strong>Price:</strong> ${currentShopService?.price}
@@ -220,18 +221,23 @@ const ServiceDetailPage: React.FC = () => {
             </p>
             {user?.role === "vendor" ? (
               <>
-                <Button variant="warning" onClick={handleUpdate}>
+                <Button variant="warning" onClick={handleUpdate}
+                  style={{width:"100px"}}
+                  >
                   Update
                 </Button>
                 <Button
                   variant="danger"
                   className="ml-2 mx-5"
+                  style={{width:"110px"}}
                   onClick={handleDelete}
                 >
                   Delete
                 </Button>
                 <Button
-                  variant="primary"
+                  variant="secondary"
+                  style={{width:"110px"}}
+
                   onClick={() => {
                     navigate(`/shop/${currentShopService?.shopId}`);
                   }}
@@ -241,24 +247,15 @@ const ServiceDetailPage: React.FC = () => {
               </>
             ) : (
               <>
-                <Button
-                  variant="primary"
-                  onClick={() => {
+                
+                <i className="bi bi-shop bt-icon-custom-style" style={{color:"#FFB300"}} onClick={() => {
                     navigate(`/shop/${currentShopService?.shopId}`);
-                  }}
-                >
-                  Goto Store
-                </Button>
+                  }}></i>
                 {user && (
-                  <Button
-                    className="mx-4"
-                    variant="primary"
-                    onClick={() => {
-                      handleChat(currentShopService?.shopId ?? 0);
-                    }}
-                  >
-                    Chat with Vendor
-                  </Button>
+                  
+                   <i className="bi bi-chat-square-dots bt-icon-custom-style" style={{color:"#43A047"}} onClick={() => {
+                    handleChat(currentShopService?.shopId ?? 0);
+                  }}></i>
                 )}
               </>
             )}

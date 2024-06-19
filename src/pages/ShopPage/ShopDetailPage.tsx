@@ -86,7 +86,7 @@ export default function ShopDetailPage() {
             <div className="update-button">
               <Popup
                 trigger={
-                  <Button variant="success" className="button ">
+                  <Button variant="warning" className="button " style={{borderRadius:"20px", width:"200px"}}>
                     {" "}
                     Add New Service{" "}
                   </Button>
@@ -107,7 +107,7 @@ export default function ShopDetailPage() {
             <div className="update-button">
               <Popup
                 trigger={
-                  <Button className="button"> Update Shop Details </Button>
+                  <Button className="button" variant="warning" style={{borderRadius:"20px", width:"200px"}}> Update Shop Details </Button>
                 }
                 modal
               >
@@ -117,14 +117,17 @@ export default function ShopDetailPage() {
                 }
               </Popup>
             </div>
+            <div className="update-button">
             <Button
-              variant="danger"
+              variant="outline-danger"
+              style={{borderRadius:"20px", width:"200px"}}
               onClick={() => {
                 setShow(true);
               }}
             >
               Delete Shop
             </Button>
+            </div>
           </>
         )}
       </Container>

@@ -89,7 +89,6 @@ export default function ServicesList({ categoryId }: { categoryId: number }) {
           style={{ width: "200px", margin: "40px 50px 10px 0px" }}
         />
       </div>
-      <ButtonContainer />
       <div className="Service-form-container">
         <div className="Service-form-list">
           {selectedItems.map((item, index) => (
@@ -99,6 +98,8 @@ export default function ServicesList({ categoryId }: { categoryId: number }) {
         </div>
         <ul className="Service-form-listPage"></ul>
       </div>
+      <ButtonContainer />
+
     </div>
   );
 }

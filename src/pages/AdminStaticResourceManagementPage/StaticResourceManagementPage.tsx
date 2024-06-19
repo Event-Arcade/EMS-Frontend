@@ -19,8 +19,8 @@ export default function StaticResourceManagementPage() {
         ) : (
           <div className="col-lg-1"></div>
         )}
-        <div className="col-lg-7" style={{ margin: "100px 40px 40px 70px" }}>
-          <PageTitle page={"Static Resources"} title={""} />
+        <div className="col-lg-7" style={{ margin: "40px 40px 40px 0px" }}>
+          <PageTitle page={"Static Resources"} title={""}  />
           <CreateAdminStaticResourceForm />
           <AdminStaticResourceList />
         </div>

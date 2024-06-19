@@ -1,30 +1,17 @@
+import React, { useMemo, useState } from 'react';
 import { Badge, Carousel } from "react-bootstrap";
-import "./shopServiceCard.css";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addSubPackageToTemporary, removeSubPackageFromTemporary } from "../../../features/package/PackageSlice";
 import SubPackage from "../../../interfaces/SubPackage";
-import { useMemo } from "react";
+import ShopService from "../../../interfaces/ShopService";
+import "./shopServiceCard.css";
 
-interface ShopService {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  rating: number;
-  shopServiceStaticResourcesURLs: string[];
-}
-
-export default function ShopServiceCard({
-  shopService,
-}: {
-  shopService: ShopService;
-}) {
-  const naviagate = useNavigate();
+const ShopServiceCard = ({ shopService }: { shopService: ShopService }) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { description, orderDate, tempararyPackage } = useAppSelector(
-    (state) => state.package
-  );
+  const { description, orderDate, tempararyPackage } = useAppSelector((state) => state.package);
+  const defaultImageUrl = "../../assets/SlidingPic1.jpg";
 
   const isServiceSelected = useMemo(() => {
     return tempararyPackage.subPackages.some(
@@ -32,12 +19,11 @@ export default function ShopServiceCard({
     );
   }, [tempararyPackage.subPackages, shopService.id]);
 
-  // add the selected service to the package
   const handleAddService = () => {
     const data: SubPackage = {
       description: description,
       orderTime: orderDate,
-      serviceId: shopService.id,
+      serviceId: shopService.id!,
     };
     try {
       dispatch(addSubPackageToTemporary(data));
@@ -46,7 +32,6 @@ export default function ShopServiceCard({
     }
   };
 
-  // remove the selected service from the package
   const handleRemoveService = () => {
     try {
       dispatch(removeSubPackageFromTemporary(shopService.id));
@@ -57,7 +42,7 @@ export default function ShopServiceCard({
 
   return (
     <div className="Service-form-item">
-      <Carousel>
+      <Carousel interval={null}>
         {shopService.shopServiceStaticResourcesURLs &&
           shopService.shopServiceStaticResourcesURLs.map((url, index) => (
             <Carousel.Item key={index}>
@@ -66,6 +51,13 @@ export default function ShopServiceCard({
               </div>
             </Carousel.Item>
           ))}
+        {shopService.shopServiceStaticResourcesURLs ? (
+          <Carousel.Item>
+            <div className="Service-form-img">
+              <img src={defaultImageUrl} alt="Default" />
+            </div>
+          </Carousel.Item>
+        ) : null}
       </Carousel>
       <div className="Service-form-content">
         <div className="Service-form-title">{shopService.name}</div>
@@ -89,7 +81,7 @@ export default function ShopServiceCard({
           <button
             className="Service-form-visit"
             onClick={() => {
-              naviagate(`/shop-service/${shopService.id}`);
+              navigate(`/shop-service/${shopService.id}`);
             }}
           >
             Visit
@@ -98,4 +90,43 @@ export default function ShopServiceCard({
       </div>
     </div>
   );
-}
+};
+
+export default ShopServiceCard;
+
+// export default function ShopServiceList() {
+//   const { shopServices } = useAppSelector((state) => state.service);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const cardsPerPage = 8; // 2 rows of 4 cards each
+//   const totalPages = Math.ceil(shopServices.length / cardsPerPage);
+
+//   const handleClick = (page: number) => {
+//     setCurrentPage(page);
+//   };
+
+//   const paginatedServices = shopServices.slice(
+//     (currentPage - 1) * cardsPerPage,
+//     currentPage * cardsPerPage
+//   );
+
+//   return (
+//     <div className="Service-form-container">
+//       <div className="Service-form-list">
+//         {paginatedServices.map((service) => (
+//           <ShopServiceCard key={service.id} shopService={service} />
+//         ))}
+//       </div>
+//       <ul className="Service-form-listPage">
+//         {Array.from({ length: totalPages }, (_, index) => (
+//           <li
+//             key={index}
+//             onClick={() => handleClick(index + 1)}
+//             className={currentPage === index + 1 ? 'active' : ''}
+//           >
+//             {index + 1}
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// }

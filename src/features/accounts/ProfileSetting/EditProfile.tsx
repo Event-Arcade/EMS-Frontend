@@ -17,6 +17,7 @@ import {
   updateUser,
   userAccountUpdatePassword,
 } from "../UserAccountSlice";
+import defaultProfilePicture from "../../../assets/images/user/default.png";
 
 export default function EditProfile({ close }: { close: () => void }) {
   const navigate = useNavigate();
@@ -174,19 +175,20 @@ export default function EditProfile({ close }: { close: () => void }) {
 
   return (
     <>
-      <Container className="mt-4">
-        <h4 className="mb-1">Edit Your Details</h4>
+      <Container className="mt-4" style={{padding:"50px"}}>
         <Row className="mb-3 justify-content-center">
           <Col md="auto">
             <Image
-              src={`${currentUser.profilePictureURL}`}
-              rounded
-              width={150}
+              src={`${currentUser.profilePictureURL||defaultProfilePicture}`}
+              roundedCircle
+              style={{ width: "150px", height: "150px" }}
               className="mb-3"
             />
           </Col>
         </Row>
-        <Form onSubmit={handleSubmit}>
+        <h4 className="mb-1">Edit Your Details</h4>
+
+        <Form onSubmit={handleSubmit} style={{paddingTop:"50px"}}>
           <Row>
             <Col md={6}>
               <Form.Group controlId="formFirstName">
@@ -278,9 +280,9 @@ export default function EditProfile({ close }: { close: () => void }) {
                 />
               </Form.Group>
             </Col>
-            <Col md={6} className="mt-4">
+            <Col md={10} className="mt-4">
               {loading ? (
-                <Button variant="success" className="mt-3 mx-auto">
+                <Button variant="success" className="mt-3 mx-auto" style={{width:"180px"}} >
                   <Spinner
                     as="span"
                     animation="grow"
@@ -288,21 +290,27 @@ export default function EditProfile({ close }: { close: () => void }) {
                     role="status"
                     aria-hidden="true"
                     className="mx-2"
+
+
                   />
                   Updating ...
                 </Button>
               ) : (
                 <>
                   <Button
-                    variant="primary"
+                    variant="warning"
                     type="submit"
                     className="mt-3 mx-auto"
+                    style={{width:"180px"}}
+
                   >
                     Save Changes
                   </Button>
                   <Button
                     variant="warning"
                     className="mx-4 mt-3"
+                    style={{width:"180px"}}
+
                     onClick={() => {
                       setShowUpdatePasswordForm(true);
                     }}
@@ -315,12 +323,15 @@ export default function EditProfile({ close }: { close: () => void }) {
                       setShow(true);
                     }}
                     className="mt-3"
+                    style={{width:"180px"}}
+
                   >
                     Delete Account
                   </Button>
                   <Button
                     variant="secondary"
-                    className="mt-3 mx-5"
+                    className="mt-3 mx-4"
+                    style={{width:"180px"}}
                     onClick={() => {
                       user?.role === "admin"
                         ? navigate("/admin/dashboard")
@@ -383,7 +394,7 @@ export default function EditProfile({ close }: { close: () => void }) {
           <Button variant="secondary" onClick={handleCloseUpdatePasswordModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleUpdateNewPassword}>
+          <Button variant="success" onClick={handleUpdateNewPassword}>
             Save Changes
           </Button>
         </Modal.Footer>

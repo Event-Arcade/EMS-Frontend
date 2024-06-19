@@ -10,6 +10,13 @@
   /* background: black; */
   background-image: url("bannerImg3.png");
   display: flex;
+  margin: 80px 0px 80px 0px;  ;
+}
+
+@media (max-width: 600px) {
+  .banner-body {
+    height: 100%;
+  }
 }
 
 @media (max-width: 600px) {
@@ -52,9 +59,11 @@
 
 @media (max-width: 800px) {
   .banner-left {
-    padding-left: 10px;
+    padding-left: 80px;
     padding-top: 50px;
+    height: 100%;
   }
+  
 }
 
 .banner-right {
@@ -70,18 +79,31 @@
   border-radius: 10px;
   margin-left: 160px;
   font-weight: 600;
+  margin-top: 50px;
 }
 
-@media (max-width: 600px) {
-  .custom-banner-button {
-    margin-left: 0px;
-    width: 100px;
-    height: 20px;
-    font-size: 10px;
+@media (max-width: 1000px) {
+  .custom-banner-button{
+    margin: 20px 0px 0 70px;
   }
 }
 
 @media (max-width: 600px) {
+  .custom-banner-button {
+    margin: 0 0 20px 70px;
+    width: 100px;
+    height: 20px;
+    font-size: 10px;
+  }
+  .banner-left{
+    padding-left: 20px;
+  }
+}
+
+
+
+
+@media (max-width: 450px) {
   .banner-text-heading {
     font-size: 15px;
   }
@@ -94,11 +116,11 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .banner-right {
-    img{
+    
       width: 50%;
-      height: 60%;
-    }
+      height: 50%;
+    
   }
 }

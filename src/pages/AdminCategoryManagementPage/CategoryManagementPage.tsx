@@ -6,7 +6,7 @@ export default function CategoryManagementPage() {
   return (
     <>
       <div className="page-content-ad">
-        <div className="col-lg-7" style={{ margin: "100px 40px 40px 70px" }}>
+        <div className="col-lg-7" style={{ margin: "40px 40px 40px 40px" }}>
           <PageTitle page={"Category Management"} title={""} />
           <CreateCategoryForm />
           <CategoryList />

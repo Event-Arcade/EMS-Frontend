@@ -4,6 +4,7 @@ import { Card, Button, Container, Row, Col, Modal } from 'react-bootstrap';
 import AdminStaticResource from '../../interfaces/AdminStaticResource';
 import { useAppSelector } from '../../store/hooks';
 import "./style.css";
+import PageTitle from '../../components/pageTitle/PageTitle';
 
 export default function AdminStaticResourceManagementListing() {
 
@@ -23,6 +24,7 @@ export default function AdminStaticResourceManagementListing() {
 
   return (
     <Container className="container">
+      <PageTitle page={"Help"} title={""} />
       <Row>
         {staticResources.map((resource) => (
           <Col md={12} key={resource.id} className="mb-4">
@@ -38,7 +40,7 @@ export default function AdminStaticResourceManagementListing() {
               <Card.Body>
                 <Card.Title>{resource.name}</Card.Title>
                 <Card.Text>{resource.description?.slice(0,50)}</Card.Text>
-                <Button variant="primary" onClick={() => handleShowModal(resource)}>
+                <Button variant="warning" onClick={() => handleShowModal(resource)}>
                   View More
                 </Button>
               </Card.Body>
